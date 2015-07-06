@@ -20,7 +20,7 @@ function ProgressBar {
 }
 
 # Total number of steps.
-_end=13
+_end=14
 step=0
 
 ## Usage:
@@ -158,6 +158,21 @@ fi
 
 ##----------------------------------------------------------------------
 
+emacsddir="$HOME/.emacs.d"
+if [ ! -d "$githubdir" ]
+then
+    echo ----------------------------------------------------------------------
+    echo "$emacsddir doesn't exists. It will be created."
+    ProgressBar ${step} ${_end}; step=$((step+1))
+    mkdir -v $HOME/.emacs.d
+    echo; echo
+else
+    echo ----------------------------------------------------------------------
+    echo "$emacsddir exists."
+    ProgressBar ${step} ${_end}; step=$((step+1))
+    echo; echo
+fi
+
 dotemacs="$HOME/.emacs"
 if [ -f "$dotemacs" ]
 then
@@ -245,10 +260,12 @@ case $opcao in
     d )
         cd $HOME/
         sed -ri 's/^(;; )(.color-theme-solarized-dark)/\2/g' .emacs
+        echo; echo
         ;;
     l )
         cd $HOME/
         sed -ri 's/^(;; )(.color-theme-solarized-light)/\2/g' .emacs
+        echo; echo
         ;;
     * )
         echo "Skipped."; echo; echo
