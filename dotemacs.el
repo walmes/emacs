@@ -252,6 +252,7 @@
             gnus-article-mode
             org-mode
             shell-mode
+            sh-mode
             muse-mode
             ess-mode
             polymode-mode
