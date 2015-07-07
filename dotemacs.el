@@ -159,6 +159,16 @@
   "Major mode for editing R-Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.Rmd\\'" . poly-markdown-mode))
 
+;; Insert a new (empty) chunk to R markdown.
+(defun insert-chunk ()
+  "Insert chunk environment Rmd sessions."
+  (interactive)
+  (insert "```{r}\n\n```")
+  (forward-line -1)
+  )
+
+(global-set-key (kbd "C-c i") 'insert-chunk)
+
 ;;----------------------------------------------------------------------
 ;; Key bindings for R, Rnw and Rmd sessions.
 ;; http://stackoverflow.com/questions/2901198/useful-keyboard-shortcuts-and-tips-for-ess-r
@@ -174,6 +184,17 @@
 (global-set-key (kbd "S-<f7>") 'polymode-previous-chunk-same-type)
 (global-set-key (kbd "S-<f8>") 'polymode-next-chunk-same-type)
 (global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
+
+;; Insert a new (empty) chunk to R markdown.
+(defun insert-chunk ()
+  "Insert chunk environment Rmd sessions."
+  (interactive)
+  (insert "```{r}\n\n```")
+  (forward-line -1)
+  )
+
+(add-hook 'poly-markdown-mode-hook
+          (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
 
 ;;----------------------------------------------------------------------
 ;; To eval line/regions in terminal open in Emacs.
