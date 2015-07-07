@@ -196,6 +196,75 @@
 (add-hook 'poly-markdown-mode-hook
           (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
 
+(setq-default inferior-R-args "--no-restore-history --no-save  ")
+
+;; http://www.kieranhealy.org/blog/archives/2009/10/12/make-shift-enter-do-a-lot-in-ess/
+(add-hook 'ess-mode-hook
+          '(lambda()
+             (setq comint-scroll-to-bottom-on-input t)
+             (setq comint-scroll-to-bottom-on-output t)
+             (setq comint-move-point-for-output t)))
+
+;; http://permalink.gmane.org/gmane.emacs.ess.general/8419
+;; Script font lock highlight.
+(setq ess-R-font-lock-keywords
+      '((ess-R-fl-keyword:modifiers . t)
+        (ess-R-fl-keyword:fun-defs . t)
+        (ess-R-fl-keyword:keywords . t)
+        (ess-R-fl-keyword:assign-ops . t)
+        (ess-R-fl-keyword:constants . t)
+        (ess-fl-keyword:fun-calls . t)
+        (ess-fl-keyword:numbers . t)
+        (ess-fl-keyword:operators . t)
+        (ess-fl-keyword:delimiters . t)
+        (ess-fl-keyword:= . t)
+        (ess-R-fl-keyword:F&T . t)
+        (ess-R-fl-keyword:%op% . t)
+        ))
+
+;; Console font lock highlight.
+(setq inferior-R-font-lock-keywords
+      '((ess-S-fl-keyword:prompt . t)
+        (ess-R-fl-keyword:messages . t)
+        (ess-R-fl-keyword:modifiers . t)
+        (ess-R-fl-keyword:fun-defs . t)
+        (ess-R-fl-keyword:keywords . t)
+        (ess-R-fl-keyword:assign-ops . t)
+        (ess-R-fl-keyword:constants . t)
+        (ess-fl-keyword:matrix-labels . t)
+        (ess-fl-keyword:fun-calls . t)
+        (ess-fl-keyword:numbers . t)
+        (ess-fl-keyword:operators . t)
+        (ess-fl-keyword:delimiters . t)
+        (ess-fl-keyword:= . t)
+        (ess-R-fl-keyword:F&T . t)
+        (ess-R-fl-keyword:%op% . t)
+        ))
+
+;; Add highlighting for certain keywords.
+;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
+;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
+(make-face 'special-words) 
+(set-face-attribute 'special-words nil :foreground "White" :background "Firebrick") 
+
+(dolist
+    (mode '(fundamental-mode
+            gnus-article-mode
+            org-mode
+            shell-mode
+            muse-mode
+            ess-mode
+            polymode-mode
+            markdown-mode
+            TeX-mode)) 
+  (font-lock-add-keywords
+   mode 
+   '(("\\<\\(COMMENT\\|DONE\\|TODO\\|STOP\\|IMPORTANT\\|NOTE\\|OBS\\|ATTENTION\\|REVIEW\\)" 
+      0 'font-lock-warning-face t) 
+     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)" 
+      0 'special-words t)))
+  ) 
+
 ;;----------------------------------------------------------------------
 ;; To eval line/regions in terminal open in Emacs.
 
