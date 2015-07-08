@@ -511,7 +511,7 @@ then
     case $opcao in
         y )
             cd $HOME/.emacs.d/
-            wget 'http://www.emacswiki.org/emacs/download/essh.el'
+            wget -N 'http://www.emacswiki.org/emacs/download/essh.el'
             ;;
         * )
             echo "Skipped."; echo; echo
@@ -524,7 +524,7 @@ else
     ProgressBar ${step} ${_end}; step=$((step+1))
     # echo ------------------------------------------------------------
     cd $HOME/.emacs.d/
-    wget 'http://www.emacswiki.org/emacs/download/essh.el'
+    wget -N 'http://www.emacswiki.org/emacs/download/essh.el'
     echo; echo
 fi
 
