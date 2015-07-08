@@ -250,3 +250,205 @@
 (define-key global-map "\M-Q" 'unfill-region)
 
 ;;----------------------------------------------------------------------
+
+;; Insert a new (empty) chunk to R markdown.
+(defun insert-chunk ()
+  "Insert chunk environment Rmd sessions."
+  (interactive)
+  (insert "```{r}\n\n```")
+  (forward-line -1)
+  )
+
+(add-hook 'poly-markdown-mode-hook
+          (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
+
+;; Mark a word at a point.
+;; http://www.emacswiki.org/emacs/ess-edit.el
+(defun ess-edit-word-at-point ()
+  (save-excursion
+    (buffer-substring
+     (+ (point) (skip-chars-backward "a-zA-Z0-9._"))
+     (+ (point) (skip-chars-forward "a-zA-Z0-9._")))))
+
+;; Eval any word where the cursor is (objects, functions, etc).
+(defun ess-eval-word ()
+  (interactive)
+  (let ((x (ess-edit-word-at-point)))
+    (ess-eval-linewise (concat x)))
+  )
+
+(add-hook 'ess-mode-hook
+          (lambda () (local-set-key (kbd "C-c r") 'ess-eval-word)))
+
+;;----------------------------------------------------------------------
+;; All functions defined below were copied from:
+;; http://www.emacswiki.org/emacs/ess-edit.el
+;; https://github.com/emacsmirror/ess-edit/blob/master/ess-edit.el
+
+(defun ess-edit-backward-move-out-of-comments (lim)
+  "If inside comments, move the point backwards out."
+  (let ((opoint (point)) stop)
+    (if (save-excursion
+	  (beginning-of-line)
+	  (search-forward "#" opoint 'move))
+	(while (not stop)
+	  (skip-chars-backward " \t\n\f" lim)
+	  (setq opoint (point))
+	  (beginning-of-line)
+	  (search-forward "#" opoint 'move)
+	  (skip-chars-backward " \t#")
+	  (setq stop (or (/= (preceding-char) ?\n) (<= (point) lim)))
+	  (if stop (point)
+	    (beginning-of-line))))))
+
+(defun ess-edit-backward-move-out-of-quotes ()
+  "If inside quotes, move the point backwards out."
+  (let ((start 
+	 (save-excursion
+	   (beginning-of-line) (point))))
+    (if (ess-edit-within-quotes start (point))
+	(re-search-backward "[\'\"]" nil t))))
+
+(defun ess-edit-within-quotes (beg end)
+  "Return t if the number of quotes between BEG and END is odd.
+   Quotes are single and double."
+  (let (
+	;; (countsq (ess-edit-how-many-quotes-region "\\(^\\|[^\\\\]\\)\'" beg end))
+	;; (countdq (ess-edit-how-many-quotes-region "\\(^\\|[^\\\\]\\|^\"\"\\)\"" beg end)))
+	(countsq (ess-edit-how-many-quotes-region beg end))
+	(countdq (ess-edit-how-many-quotes-region beg end)))
+    ;; (countsq (ess-edit-how-many-region "\'" beg end))
+    ;; (countdq (ess-edit-how-many-region "\"" beg end)))
+    (or (= (mod countsq 2) 1) (= (mod countdq 2) 1))))
+
+;; modified copy of comint-how-many-region
+(defun ess-edit-how-many-quotes-region (beg end)
+  "Return number of matches for quotes skipping double quotes and escaped quotes from BEG to END."
+  (let ((count 0))
+    (save-excursion
+      (save-match-data
+	(goto-char beg)
+	(while (re-search-forward "\"\\|\'" end t)
+	  (if (or (save-excursion
+		    (backward-char 3)
+		    (looking-at "\\\\"))
+		  (looking-at "\"\\|\'"))
+	      (forward-char 1)
+	    (setq count (1+ count))))))
+    count))
+
+(defun ess-edit-read-call (&optional arg move all)
+  "Return the name of the R-function call at point as a string.
+   If ARG return name of function call which is ARG function
+   calls above point. If MOVE is non-nil leave point after
+   opening parentheses of call. If all is non-nil return the full
+   string."
+  (interactive "p")
+  (or arg (setq arg 1))
+  (if (< arg 0) (error "Only backward reading of function calls possible."))
+  (add-hook 'pre-command-hook 'ess-edit-pre-command-hook)
+  ;; assume correct syntax, at least beyond previous paragraph-start 
+  (let ((oldpoint (point))
+	(lim (save-excursion
+	       (backward-paragraph 1) (point)))
+	fun beg end)
+    ;; move outside comments and quotes first
+    (ess-edit-backward-move-out-of-comments lim)
+    (ess-edit-backward-move-out-of-quotes)
+    ;;what if we are sitting on a function call?
+    (if (save-excursion
+	  (skip-chars-backward "a-zA-Z0-9.")
+	  (looking-at "\\([a-zA-Z0-9.]+\\)\\((\\)"))
+	(setq beg (match-beginning 1) end (match-end 1)
+	      fun (list (match-string 1))
+	      arg (- arg 1)))
+    (while
+	(and (> arg 0)
+             (re-search-backward "[\"\'()]" lim t)
+             (let ((matchcar (char-before (match-end 0)))
+                   matchcall)
+               (if (eq ?\( matchcar)
+                   ;; test if sitting on proper function call
+                   (if (not (progn
+                              (skip-chars-backward "a-zA-Z0-9.")
+                              (looking-at "\\([a-zA-Z0-9.]+\\)\\((\\)")))
+                       nil
+                     (if (string= "\\(if\\|else\\|for\\)"
+                                  (setq matchcall (match-string 1)))
+                         t
+                       (setq beg (match-beginning 1) end (match-end 1)
+                             fun (append (list matchcall) fun))
+                       (if (= arg 1) nil (setq arg (- arg 1)))))
+                 ;; skip balanced parentheses or quotes
+                 (if (not (= ?\) matchcar))
+                     (re-search-backward
+                      (char-to-string matchcar) lim t)
+                   (condition-case nil 
+                       (progn
+                         (forward-char 1)
+                         (backward-sexp) t)
+                     (t (goto-char oldpoint)
+                        (error "Point is not in a proper function call or unbalanced parentheses paragraph."))))))))
+    (if (not fun)
+        (progn (goto-char oldpoint)
+               (error "Point is not in a proper function call or unbalanced parentheses in this paragraph."))
+      (ess-edit-highlight 0 beg end)
+      (message (car fun))
+      (goto-char (if move (+ (point) (skip-chars-forward "a-zA-Z0-9."))
+                   oldpoint))
+      (if all fun (car fun)))))
+
+;; Two functions for activating and deactivation highlight overlays
+(defun ess-edit-highlight (index begin end &optional buffer)
+  "Highlight a region with overlay INDEX."
+  (move-overlay (aref ess-edit-highlight-overlays index)
+                begin end (or buffer (current-buffer))))
+
+;; We keep a vector with several different overlays to do our highlighting.
+(defvar ess-edit-highlight-overlays [nil nil])
+
+;; Initialize the overlays
+(aset ess-edit-highlight-overlays 0 (make-overlay 1 1))
+(overlay-put (aref ess-edit-highlight-overlays 0) 'face 'highlight)
+(aset ess-edit-highlight-overlays 1 (make-overlay 1 1))
+(overlay-put (aref ess-edit-highlight-overlays 1) 'face 'highlight)
+
+(defun ess-edit-indent-call-sophisticatedly (&optional arg force)
+  (interactive "p")
+  (let* ((arg (or arg 1))
+	 (fun (ess-edit-read-call arg 'go))
+	 (beg (+ (point) 1))
+	 (end (progn (forward-sexp) (point)))
+	 breaks
+	 delete-p)
+    ;;	  (eq last-command 'ess-edit-indent-call-sophisticatedly)
+    (goto-char beg)
+    (while (setq match (re-search-forward "[\"\'{([,]" end t))
+      (if (string= (match-string 0) ",")
+	  (setq breaks (cons (cons (point)
+				   (if (looking-at "[ \t]*\n") t nil)) breaks))
+	(if (or (string= (match-string 0) "\"")  (string= (match-string 0) "\'"))
+	    (re-search-forward (match-string 0) nil t)
+          (backward-char 1)
+          (forward-sexp))))
+    ;; if there are more breaks than half the number of
+    ;; arguments then delete breaks else add linebreaks
+    (setq delete-p
+	  (if force nil
+	    (> (length (delete nil (mapcar 'cdr breaks))) (* 0.5 (length breaks)))))
+    (while breaks (goto-char (caar breaks))
+           (if delete-p
+               (if (cdar breaks)
+                   (delete-region (caar breaks) (+ (point) (skip-chars-forward " \t\n"))))
+             (if (not (cdar breaks))
+                 (insert "\n")))
+           (setq breaks (cdr breaks)))
+    (goto-char (- beg 1))
+    (ess-indent-exp)
+    (ess-edit-read-call arg 'go)))
+
+;; (global-set-key (kbd "C-c C-h") 'ess-eval-word)
+(add-hook 'ess-mode-hook
+          (lambda () (local-set-key (kbd "C-c C-h")
+                                    'ess-edit-indent-call-sophisticatedly)))
+
