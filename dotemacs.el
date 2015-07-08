@@ -185,17 +185,6 @@
 (global-set-key (kbd "S-<f8>") 'polymode-next-chunk-same-type)
 (global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
 
-;; Insert a new (empty) chunk to R markdown.
-(defun insert-chunk ()
-  "Insert chunk environment Rmd sessions."
-  (interactive)
-  (insert "```{r}\n\n```")
-  (forward-line -1)
-  )
-
-(add-hook 'poly-markdown-mode-hook
-          (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
-
 (setq-default inferior-R-args "--no-restore-history --no-save  ")
 
 ;; http://www.kieranhealy.org/blog/archives/2009/10/12/make-shift-enter-do-a-lot-in-ess/
@@ -336,3 +325,4 @@
 (add-to-list 'auto-mode-alist '("\\.pgs" . tex-mode))
 
 ;;----------------------------------------------------------------------
+
