@@ -147,6 +147,54 @@
 (global-set-key (kbd "M-]") 'move-region-down)
 
 ;;----------------------------------------------------------------------
+;; Commented rules to divide code.
+
+(defun insert-rule-and-comment-1 ()
+  "Insert a commented rule with 70 dashes (-). Useful to divide
+   your code in sections."
+  (interactive)
+  (insert (make-string 70 ?-))
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 70)
+  (backward-delete-char 1 2)
+  (move-end-of-line nil)
+  )
+
+(global-set-key [?\M--] (kbd "C-u 7 0 -"))
+
+(defun insert-rule-and-comment-2 ()
+  "Insert a commented rule with 70 equals (=). Useful to divide
+   your code in sections."
+  (interactive)
+  (insert (make-string 70 ?=))
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 70)
+  (backward-delete-char 1 2)
+  (move-end-of-line nil)
+  )
+
+(global-set-key [?\M-=] (kbd "C-u 7 0 ="))
+
+(defun insert-rule-and-comment-3 ()
+  "Insert a commented rule with 43 dashes (-). Useful to divide
+   your code in sections."
+  (interactive)
+  (insert (make-string 43 ?-))
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 70)
+  (backward-delete-char 1 2)
+  (move-end-of-line nil)
+  )
+
+(global-set-key [?\C--] (kbd "C-u 4 3 -"))
+
+;;----------------------------------------------------------------------
 ;; Improved version of occur. Quick navigation.
 ;; http://ignaciopp.wordpress.com/2009/06/10/customizing-emacs-occur/
 
