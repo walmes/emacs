@@ -160,9 +160,10 @@
   (backward-char 70)
   (backward-delete-char 1 2)
   (move-end-of-line nil)
+  (next-line)
   )
 
-(global-set-key [?\M--] (kbd "C-u 7 0 -"))
+(global-set-key [?\M--] 'insert-rule-and-comment-1)
 
 (defun insert-rule-and-comment-2 ()
   "Insert a commented rule with 70 equals (=). Useful to divide
@@ -175,9 +176,10 @@
   (backward-char 70)
   (backward-delete-char 1 2)
   (move-end-of-line nil)
+  (next-line)
   )
 
-(global-set-key [?\M-=] (kbd "C-u 7 0 ="))
+(global-set-key [?\M-=] 'insert-rule-and-comment-2)
 
 (defun insert-rule-and-comment-3 ()
   "Insert a commented rule with 43 dashes (-). Useful to divide
@@ -187,12 +189,13 @@
   (comment-or-uncomment-region
    (line-beginning-position)
    (line-beginning-position 2))
-  (backward-char 70)
+  (backward-char 43)
   (backward-delete-char 1 2)
   (move-end-of-line nil)
+  (next-line)
   )
 
-(global-set-key [?\C--] (kbd "C-u 4 3 -"))
+(global-set-key [?\C--] 'insert-rule-and-comment-3)
 
 ;;----------------------------------------------------------------------
 ;; Improved version of occur. Quick navigation.
