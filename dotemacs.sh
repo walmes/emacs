@@ -159,7 +159,7 @@ fi
 ##----------------------------------------------------------------------
 
 emacsddir="$HOME/.emacs.d"
-if [ ! -d "$githubdir" ]
+if [ ! -d "$emacsddir" ]
 then
     echo ----------------------------------------------------------------------
     echo "$emacsddir doesn't exists. It will be created."
