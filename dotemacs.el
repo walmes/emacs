@@ -158,6 +158,7 @@
 (autoload 'poly-markdown-mode "poly-markdown-mode"
   "Major mode for editing R-Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.Rmd\\'" . poly-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.Rpres\\'" . poly-markdown-mode))
 
 ;; Insert a new (empty) chunk to R markdown.
 (defun insert-chunk ()
