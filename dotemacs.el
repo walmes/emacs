@@ -188,6 +188,17 @@
 
 (setq-default inferior-R-args "--no-restore-history --no-save  ")
 
+(defadvice ess-eval-buffer (before really-eval-buffer compile activate)
+  "Prevent call ess-eval-buffer by accident, frequently by
+   hitting C-c C-b instead of C-c C-n."
+  (if (yes-or-no-p
+       (format "Are you sure you want to evaluate the %s buffer?"
+               buffer-file-name))
+      (message "ess-eval-buffer started.")
+    (error "ess-eval-buffer canceled!")
+    )
+  )
+
 ;; http://www.kieranhealy.org/blog/archives/2009/10/12/make-shift-enter-do-a-lot-in-ess/
 (add-hook 'ess-mode-hook
           '(lambda()
