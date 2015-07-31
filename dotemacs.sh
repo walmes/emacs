@@ -20,7 +20,7 @@ function ProgressBar {
 }
 
 # Total number of steps.
-_end=14
+_end=15
 step=0
 
 ## Usage:
@@ -494,6 +494,50 @@ else
             echo "Skipped."; echo; echo
             ;;
     esac 
+fi
+
+##----------------------------------------------------------------------
+## Folding code blocks based on indentation.
+## https://github.com/zenozeng/yafolding.el.git
+
+dir="$HOME/.emacs.d/yafolding.el/.git/"
+if [ -d "$dir" ]
+then
+    echo ------------------------------------------------------------
+    echo "~/.emacs.d/yafolding.el/ repository found."
+    echo "Do you want update this repository? [ y ]"
+    ProgressBar ${step} ${_end}; step=$((step+1))
+    # echo ------------------------------------------------------------
+    read opcao
+    case $opcao in
+        y )
+            echo "Updating ...";
+            cd $HOME/.emacs.d/yafolding.el/
+            git pull
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac
+else
+    echo ------------------------------------------------------------
+    echo "~/.emacs.d/yafolding.el/ not found."
+    echo "Do you want to clone it? [ y ]"
+    ProgressBar ${step} ${_end}; step=$((step+1))
+    # echo ------------------------------------------------------------
+    read opcao
+    case $opcao in
+        y )
+            echo "Cloning ..."
+            cd $HOME/.emacs.d/
+            git clone https://github.com/zenozeng/yafolding.el.git
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac
 fi
 
 ##----------------------------------------------------------------------
