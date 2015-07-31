@@ -334,6 +334,16 @@
 (global-set-key (kbd "<S-f2>") 'bm-previous)
 
 ;;----------------------------------------------------------------------
+;; Folding code blocks based on indentation.
+;; git clone https://github.com/zenozeng/yafolding.el.git
+
+(add-to-list 'load-path "~/.emacs.d/yafolding.el/")
+(require 'yafolding)
+
+(global-set-key [?\C-{] #'yafolding-hide-parent-element)
+(global-set-key [?\C-}] #'yafolding-toggle-element)
+
+;;----------------------------------------------------------------------
 ;; Latex extensions.
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
@@ -347,4 +357,3 @@
 (add-to-list 'auto-mode-alist '("\\.pgs" . tex-mode))
 
 ;;----------------------------------------------------------------------
-
