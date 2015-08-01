@@ -164,7 +164,7 @@ then
     echo ----------------------------------------------------------------------
     echo "$emacsddir doesn't exists. It will be created."
     ProgressBar ${step} ${_end}; step=$((step+1))
-    mkdir -v $HOME/.emacs.d
+    mkdir -v $HOME/.emacs.d/lisp/
     echo; echo
 else
     echo ----------------------------------------------------------------------
@@ -554,7 +554,7 @@ then
     read opcao
     case $opcao in
         y )
-            cd $HOME/.emacs.d/
+            cd $HOME/.emacs.d/lisp/
             wget -N 'http://www.emacswiki.org/emacs/download/essh.el'
             ;;
         * )
