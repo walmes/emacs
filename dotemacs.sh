@@ -399,7 +399,7 @@ then
             git pull
             cd $HOME/.emacs.d/popup-el/
             git pull
-            cp -v $HOME/.emacs.d/popup-el/popup.el $HOME/.emacs.d/
+            cp -v $HOME/.emacs.d/popup-el/popup.el $HOME/.emacs.d/lisp/
             echo; echo
             ;;
         * )
