@@ -126,8 +126,10 @@
 (add-to-list 'load-path
              "~/.emacs.d/emacs-color-theme-solarized")
 (require 'color-theme-solarized)
-;; (color-theme-solarized-dark)
-;; (color-theme-solarized-light)
+
+;; Color theme according to machine name.
+(if (not (string-equal system-name "class"))
+    (color-theme-solarized-dark))
 
 ;;----------------------------------------------------------------------
 ;; MarkDown extensions.
@@ -288,14 +290,31 @@
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
 
-(add-to-list 'load-path
-             "~/.emacs.d/auto-complete/")
-(require 'auto-complete-config)
+;; (symbol-value 'system-type) ;; gnu/linux.
+;; (system-name)               ;; machine name.
 
-(add-to-list 'ac-dictionary-directories
-             "~/.emacs.d/auto-complete/dict/")
-(ac-config-default)
+(if (string-equal system-name "youngest")
+    ;; [THEN] if youngest = my Antergus, Arch Linux.
+    (progn
+      ;; instalation: https://aur.archlinux.org/packages/auto-complete/
+      (add-to-list 'load-path "/usr/share/emacs/site-lisp/auto-complete")
+      (require 'auto-complete-config)
+      (add-to-list 'ac-dictionary-directories
+                   "/usr/share/emacs/site-lisp/auto-complete/ac-dict")
+      (ac-config-default)
+      )
+  ;; [ELSE] if other machine name = Debian (Ubuntu, Mint).
+  (progn
+    (add-to-list 'load-path
+                 "~/.emacs.d/auto-complete/")
+    (require 'auto-complete-config)
+    (add-to-list 'ac-dictionary-directories
+                 "~/.emacs.d/auto-complete/dict/")
+    (ac-config-default)
+    )
+)
 
+;; To activate ESS auto-complete for R.
 (setq ess-use-auto-complete 'script-only)
 
 ;; Change 'ac-complete from ENTER to TAB.
