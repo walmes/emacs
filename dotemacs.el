@@ -21,7 +21,7 @@
 ;;----------------------------------------------------------------------
 
 ;; Add directory with supplementary configuration files.
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Highlight the cursor line.
 (global-hl-line-mode 1)
