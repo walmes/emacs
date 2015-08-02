@@ -292,6 +292,49 @@ else
 fi
 
 ##----------------------------------------------------------------------
+## ESS - Emacs Speaks Statistics.
+
+dir="$HOME/.emacs.d/ESS/.git/"
+if [ -d "$dir" ]
+then
+    echo ------------------------------------------------------------
+    echo "~/.emacs.d/ESS/ repository found."
+    echo "Do you want update this repository? [ y ]"
+    ProgressBar ${step} ${_end}; step=$((step+1))
+    # echo ------------------------------------------------------------
+    read opcao
+    case $opcao in
+        y )
+            echo "Updating ...";
+            cd $HOME/.emacs.d/ESS/
+            git pull
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac 
+else
+    echo ------------------------------------------------------------
+    echo "~/.emacs.d/ESS/ not found."
+    echo "Do you want to clone it? [ y ]"
+    ProgressBar ${step} ${_end}; step=$((step+1))
+    # echo ------------------------------------------------------------
+    read opcao
+    case $opcao in
+        y )
+            echo "Cloning ..."
+            cd $HOME/.emacs.d/
+            git clone https://github.com/emacs-ess/ESS.git
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac 
+fi
+
+##----------------------------------------------------------------------
 ## Polymode to edit R MarkDown and related files.
 
 dir="$HOME/.emacs.d/polymode/.git/"
