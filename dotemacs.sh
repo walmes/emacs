@@ -158,13 +158,13 @@ fi
 
 ##----------------------------------------------------------------------
 
-emacsddir="$HOME/.emacs.d"
+emacsddir="$HOME/.emacs.d/lisp/"
 if [ ! -d "$emacsddir" ]
 then
     echo ----------------------------------------------------------------------
     echo "$emacsddir doesn't exists. It will be created."
     ProgressBar ${step} ${_end}; step=$((step+1))
-    mkdir -v $HOME/.emacs.d/lisp/
+    mkdir -v -p $HOME/.emacs.d/lisp/
     echo; echo
 else
     echo ----------------------------------------------------------------------
@@ -562,7 +562,7 @@ fi
 ##----------------------------------------------------------------------
 ## Send line or region for shell buffer. 
 
-file="$HOME/.emacs.d/essh.el"
+file="$HOME/.emacs.d/lisp/essh.el"
 if [ -f "$file" ]
 then
     echo ------------------------------------------------------------
@@ -582,11 +582,11 @@ then
     esac 
 else
     echo ------------------------------------------------------------
-    echo "~/.emacs.d/essh.el file not found."
+    echo "~/.emacs.d/lisp/essh.el file not found."
     echo "It will be created."
     ProgressBar ${step} ${_end}; step=$((step+1))
     # echo ------------------------------------------------------------
-    cd $HOME/.emacs.d/
+    cd $HOME/.emacs.d/lisp/
     wget -N 'http://www.emacswiki.org/emacs/download/essh.el'
     echo; echo
 fi
