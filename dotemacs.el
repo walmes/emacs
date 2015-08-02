@@ -173,6 +173,16 @@
 (global-set-key (kbd "C-c i") 'insert-chunk)
 
 ;;----------------------------------------------------------------------
+;; ESS - Emacs Speaks Statistics.
+
+;; http://ess.r-project.org/
+;; git clone git@github.com:emacs-ess/ESS.git
+(load "~/.emacs.d/ESS/lisp/ess-site")
+(require 'ess-site)
+(setq-default ess-dialect "R")
+(require 'ess-eldoc)
+
+;;----------------------------------------------------------------------
 ;; Key bindings for R, Rnw and Rmd sessions.
 ;; http://stackoverflow.com/questions/2901198/useful-keyboard-shortcuts-and-tips-for-ess-r
 
@@ -244,7 +254,9 @@
         (ess-R-fl-keyword:%op% . t)
         ))
 
+;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
+
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
 ;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
 (make-face 'special-words) 
