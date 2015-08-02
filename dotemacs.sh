@@ -566,7 +566,7 @@ file="$HOME/.emacs.d/lisp/essh.el"
 if [ -f "$file" ]
 then
     echo ------------------------------------------------------------
-    echo "~/.emacs.d/essh.el file found."
+    echo "~/.emacs.d/lisp/essh.el file found."
     echo "Do you want update it? [ y ]"
     ProgressBar ${step} ${_end}; step=$((step+1))
     # echo ------------------------------------------------------------
