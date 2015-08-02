@@ -249,30 +249,6 @@ else
 fi
 
 ##----------------------------------------------------------------------
-## Choose solarized color theme
-
-echo ------------------------------------------------------------
-echo "Choose your solarized theme, dark or light? [ d/l ]"
-ProgressBar ${step} ${_end}; step=$((step+1))
-# echo ------------------------------------------------------------
-read opcao
-case $opcao in
-    d )
-        cd $HOME/
-        sed -ri 's/^(;; )(.color-theme-solarized-dark)/\2/g' .emacs
-        echo; echo
-        ;;
-    l )
-        cd $HOME/
-        sed -ri 's/^(;; )(.color-theme-solarized-light)/\2/g' .emacs
-        echo; echo
-        ;;
-    * )
-        echo "Skipped."; echo; echo
-        ;;
-esac 
-
-##----------------------------------------------------------------------
 ## Markdown mode for Emacs.
 
 dir="$HOME/.emacs.d/markdown-mode/.git/"
