@@ -177,7 +177,12 @@
 
 ;; http://ess.r-project.org/
 ;; git clone git@github.com:emacs-ess/ESS.git
-(load "~/.emacs.d/ESS/lisp/ess-site")
+
+;; Color theme according to machine name.
+(if (string-equal system-name "youngest")
+    (load "~/.emacs.d/ESS/lisp/ess-site")
+  )
+
 (require 'ess-site)
 (setq-default ess-dialect "R")
 (require 'ess-eldoc)
