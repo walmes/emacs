@@ -178,11 +178,6 @@
 ;; http://ess.r-project.org/
 ;; git clone git@github.com:emacs-ess/ESS.git
 
-;; Color theme according to machine name.
-(if (string-equal system-name "youngest")
-    (load "~/.emacs.d/ESS/lisp/ess-site")
-  )
-
 (require 'ess-site)
 (setq-default ess-dialect "R")
 (require 'ess-eldoc)
@@ -237,7 +232,7 @@
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
         (ess-R-fl-keyword:F&T . t)
-        (ess-R-fl-keyword:%op% . t)
+        ;; (ess-R-fl-keyword:%op% . t)
         ))
 
 ;; Console font lock highlight.
@@ -307,29 +302,8 @@
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
 
-;; (symbol-value 'system-type) ;; gnu/linux.
-;; (system-name)               ;; machine name.
-
-(if (string-equal system-name "youngest")
-    ;; [THEN] if youngest = my Antergus, Arch Linux.
-    (progn
-      ;; instalation: https://aur.archlinux.org/packages/auto-complete/
-      (add-to-list 'load-path "/usr/share/emacs/site-lisp/auto-complete")
-      (require 'auto-complete-config)
-      (add-to-list 'ac-dictionary-directories
-                   "/usr/share/emacs/site-lisp/auto-complete/ac-dict")
-      (ac-config-default)
-      )
-  ;; [ELSE] if other machine name = Debian (Ubuntu, Mint).
-  (progn
-    (add-to-list 'load-path
-                 "~/.emacs.d/auto-complete/")
-    (require 'auto-complete-config)
-    (add-to-list 'ac-dictionary-directories
-                 "~/.emacs.d/auto-complete/dict/")
-    (ac-config-default)
-    )
-)
+(require 'auto-complete-config)
+(ac-config-default)
 
 ;; To activate ESS auto-complete for R.
 (setq ess-use-auto-complete 'script-only)
