@@ -157,10 +157,9 @@
   (comment-or-uncomment-region
    (line-beginning-position)
    (line-beginning-position 2))
-  (backward-char 70)
-  (backward-delete-char 1 2)
+  (backward-char 71)
+  (delete-char 1)
   (move-end-of-line nil)
-  (next-line)
   )
 
 (global-set-key [?\M--] 'insert-rule-and-comment-1)
@@ -173,10 +172,9 @@
   (comment-or-uncomment-region
    (line-beginning-position)
    (line-beginning-position 2))
-  (backward-char 70)
-  (backward-delete-char 1 2)
+  (backward-char 71)
+  (delete-char 1)
   (move-end-of-line nil)
-  (next-line)
   )
 
 (global-set-key [?\M-=] 'insert-rule-and-comment-2)
@@ -189,10 +187,9 @@
   (comment-or-uncomment-region
    (line-beginning-position)
    (line-beginning-position 2))
-  (backward-char 43)
-  (backward-delete-char 1 2)
+  (backward-char 44)
+  (delete-char 1)
   (move-end-of-line nil)
-  (next-line)
   )
 
 (global-set-key [?\C--] 'insert-rule-and-comment-3)

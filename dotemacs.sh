@@ -1,7 +1,7 @@
 #!/bin/bash
 
-##----------------------------------------------------------------------
-## From: http://stackoverflow.com/questions/238073/how-to-add-a-progress-bar-to-a-shell-script
+#----------------------------------------------------------------------
+# From: http://stackoverflow.com/questions/238073/how-to-add-a-progress-bar-to-a-shell-script
 
 # ProgressBar function.
 # Input is currentState($1) and totalState($2).
@@ -106,7 +106,7 @@ esac
 githubdir="$HOME/GitHub"
 if [ ! -d "$githubdir" ]
 then
-    echo ----------------------------------------------------------------------
+    echo ------------------------------------------------------------
     echo "$githubdir doesn't exists. It will be created."
     ProgressBar ${step} ${_end}; step=$((step+1))
     mkdir -v $HOME/GitHub
@@ -122,8 +122,10 @@ then
     echo ------------------------------------------------------------
     echo "~/GitHub/emacs/ repository found."
     ProgressBar ${step} ${_end}; step=$((step+1))
+    echo
+    echo
     # echo "Do you want update this repository? [ y ]"
-    echo ------------------------------------------------------------
+    # echo ------------------------------------------------------------
     # read opcao
     # case $opcao in
     #     y )
@@ -161,13 +163,13 @@ fi
 emacsddir="$HOME/.emacs.d/lisp/"
 if [ ! -d "$emacsddir" ]
 then
-    echo ----------------------------------------------------------------------
+    echo ------------------------------------------------------------
     echo "$emacsddir doesn't exists. It will be created."
     ProgressBar ${step} ${_end}; step=$((step+1))
     mkdir -v -p $HOME/.emacs.d/lisp/
     echo; echo
 else
-    echo ----------------------------------------------------------------------
+    echo ------------------------------------------------------------
     echo "$emacsddir exists."
     ProgressBar ${step} ${_end}; step=$((step+1))
     echo; echo
