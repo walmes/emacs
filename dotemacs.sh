@@ -20,7 +20,7 @@ function ProgressBar {
 }
 
 # Total number of steps.
-_end=15
+_end=13
 step=0
 
 ## Usage:
@@ -72,7 +72,7 @@ else
             echo "Update souces list."
             sudo apt-get update
             echo "Install emacs24."
-            sudo apt-get install emacs24
+            sudo apt-get install emacs24 -y
             echo; echo
             ;;
         * )
@@ -85,14 +85,14 @@ fi
 ## Install Emacs' friends?
 
 echo ------------------------------------------------------------
-echo "Install emacs-goodies-el, ess and auctex? [ y ]"
+echo "Install emacs-goodies-el, auto-complete-el and ess [ y ]"
 ProgressBar ${step} ${_end}; step=$((step+1))
 # echo ------------------------------------------------------------
 read opcao
 case $opcao in
     y )
         echo "Install Emacs' friends."
-        sudo apt-get install emacs-goodies-el ess auctex
+        sudo apt-get install emacs-goodies-el auto-complete-el ess -y
         echo; echo
         ;;
     * )
@@ -121,21 +121,21 @@ if [ -d "$emacsgit" ]
 then
     echo ------------------------------------------------------------
     echo "~/GitHub/emacs/ repository found."
-    echo "Do you want update this repository? [ y ]"
     ProgressBar ${step} ${_end}; step=$((step+1))
-    # echo ------------------------------------------------------------
-    read opcao
-    case $opcao in
-        y )
-            echo "Updating from github.com/walmes/emacs.git ..."
-            cd $HOME/GitHub/emacs/
-            git pull
-            echo; echo
-            ;;
-        * )
-            echo "Skipped."; echo; echo
-            ;;
-    esac 
+    # echo "Do you want update this repository? [ y ]"
+    echo ------------------------------------------------------------
+    # read opcao
+    # case $opcao in
+    #     y )
+    #         echo "Updating from github.com/walmes/emacs.git ..."
+    #         cd $HOME/GitHub/emacs/
+    #         git pull
+    #         echo; echo
+    #         ;;
+    #     * )
+    #         echo "Skipped."; echo; echo
+    #         ;;
+    # esac 
 else
     echo ------------------------------------------------------------
     echo "~/GitHub/emacs/ repository not found."
@@ -294,45 +294,45 @@ fi
 ##----------------------------------------------------------------------
 ## ESS - Emacs Speaks Statistics.
 
-dir="$HOME/.emacs.d/ESS/.git/"
-if [ -d "$dir" ]
-then
-    echo ------------------------------------------------------------
-    echo "~/.emacs.d/ESS/ repository found."
-    echo "Do you want update this repository? [ y ]"
-    ProgressBar ${step} ${_end}; step=$((step+1))
-    # echo ------------------------------------------------------------
-    read opcao
-    case $opcao in
-        y )
-            echo "Updating ...";
-            cd $HOME/.emacs.d/ESS/
-            git pull
-            echo; echo
-            ;;
-        * )
-            echo "Skipped."; echo; echo
-            ;;
-    esac 
-else
-    echo ------------------------------------------------------------
-    echo "~/.emacs.d/ESS/ not found."
-    echo "Do you want to clone it? [ y ]"
-    ProgressBar ${step} ${_end}; step=$((step+1))
-    # echo ------------------------------------------------------------
-    read opcao
-    case $opcao in
-        y )
-            echo "Cloning ..."
-            cd $HOME/.emacs.d/
-            git clone https://github.com/emacs-ess/ESS.git
-            echo; echo
-            ;;
-        * )
-            echo "Skipped."; echo; echo
-            ;;
-    esac 
-fi
+# dir="$HOME/.emacs.d/ESS/.git/"
+# if [ -d "$dir" ]
+# then
+#     echo ------------------------------------------------------------
+#     echo "~/.emacs.d/ESS/ repository found."
+#     echo "Do you want update this repository? [ y ]"
+#     ProgressBar ${step} ${_end}; step=$((step+1))
+#     # echo ------------------------------------------------------------
+#     read opcao
+#     case $opcao in
+#         y )
+#             echo "Updating ...";
+#             cd $HOME/.emacs.d/ESS/
+#             git pull
+#             echo; echo
+#             ;;
+#         * )
+#             echo "Skipped."; echo; echo
+#             ;;
+#     esac 
+# else
+#     echo ------------------------------------------------------------
+#     echo "~/.emacs.d/ESS/ not found."
+#     echo "Do you want to clone it? [ y ]"
+#     ProgressBar ${step} ${_end}; step=$((step+1))
+#     # echo ------------------------------------------------------------
+#     read opcao
+#     case $opcao in
+#         y )
+#             echo "Cloning ..."
+#             cd $HOME/.emacs.d/
+#             git clone https://github.com/emacs-ess/ESS.git
+#             echo; echo
+#             ;;
+#         * )
+#             echo "Skipped."; echo; echo
+#             ;;
+#     esac 
+# fi
 
 ##----------------------------------------------------------------------
 ## Polymode to edit R MarkDown and related files.
@@ -383,50 +383,50 @@ fi
 ## http://cx4a.org/software/auto-complete/
 ## http://www.emacswiki.org/emacs/ESSAuto-complete
 
-dir="$HOME/.emacs.d/auto-complete/.git/"
-if [ -d "$dir" ]
-then
-    echo ------------------------------------------------------------
-    echo "~/.emacs.d/auto-complete/ repository found."
-    echo "Do you want update this repository? [ y ]"
-    ProgressBar ${step} ${_end}; step=$((step+1))
-    # echo ------------------------------------------------------------
-    read opcao
-    case $opcao in
-        y )
-            echo "Updating ...";
-            cd $HOME/.emacs.d/auto-complete/
-            git pull
-            cd $HOME/.emacs.d/popup-el/
-            git pull
-            cp -v $HOME/.emacs.d/popup-el/popup.el $HOME/.emacs.d/lisp/
-            echo; echo
-            ;;
-        * )
-            echo "Skipped."; echo; echo
-            ;;
-    esac 
-else
-    echo ------------------------------------------------------------
-    echo "~/.emacs.d/auto-complete/ not found."
-    echo "Do you want to clone it? [ y ]"
-    ProgressBar ${step} ${_end}; step=$((step+1))
-    # echo ------------------------------------------------------------
-    read opcao
-    case $opcao in
-        y )
-            echo "Cloning ..."
-            cd $HOME/.emacs.d/
-            git clone https://github.com/auto-complete/auto-complete.git
-            git clone https://github.com/auto-complete/popup-el.git
-            cp -v $HOME/.emacs.d/popup-el/popup.el $HOME/.emacs.d/
-            echo; echo        
-            ;;
-        * )
-            echo "Skipped."; echo; echo
-            ;;
-    esac 
-fi
+# dir="$HOME/.emacs.d/auto-complete/.git/"
+# if [ -d "$dir" ]
+# then
+#     echo ------------------------------------------------------------
+#     echo "~/.emacs.d/auto-complete/ repository found."
+#     echo "Do you want update this repository? [ y ]"
+#     ProgressBar ${step} ${_end}; step=$((step+1))
+#     # echo ------------------------------------------------------------
+#     read opcao
+#     case $opcao in
+#         y )
+#             echo "Updating ...";
+#             cd $HOME/.emacs.d/auto-complete/
+#             git pull
+#             cd $HOME/.emacs.d/popup-el/
+#             git pull
+#             cp -v $HOME/.emacs.d/popup-el/popup.el $HOME/.emacs.d/lisp/
+#             echo; echo
+#             ;;
+#         * )
+#             echo "Skipped."; echo; echo
+#             ;;
+#     esac 
+# else
+#     echo ------------------------------------------------------------
+#     echo "~/.emacs.d/auto-complete/ not found."
+#     echo "Do you want to clone it? [ y ]"
+#     ProgressBar ${step} ${_end}; step=$((step+1))
+#     # echo ------------------------------------------------------------
+#     read opcao
+#     case $opcao in
+#         y )
+#             echo "Cloning ..."
+#             cd $HOME/.emacs.d/
+#             git clone https://github.com/auto-complete/auto-complete.git
+#             git clone https://github.com/auto-complete/popup-el.git
+#             cp -v $HOME/.emacs.d/popup-el/popup.el $HOME/.emacs.d/
+#             echo; echo        
+#             ;;
+#         * )
+#             echo "Skipped."; echo; echo
+#             ;;
+#     esac 
+# fi
 
 ##----------------------------------------------------------------------
 ## Bookmark-plus for Emacs.
