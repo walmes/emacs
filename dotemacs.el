@@ -73,6 +73,16 @@
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
 ;;----------------------------------------------------------------------
+;; Add melpa repository.
+;;----------------------------------------------------------------------
+
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+  (package-initialize))
+
+;;----------------------------------------------------------------------
 ;; Key bindings.
 ;;----------------------------------------------------------------------
 
@@ -357,8 +367,6 @@
 ;; Latex extensions.
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-(require 'tex-site)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 
