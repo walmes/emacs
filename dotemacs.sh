@@ -166,6 +166,7 @@ then
             cd $HOME/GitLab/emacs/
             cp -v dotemacs.el ~/.emacs
             cp -v functions.el ~/.emacs.d/lisp/
+            cp -v prelude-packages.el ~/.emacs.d/lisp/
             echo; echo
             ;;
         * )
