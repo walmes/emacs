@@ -82,6 +82,12 @@
                '("melpa" . "http://melpa.org/packages/") t)
   (package-initialize))
 
+;; Another repository.
+;; (add-to-list 'package-archives
+;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+(require 'prelude-packages)
+
 ;;----------------------------------------------------------------------
 ;; Key bindings.
 ;;----------------------------------------------------------------------
