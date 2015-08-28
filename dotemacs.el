@@ -86,7 +86,7 @@
 ;; (add-to-list 'package-archives
 ;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
-(require 'prelude-packages)
+;; (require 'prelude-packages)
 
 ;;----------------------------------------------------------------------
 ;; Key bindings.
