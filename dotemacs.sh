@@ -20,7 +20,7 @@ function ProgressBar {
 }
 
 # Total number of steps.
-_end=8
+_end=7
 step=0
 
 ##----------------------------------------------------------------------
@@ -41,7 +41,7 @@ read -s opcao; echo; echo
 ##----------------------------------------------------------------------
 ## Install Emacs-24.5.
 
-if which emacs24 >/dev/null
+if which emacs-24.5 >/dev/null
 then
     echo ------------------------------------------------------------
     echo "Emacs-24.5 is installed."
@@ -57,14 +57,17 @@ else
         y )
             echo "Add emacs24 repository."
             sudo add-apt-repository ppa:cassou/emacs
+            echo
             echo "Update souces list."
             sudo apt-get update
+            echo
             echo "Running \"apt-get build-dep emacs24\""
             sudo apt-get build-dep emacs24 -y
-            echo; echo
+            echo
             cd ~/Downloads/
             echo "Downloading Emacs-24.5 ..."
             wget http://ftp.gnu.org/gnu/emacs/emacs-24.5.tar.gz
+            echo
             echo "Extracting ..."
             tar -xf emacs-24.5.tar.gz && cd ~/Downloads/emacs-*
             echo
@@ -94,7 +97,7 @@ read opcao
 case $opcao in
     y )
         echo "Install Emacs' friends."
-        sudo apt-get install emacs-goodies-el auto-complete-el ess -y
+        sudo apt-get install emacs-goodies-el -y
         echo; echo
         ;;
     * )
@@ -113,7 +116,7 @@ case $opcao in
     y )
         echo "Creating \"/usr/share/applications/emacs-24.5.desktop\"."
         echo; echo
-        sudo cat > /usr/share/applications/emacs-24.5.desktop << EOL
+        cat > emacs-24.5.desktop << EOL
 [Desktop Entry]
 Version=1.0
 Name=GNU Emacs 24.5
@@ -128,6 +131,7 @@ Terminal=false
 Categories=Utility;Development;TextEditor;
 StartupWMClass=emacs-24.5
 EOL
+sudo mv emacs-24.5.desktop /usr/share/applications/
         ;;
     * )
         echo "Skipped."; echo; echo
