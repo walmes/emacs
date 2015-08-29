@@ -195,6 +195,41 @@
 (global-set-key [?\C--] 'insert-rule-and-comment-3)
 
 ;;----------------------------------------------------------------------
+;; Header.
+
+(defun header ()
+  "Insert a header."
+  (interactive)
+  (insert-rule-and-comment-2)
+  ;;-------------------------------------------
+  (insert "\nWalmes Zeviani")
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 14)
+  (insert (make-string 55 ? ))
+  (forward-char 14)
+  ;;-------------------------------------------
+  (insert "\nwalmes@ufpr.br")
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 14)
+  (insert (make-string 55 ? ))
+  (forward-char 15)
+  ;;-------------------------------------------
+  (insert (format-time-string "%d-%m-%Y"))
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 10)
+  (insert (make-string 59 ? ))
+  (forward-char 10)
+  (insert "\n")
+  (insert-rule-and-comment-2)
+  )
+
+;;----------------------------------------------------------------------
 ;; Improved version of occur. Quick navigation.
 ;; http://ignaciopp.wordpress.com/2009/06/10/customizing-emacs-occur/
 
