@@ -6,26 +6,26 @@
 
 (defvar prelude-packages
   '(async
-    ;; auctex
-    ;; auto-complete
-    ;; bm
-    ;; bookmark+
-    ;; color-theme
-    ;; color-theme-solarized
-    ;; ctable
-    ;; dash
-    ;; ess
-    ;; ess-R-data-view
-    ;; ess-R-object-popup
-    ;; git-commit
-    ;; julia-mode
+    auctex
+    auto-complete
+    bm
+    bookmark+
+    color-theme
+    color-theme-solarized
+    ctable
+    dash
+    ess
+    ess-R-data-view
+    ess-R-object-popup
+    git-commit
+    julia-mode
     magit
-    ;; magit-popup
-    ;; markdown-mode
-    ;; markdown-toc
-    ;; polymode
-    ;; popup
-    ;; with-editor
+    magit-popup
+    markdown-mode
+    markdown-toc
+    polymode
+    popup
+    with-editor
     yafolding)
   "A list of packages to ensure are installed at launch.")
 
