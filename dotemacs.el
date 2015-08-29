@@ -82,10 +82,6 @@
                '("melpa" . "http://melpa.org/packages/") t)
   (package-initialize))
 
-;; Another repository.
-;; (add-to-list 'package-archives
-;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
-
 ;; (require 'prelude-packages)
 
 ;;----------------------------------------------------------------------
@@ -381,3 +377,10 @@
 (add-to-list 'auto-mode-alist '("\\.pgs" . tex-mode))
 
 ;;----------------------------------------------------------------------
+;; Check for packages.
+;;----------------------------------------------------------------------
+
+(require 'prelude-packages)
+
+;;----------------------------------------------------------------------
+
