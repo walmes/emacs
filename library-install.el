@@ -29,6 +29,7 @@
 (package-install 'ess)
 (package-install 'ess-R-data-view)
 (package-install 'ess-R-object-popup)
+(package-install 'leuven-theme)
 (package-install 'magit)
 (package-install 'magit-popup)
 (package-install 'markdown-mode)

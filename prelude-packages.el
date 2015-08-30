@@ -19,6 +19,7 @@
     ess-R-object-popup
     git-commit
     julia-mode
+    leuven-theme
     magit
     magit-popup
     markdown-mode
