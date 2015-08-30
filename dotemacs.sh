@@ -184,7 +184,8 @@ else
     ProgressBar ${step} ${_end}; step=$((step+1))
     cd $HOME/GitLab/emacs/
     cp -v dotemacs.el ~/.emacs
-    cp -v functions.el ~/.emacs.d/
+    cp -v functions.el ~/.emacs.d/lisp/
+    cp -v prelude-packages.el ~/.emacs.d/lisp/
     echo; echo
 fi
 
