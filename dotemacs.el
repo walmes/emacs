@@ -72,6 +72,10 @@
 (setq inhibit-startup-screen t)
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
+;; Eshell as welcome buffer in emacs.
+(eshell)
+(switch-to-buffer "*eshell*")
+
 ;;----------------------------------------------------------------------
 ;; Add melpa repository.
 ;;----------------------------------------------------------------------
