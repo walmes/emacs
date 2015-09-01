@@ -197,36 +197,36 @@
 ;;----------------------------------------------------------------------
 ;; Header.
 
+(defun right-align-commented-text (text)
+  "Write text aligned to the right margin at `fill-column' and
+   comment it out."
+  (let ((number-of-spaces (- fill-column (length text)))
+        (string-length (length text))
+        )
+    (insert (concat "\n" text))
+    (comment-line-or-region)
+    (backward-char string-length)
+    (insert (make-string (- number-of-spaces 3) ? ))
+    (forward-char string-length)
+    )
+  )
+
 (defun header ()
   "Insert a header."
   (interactive)
   (insert-rule-and-comment-2)
-  ;;-------------------------------------------
-  (insert "\nWalmes Zeviani")
-  (comment-or-uncomment-region
-   (line-beginning-position)
-   (line-beginning-position 2))
-  (backward-char 14)
-  (insert (make-string 55 ? ))
-  (forward-char 14)
-  ;;-------------------------------------------
-  (insert "\nwalmes@ufpr.br")
-  (comment-or-uncomment-region
-   (line-beginning-position)
-   (line-beginning-position 2))
-  (backward-char 14)
-  (insert (make-string 55 ? ))
-  (forward-char 15)
-  ;;-------------------------------------------
-  (insert (format-time-string "%d-%m-%Y"))
-  (comment-or-uncomment-region
-   (line-beginning-position)
-   (line-beginning-position 2))
-  (backward-char 10)
-  (insert (make-string 59 ? ))
-  (forward-char 10)
+  (insert "\n?")
+  (comment-line-or-region)
+  (right-align-commented-text "Walmes Zeviani")
+  (right-align-commented-text "www.leg.ufpr.br/~walmes")
+  (right-align-commented-text "walmes [@] ufpr.br")
+  (right-align-commented-text "LEG/UFPR")
+  (right-align-commented-text (format-time-string "%Y-%m-%d"))
   (insert "\n")
   (insert-rule-and-comment-2)
+  ;; If insert/delete new line of infomation, then de/increment a unit.
+  (previous-line 6)
+  (delete-char -1)
   )
 
 ;;----------------------------------------------------------------------
