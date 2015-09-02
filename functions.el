@@ -535,3 +535,6 @@
           (lambda () (local-set-key (kbd "C-c C-h")
                                     'ess-edit-indent-call-sophisticatedly)))
 
+;;----------------------------------------------------------------------
+
+(provide 'functions)

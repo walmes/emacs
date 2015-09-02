@@ -48,5 +48,3 @@
       (package-install p))))
 
 (provide 'prelude-packages)
-
-
