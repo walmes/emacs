@@ -376,6 +376,13 @@
 (yas-global-mode 1)
 
 ;;----------------------------------------------------------------------
+;; R snippets
+;; https://github.com/mlf176f2/r-autoyas.el
+
+(require 'r-autoyas)
+(add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
+
+;;----------------------------------------------------------------------
 ;; Latex extensions.
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
