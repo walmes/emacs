@@ -192,6 +192,17 @@ function downloadessh {
 }
 
 #----------------------------------------------------------------------
+# Configure remotes.
+
+function confremotes {
+    git remote rm origin
+    git remote add origin git@git.leg.ufpr.br:walmes/emacs.git
+    git remote set-url origin --add git@gitlab.c3sl.ufpr.br:walmes/emacs.git
+    git remote set-url origin --add git@github.com:walmes/emacs.git
+    git remote -v
+}
+
+#----------------------------------------------------------------------
 # Cicle among options.
 
 while :
@@ -201,9 +212,10 @@ do
     printf "  2. Make desktop application for Emacs-24.5.\n"
     printf "  3. Move .emacs and .emacs.d/.\n"
     printf "  4. Download and move essh.el.\n"
+    printf "  5. Configure remotes.\n"
     printf "  q. Quit.\n\n"
     
-    read -sn1 -p "Select (1,2,3,4,q): " input
+    read -sn1 -p "Select (1,2,3,4,5,q): " input
     echo
 
     case $input in
@@ -211,6 +223,7 @@ do
         2) makedesktopapp ;;
         3) moveemacsfiles ;;
         4) downloadessh ;;
+        5) confremotes ;;
         q) break ;;
         *) echo "Invalid seletion" ;;
     esac
