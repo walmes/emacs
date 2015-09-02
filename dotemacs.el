@@ -368,6 +368,14 @@
 (global-set-key [?\C-}] #'yafolding-toggle-element)
 
 ;;----------------------------------------------------------------------
+;; Start yasnippet with emacs.
+;; http://barisyuksel.com/cppmode/.emacs
+;; https://www.youtube.com/watch?v=HTUE03LnaXA
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;;----------------------------------------------------------------------
 ;; Latex extensions.
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
@@ -382,7 +390,7 @@
 ;; Check for packages.
 ;;----------------------------------------------------------------------
 
-(require 'prelude-packages)
+;; (require 'prelude-packages)
 
 ;;----------------------------------------------------------------------
 
