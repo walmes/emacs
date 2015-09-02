@@ -376,11 +376,24 @@
 (yas-global-mode 1)
 
 ;;----------------------------------------------------------------------
-;; R snippets
+;; R snippets.
 ;; https://github.com/mlf176f2/r-autoyas.el
 
 (require 'r-autoyas)
 (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
+
+;;----------------------------------------------------------------------
+;; Auto complete mode for Emacs.
+
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; To activate ESS auto-complete for R.
+(setq ess-use-auto-complete 'script-only)
+
+;; Change 'ac-complete from ENTER to TAB.
+(define-key ac-completing-map "\r" nil)
+(define-key ac-completing-map "\t" 'ac-complete)
 
 ;;----------------------------------------------------------------------
 ;; Latex extensions.
