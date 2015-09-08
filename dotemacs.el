@@ -287,6 +287,7 @@
             ess-mode
             polymode-mode
             markdown-mode
+            latex-mode
             TeX-mode)) 
   (font-lock-add-keywords
    mode 
