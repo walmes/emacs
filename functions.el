@@ -149,35 +149,57 @@
 ;;----------------------------------------------------------------------
 ;; Commented rules to divide code.
 
-(defun insert-rule-and-comment-1 ()
-  "Insert a commented rule with 70 dashes (-). Useful to divide
-   your code in sections."
+;; (defun insert-rule-and-comment-1 ()
+;;   "Insert a commented rule with 70 dashes (-). Useful to divide
+;;    your code in sections."
+;;   (interactive)
+;;   (insert (make-string 70 ?-))
+;;   (comment-or-uncomment-region
+;;    (line-beginning-position)
+;;    (line-beginning-position 2))
+;;   (backward-char 71)
+;;   (delete-char 1)
+;;   (move-end-of-line nil)
+;;   )
+;; 
+;; (global-set-key [?\M--] 'insert-rule-and-comment-1)
+;; 
+;; (defun insert-rule-and-comment-2 ()
+;;   "Insert a commented rule with 70 equals (=). Useful to divide
+;;    your code in sections."
+;;   (interactive)
+;;   (insert (make-string 70 ?=))
+;;   (comment-or-uncomment-region
+;;    (line-beginning-position)
+;;    (line-beginning-position 2))
+;;   (backward-char 71)
+;;   (delete-char 1)
+;;   (move-end-of-line nil)
+;;   )
+;; 
+;; (global-set-key [?\M-=] 'insert-rule-and-comment-2)
+
+(defun insert-rule-from-point-to-margin (&optional rule-char)
+  "Insert a commented rule with dashes (-) from the `point' to
+   the `fill-column'. Useful to divide your code in sections. If
+   a non nil prefix argument is passed, then (=) is used
+   instead."
   (interactive)
-  (insert (make-string 70 ?-))
-  (comment-or-uncomment-region
-   (line-beginning-position)
-   (line-beginning-position 2))
-  (backward-char 71)
-  (delete-char 1)
-  (move-end-of-line nil)
+  (insert "-")
+  (comment-line-or-region)
+  (delete-char -2)
+  (if rule-char
+      (insert (make-string (- fill-column (current-column)) ?=))
+    (insert (make-string (- fill-column (current-column)) ?-)))
   )
 
-(global-set-key [?\M--] 'insert-rule-and-comment-1)
+;; (funcall (lambda () (insert-rule-from-point-to-margin 1)))
 
-(defun insert-rule-and-comment-2 ()
-  "Insert a commented rule with 70 equals (=). Useful to divide
-   your code in sections."
-  (interactive)
-  (insert (make-string 70 ?=))
-  (comment-or-uncomment-region
-   (line-beginning-position)
-   (line-beginning-position 2))
-  (backward-char 71)
-  (delete-char 1)
-  (move-end-of-line nil)
-  )
-
-(global-set-key [?\M-=] 'insert-rule-and-comment-2)
+(global-set-key [?\M--] 'insert-rule-from-point-to-margin)
+(global-set-key [?\M-=]
+                (lambda ()
+                  (interactive)
+                  (insert-rule-from-point-to-margin 1)))
 
 (defun insert-rule-and-comment-3 ()
   "Insert a commented rule with 43 dashes (-). Useful to divide
