@@ -209,8 +209,8 @@
 (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
 
 ;; Movement across chunks in Rmd files.
-(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk-same-type)
-(global-set-key (kbd "S-<f8>") 'polymode-next-chunk-same-type)
+(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
+(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
 (global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
 
 (setq-default inferior-R-args "--no-restore-history --no-save  ")
