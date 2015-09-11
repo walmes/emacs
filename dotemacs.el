@@ -340,8 +340,18 @@
 ;;              "~/.emacs.d/bookmark-plus/")
 (require 'bookmark+)
 
-;; Temporary bookmarks.
-;; (bmkp-toggle-autotemp-on-set)
+;; Create an autonamed bookmark.
+(global-set-key
+ (kbd "<C-f3>") 'bmkp-toggle-autonamed-bookmark-set/delete)
+;; Go to the next bookmark in file.
+(global-set-key
+ (kbd "<f3>") 'bmkp-next-bookmark-this-file/buffer-repeat)
+;; Go to the previous bookmark in file.
+(global-set-key
+ (kbd "<f4>") 'bmkp-previous-bookmark-this-file/buffer-repeat)
+;; Toggle temporary/permanent bookmark.
+(global-set-key
+ (kbd "<S-f3>") 'bmkp-toggle-temporary-bookmark)
 
 ;;----------------------------------------------------------------------
 ;; Visible bookmarks. Easy movement.
@@ -377,12 +387,12 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;;----------------------------------------------------------------------
-;; R snippets.
-;; https://github.com/mlf176f2/r-autoyas.el
-
-(require 'r-autoyas)
-(add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
+;; ;;----------------------------------------------------------------------
+;; ;; R snippets.
+;; ;; https://github.com/mlf176f2/r-autoyas.el
+;; 
+;; (require 'r-autoyas)
+;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
 
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
@@ -414,40 +424,40 @@
 
 ;; (require 'prelude-packages)
 
-;;----------------------------------------------------------------------
-;; Load the local or parent bookmark file, if exists.
-
-(defun switch-to-local-bookmark-file ()
-  "This function search for a file that has the same na'me of the
-   current buffer that call it, append the extention `bmk' and
-   check if a such file exists in the current directory to load
-   it as a bookmark file. If it fails, then tries a file named
-   `bookmark'. If fails, tries a `bookmark' at the parent
-   directory. If fails, nothing happens."
-  (defvar current-file-dir
-    (file-name-directory (or load-file-name buffer-file-name)))
-  (let ((local-file-with-bmk-extension
-         (concat current-file-dir (file-name-base) ".bmk"))
-        (local-bookmark-file
-         (concat current-file-dir "bookmark"))
-        (parent-bookmark-file
-         (concat (file-name-directory
-                  (directory-file-name current-file-dir))
-                 "bookmark")))
-    ;; Nested if statments to search, check and load a bookmark file.
-    (if (file-exists-p local-file-with-bmk-extension)
-        (bmkp-switch-bookmark-file-create local-file-with-bmk-extension)
-      (if (file-exists-p local-bookmark-file)
-          (bmkp-switch-bookmark-file-create local-bookmark-file)
-        (if (file-exists-p parent-bookmark-file)
-            (bmkp-switch-bookmark-file-create parent-bookmark-file)
-          )
-        )
-      )
-    ))
-
-(add-hook 'find-file-hook 'switch-to-local-bookmark-file)
-
+;; ;;----------------------------------------------------------------------
+;; ;; Load the local or parent bookmark file, if exists.
+;; 
+;; (defun switch-to-local-bookmark-file ()
+;;   "This function search for a file that has the same na'me of the
+;;    current buffer that call it, append the extention `bmk' and
+;;    check if a such file exists in the current directory to load
+;;    it as a bookmark file. If it fails, then tries a file named
+;;    `bookmark'. If fails, tries a `bookmark' at the parent
+;;    directory. If fails, nothing happens."
+;;   (defvar current-file-dir
+;;     (file-name-directory (or load-file-name buffer-file-name)))
+;;   (let ((local-file-with-bmk-extension
+;;          (concat current-file-dir (file-name-base) ".bmk"))
+;;         (local-bookmark-file
+;;          (concat current-file-dir "bookmark"))
+;;         (parent-bookmark-file
+;;          (concat (file-name-directory
+;;                   (directory-file-name current-file-dir))
+;;                  "bookmark")))
+;;     ;; Nested if statments to search, check and load a bookmark file.
+;;     (if (file-exists-p local-file-with-bmk-extension)
+;;         (bmkp-switch-bookmark-file-create local-file-with-bmk-extension)
+;;       (if (file-exists-p local-bookmark-file)
+;;           (bmkp-switch-bookmark-file-create local-bookmark-file)
+;;         (if (file-exists-p parent-bookmark-file)
+;;             (bmkp-switch-bookmark-file-create parent-bookmark-file)
+;;           )
+;;         )
+;;       )
+;;     ))
+;; 
+;; (add-hook 'find-file-hook 'switch-to-local-bookmark-file)
+;; 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
