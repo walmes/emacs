@@ -38,6 +38,12 @@
 ;; Auto break line at 72 characters.
 (setq-default fill-column 72)
 
+;; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
+;; (require 'whitespace)
+(setq whitespace-line-column fill-column)
+(setq whitespace-style '(face lines-tail))
+(global-whitespace-mode +1)
+
 ;; Activate auto-fill-mode to make auto break lines.
 (setq-default auto-fill-function 'do-auto-fill)
 
