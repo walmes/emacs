@@ -65,7 +65,15 @@
 (setq-default indent-tabs-mode nil)
 
 ;; Font and size.
-(set-default-font "Ubuntu Mono-13")
+(cond
+ ((string-equal system-name "brother")
+  (set-default-font "Ubuntu Mono-16"))
+ ((string-equal system-name "youngest")
+  (set-default-font "Ubuntu Mono-16"))
+ ((string-equal system-name "first")
+  (set-default-font "Ubuntu Mono-14"))
+ ((string-equal system-name "class")
+  (set-default-font "Ubuntu Mono-14")))
 
 ;; Turn ido-mode on.
 ;; http://www.emacswiki.org/InteractivelyDoThings
