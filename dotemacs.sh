@@ -213,9 +213,10 @@ do
     printf "  3. Move .emacs and .emacs.d/.\n"
     printf "  4. Download and move essh.el.\n"
     printf "  5. Configure remotes.\n"
+    printf "  6. Open files with meld.\n"
     printf "  q. Quit.\n\n"
     
-    read -sn1 -p "Select (1,2,3,4,5,q): " input
+    read -sn1 -p "Select (1,2,3,4,5,6,q): " input
     echo
 
     case $input in
@@ -224,6 +225,7 @@ do
         3) moveemacsfiles ;;
         4) downloadessh ;;
         5) confremotes ;;
+        6) meld dotemacs.el ~/.emacs ;;
         q) break ;;
         *) echo "Invalid seletion" ;;
     esac
