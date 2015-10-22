@@ -398,8 +398,8 @@
 ;; http://barisyuksel.com/cppmode/.emacs
 ;; https://www.youtube.com/watch?v=HTUE03LnaXA
 
-(require 'yasnippet)
-(yas-global-mode 1)
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
 
 ;; ;;----------------------------------------------------------------------
 ;; ;; R snippets.
@@ -431,6 +431,16 @@
 ;; Open Tikz files (pgf and pgs extensions) in Tex mode.
 (add-to-list 'auto-mode-alist '("\\.pgf" . tex-mode))
 (add-to-list 'auto-mode-alist '("\\.pgs" . tex-mode))
+
+;;----------------------------------------------------------------------
+;; Babel.
+
+(org-babel-do-load-languages 'org-babel-load-languages
+                             '((R . t)
+                               (emacs-lisp . t)
+                               (python . t)))
+;; (org-confirm-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
 
 ;;----------------------------------------------------------------------
 ;; Check for packages.
