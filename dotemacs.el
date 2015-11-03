@@ -95,6 +95,12 @@
 ;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
 (setq org-src-fontify-natively t)
 
+;; http://orgmode.org/worg/org-dependencies.html
+(require 'ox-latex)
+(setq org-latex-listings t)
+(add-to-list 'org-latex-packages-alist '("" "listings"))
+(add-to-list 'org-latex-packages-alist '("" "color"))
+
 ;;----------------------------------------------------------------------
 ;; Add melpa repository.
 ;;----------------------------------------------------------------------
