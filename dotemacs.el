@@ -86,9 +86,14 @@
 (setq inhibit-startup-screen t)
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
-;; Eshell as welcome buffer in emacs.
-;; (eshell)
-;; (switch-to-buffer "*eshell*")
+;; Org-mode definitions.
+;; http://emacswiki.org/emacs/OrgMode#toc7
+(setq org-replace-disputed-keys t)
+(setq org-return-follows-link t)
+
+;; Fontify code in code blocks.
+;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
+(setq org-src-fontify-natively t)
 
 ;;----------------------------------------------------------------------
 ;; Add melpa repository.
@@ -172,6 +177,10 @@
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; Org-struct minor mode active in markdown mode.
+(add-hook 'markdown-mode-hook 'turn-on-orgstruct)
+(add-hook 'markdown-mode-hook 'turn-on-orgstruct++)
 
 ;;----------------------------------------------------------------------
 ;; R+MarkDown extensions (emacs >= 24.3.1).
