@@ -163,13 +163,44 @@
 (color-theme-initialize)
 (setq color-theme-is-global t)
 
-;; (add-to-list 'load-path
-;;              "~/.emacs.d/emacs-color-theme-solarized")
-(require 'color-theme-solarized)
+(cond
+ ((string-equal system-name "brother")
+  (setq solarized-default-background-mode 'dark))
+ ((string-equal system-name "youngest")
+  (setq solarized-default-background-mode 'dark))
+ ((string-equal system-name "first")
+  (setq solarized-default-background-mode 'light))
+ ((string-equal system-name "class")
+  (setq solarized-default-background-mode 'light)))
 
-;; Color theme according to machine name.
-(if (not (string-equal system-name "class"))
-    (color-theme-solarized-dark))
+(load-theme 'solarized t)
+
+;; From Fernando Mayer
+;; http://git.leg.ufpr.br/fernandomayer/emacs/blob/master/emacs.el
+(defun set-background-mode (frame mode)
+  (set-frame-parameter frame 'background-mode mode)
+  (when
+      (not (display-graphic-p frame))
+    (set-terminal-parameter
+     (frame-terminal frame) 'background-mode mode))
+  (enable-theme 'solarized))
+
+(defun switch-theme ()
+  (interactive)
+  (let ((mode
+         (if (eq (frame-parameter nil 'background-mode) 'dark)
+             'light 'dark)))
+    (set-background-mode nil mode)))
+
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (set-background-mode
+             frame
+             solarized-default-background-mode)))
+
+(set-background-mode nil solarized-default-background-mode)
+
+;; (global-set-key (kbd "C-c t") 'switch-theme)
 
 ;;----------------------------------------------------------------------
 ;; MarkDown extensions.
@@ -453,6 +484,7 @@
 (org-babel-do-load-languages 'org-babel-load-languages
                              '((R . t)
                                (emacs-lisp . t)
+                               (sh . t)
                                (python . t)))
 ;; (org-confirm-babel-evaluate nil)
 (setq org-confirm-babel-evaluate nil)
@@ -506,7 +538,8 @@
  '(bmkp-auto-light-when-set (quote all-in-buffer))
  '(bmkp-last-as-first-bookmark-file nil)
  '(bmkp-light-style-autonamed (quote lfringe))
- '(bmkp-light-style-non-autonamed (quote lfringe)))
+ '(bmkp-light-style-non-autonamed (quote lfringe))
+ '(doc-view-continuous t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
