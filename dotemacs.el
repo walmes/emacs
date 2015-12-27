@@ -351,13 +351,13 @@
             TeX-mode)) 
   (font-lock-add-keywords
    mode 
-   '(((concat "\\<\\(COMMENT\\|DONE\\|TODO\\|STOP\\|"
-              "IMPORTANT\\|NOTE\\|OBS\\|ATTENTION\\|"
-              "IMPROVE\\|REVIEW\\)")
-      0 'font-lock-warning-face t) 
-     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)" 
-      0 'special-words t)))
-  ) 
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
+      0 'font-lock-warning-face t)
+     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
+      0 'font-lock-warning-face t)
+     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
+      0 'special-words t))
+   )) 
 
 ;;----------------------------------------------------------------------
 ;; To eval line/regions in terminal open in Emacs.
