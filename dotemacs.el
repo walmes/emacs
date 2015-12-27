@@ -351,7 +351,9 @@
             TeX-mode)) 
   (font-lock-add-keywords
    mode 
-   '(("\\<\\(COMMENT\\|DONE\\|TODO\\|STOP\\|IMPORTANT\\|NOTE\\|OBS\\|ATTENTION\\|REVIEW\\)" 
+   '(((concat "\\<\\(COMMENT\\|DONE\\|TODO\\|STOP\\|"
+              "IMPORTANT\\|NOTE\\|OBS\\|ATTENTION\\|"
+              "IMPROVE\\|REVIEW\\)")
       0 'font-lock-warning-face t) 
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)" 
       0 'special-words t)))
