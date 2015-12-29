@@ -477,8 +477,8 @@
 (setq reftex-plug-into-AUCTeX t)
 
 ;; Open Tikz files (pgf and pgs extensions) in Tex mode.
-(add-to-list 'auto-mode-alist '("\\.pgf" . tex-mode))
-(add-to-list 'auto-mode-alist '("\\.pgs" . tex-mode))
+(add-to-list 'auto-mode-alist '("\\.pgf" . latex-mode))
+(add-to-list 'auto-mode-alist '("\\.pgs" . latex-mode))
 
 ;;----------------------------------------------------------------------
 ;; Babel.
