@@ -386,6 +386,47 @@
           (lambda () (local-set-key (kbd "C-c r") 'ess-eval-word)))
 
 ;;----------------------------------------------------------------------
+;; Font:
+;; https://github.com/basille/.emacs.d/blob/master/functions/ess-indent-region-as-R-function.el
+
+;; The function below is a modification of the original to use
+;; formatR::tidy_source(). This is because formatR have functions with
+;; arguments to control the output, as keep comments and set the width
+;; cutoff.
+
+(defun ess-indent-region-with-formatR-tidy-source (beg end)
+  "Format region of code R using formatR::tidy_source()."
+  (interactive "r")
+  (let ((string
+         (replace-regexp-in-string
+          "\"" "\\\\\\&"
+          (replace-regexp-in-string ;; how to avoid this double matching?
+           "\\\\\"" "\\\\\\&"
+           (buffer-substring-no-properties beg end))))
+	(buf (get-buffer-create "*ess-command-output*")))
+    (ess-force-buffer-current "Process to load into:")
+    (ess-command
+     (format
+      "local({
+          formatR::tidy_source(text=\"\n%s\",
+                               arrow=TRUE, width.cutoff=60) })\n"
+      string) buf)
+    (with-current-buffer buf
+      (goto-char (point-max))
+      ;; (skip-chars-backward "\n")
+      (let ((end (point)))
+	(goto-char (point-min))
+	(goto-char (1+ (point-at-eol)))
+	(setq string (buffer-substring-no-properties (point) end))
+	))
+  (delete-region beg end)
+  (insert string)
+  ))
+
+(global-set-key (kbd "C-|")
+                'ess-indent-region-with-formatR-tidy-source)
+
+;;----------------------------------------------------------------------
 ;; All functions defined below were copied from:
 ;; http://www.emacswiki.org/emacs/ess-edit.el
 ;; https://github.com/emacsmirror/ess-edit/blob/master/ess-edit.el
