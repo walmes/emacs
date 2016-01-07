@@ -179,15 +179,27 @@
 ;; 
 ;; (global-set-key [?\M-=] 'insert-rule-and-comment-2)
 
+;; Retorna t se linha só em espaços e nil caso contrário.
+;; https://lists.gnu.org/archive/html/help-gnu-emacs/2015-11/msg00212.html
+(defun blank-line-p ()
+  (string-match "^[[:space:]]*$"
+                (buffer-substring-no-properties
+                 (line-beginning-position)
+                 (line-end-position) )))
+
 (defun insert-rule-from-point-to-margin (&optional rule-char)
   "Insert a commented rule with dashes (-) from the `point' to
-   the `fill-column'. Useful to divide your code in sections. If
-   a non nil prefix argument is passed, then (=) is used
-   instead."
+   the `fill-column' if the line has only spaces. If the line has
+   text, fill with dashes until the `fill-column'. Useful to
+   divide your code in sections. If a non nil prefix argument is
+   passed, then (=) is used instead."
   (interactive)
-  (insert "-")
-  (comment-line-or-region)
-  (delete-char -2)
+  (if (blank-line-p)
+      (progn
+        (insert "-")
+        (comment-line-or-region)
+        (delete-char -2))
+    nil)
   (if rule-char
       (insert (make-string (- fill-column (current-column)) ?=))
     (insert (make-string (- fill-column (current-column)) ?-)))
