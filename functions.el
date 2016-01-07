@@ -433,6 +433,7 @@
 	))
   (delete-region beg end)
   (insert string)
+  (delete-backward-char 2)
   ))
 
 (global-set-key (kbd "C-|")
