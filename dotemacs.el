@@ -291,7 +291,12 @@
           '(lambda()
              (setq comint-scroll-to-bottom-on-input t)
              (setq comint-scroll-to-bottom-on-output t)
-             (setq comint-move-point-for-output t)))
+             (setq comint-move-point-for-output t)
+             ;; No indent styles.
+             (setq ess-indent-with-fancy-comments nil)
+             ;; No ## as default to comment.
+             (setq-local comment-add 0)
+             ))
 
 ;; http://permalink.gmane.org/gmane.emacs.ess.general/8419
 ;; Script font lock highlight.
