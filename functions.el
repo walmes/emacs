@@ -440,6 +440,29 @@
                 'ess-indent-region-with-formatR-tidy-source)
 
 ;;----------------------------------------------------------------------
+;; Function based in the bm-bookmark-regexp-region.
+;; This function bookmark all chunks in *.Rnw and *.Rmd buffers.
+
+(defun bm-bookmark-chunk-in-buffer ()
+  "Set bookmark on chunk header lines in Rnw and Rmd files."
+  (interactive)
+  (let ((regexp "^<<.*>>=$\\|^```{.*}$")
+        (annotation nil)
+        (count 0))
+    (save-excursion
+      (if bm-annotate-on-create
+          (setq annotation
+                (read-from-minibuffer
+                 "Annotation: " nil nil nil 'bm-annotation-history)))
+      (goto-char (point-min))
+      (while (and (< (point) (point-max))
+                  (re-search-forward regexp (point-max) t))
+        (bm-bookmark-add annotation)
+        (setq count (1+ count))
+        (forward-line 1)))
+    (message "%d bookmark(s) created." count)))
+
+;;----------------------------------------------------------------------
 ;; All functions defined below were copied from:
 ;; http://www.emacswiki.org/emacs/ess-edit.el
 ;; https://github.com/emacsmirror/ess-edit/blob/master/ess-edit.el
