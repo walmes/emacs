@@ -132,14 +132,11 @@
 ;; M-+ to indent paragraph.
 (global-set-key [?\M-+] (kbd "M-h C-M-\\"))
 
-;; M-= to get division line with 70 =.
-(global-set-key [?\M-=] (kbd "C-u 7 0 ="))
+;; "C-~" to keep one white space between objects around point.
+(global-set-key (kbd "<C-dead-tilde>") 'fixup-whitespace)
 
-;; M-- to get division line with 70 -.
-(global-set-key [?\M--] (kbd "C-u 7 0 -"))
-
-;; C-- to get division line with 43 -.
-(global-set-key [?\C--] (kbd "C-u 4 3 -"))
+;; "M-~" to joint lines.
+(global-set-key (kbd "<M-dead-tilde>") 'delete-indentation)
 
 ;; S-F11 and S-F12 to show/hide menu bar and tool bar.
 (global-set-key (kbd "<S-f11>") 'toggle-menu-bar-mode-from-frame)
