@@ -11,7 +11,7 @@
 ;; http://www.emacswiki.org/wiki/EmacsNiftyTricks
 ;; “I’ve used Emacs for many years now, but have never reached its
 ;;    maximum potential.” – Anon.
-;;   
+;;
 ;; http://www.mygooglest.com/fni/dot-emacs.html
 ;; “Show me your ~/.emacs and I will tell
 ;;    you who you are.” - Bogdan Maryniuk.
@@ -41,7 +41,8 @@
 ;; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
 ;; (require 'whitespace)
 (setq whitespace-line-column fill-column)
-(setq whitespace-style '(face lines-tail))
+(setq whitespace-style
+      '(face lines-tail trailing spaces tabs empty))
 (global-whitespace-mode +1)
 
 ;; Activate auto-fill-mode to make auto break lines.
@@ -49,12 +50,15 @@
 
 ;; Screen lines instead of logical lines.
 (visual-line-mode 1)
- 
+
 ;; Allow shared transfer area.
 (setq x-select-enable-clipboard t)
 
 ;; Comment even in empty lines.
 (setq comment-empty-lines t)
+
+;; Remove white espace at end when save buffer.
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Turn off auto save and auto backup.
 (setq auto-save-default nil) ;; Para o #autosave#.
@@ -336,8 +340,8 @@
 
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
 ;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
-(make-face 'special-words) 
-(set-face-attribute 'special-words nil :foreground "White" :background "Firebrick") 
+(make-face 'special-words)
+(set-face-attribute 'special-words nil :foreground "White" :background "Firebrick")
 
 (dolist
     (mode '(fundamental-mode
@@ -350,16 +354,16 @@
             polymode-mode
             markdown-mode
             latex-mode
-            TeX-mode)) 
+            TeX-mode))
   (font-lock-add-keywords
-   mode 
+   mode
    '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
       0 'font-lock-warning-face t)
      ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
       0 'font-lock-warning-face t)
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
       0 'special-words t))
-   )) 
+   ))
 
 ;;----------------------------------------------------------------------
 ;; To eval line/regions in terminal open in Emacs.
@@ -370,13 +374,13 @@
 ;; (global-set-key [?\C-&] 'pipe-region-to-shell)
 
 ;; essh.el - ESS like shell mode
-(defun essh-sh-hook ()                                             
-  (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)        
-  (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)        
-  (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)          
-  (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step) 
-  (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)      
-  (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)) 
+(defun essh-sh-hook ()
+  (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
+  (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
+  (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
+  (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
+  (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
+  (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory))
 (add-hook 'sh-mode-hook 'essh-sh-hook)
 
 ;;----------------------------------------------------------------------
@@ -454,7 +458,7 @@
 ;; ;;----------------------------------------------------------------------
 ;; ;; R snippets.
 ;; ;; https://github.com/mlf176f2/r-autoyas.el
-;; 
+;;
 ;; (require 'r-autoyas)
 ;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
 
@@ -501,7 +505,7 @@
 
 ;; ;;----------------------------------------------------------------------
 ;; ;; Load the local or parent bookmark file, if exists.
-;; 
+;;
 ;; (defun switch-to-local-bookmark-file ()
 ;;   "This function search for a file that has the same na'me of the
 ;;    current buffer that call it, append the extention `bmk' and
@@ -530,9 +534,9 @@
 ;;         )
 ;;       )
 ;;     ))
-;; 
+;;
 ;; (add-hook 'find-file-hook 'switch-to-local-bookmark-file)
-;; 
+;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -543,7 +547,8 @@
  '(bmkp-last-as-first-bookmark-file nil)
  '(bmkp-light-style-autonamed (quote lfringe))
  '(bmkp-light-style-non-autonamed (quote lfringe))
- '(doc-view-continuous t))
+ '(doc-view-continuous t)
+)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
