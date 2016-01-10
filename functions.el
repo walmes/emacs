@@ -161,9 +161,9 @@
 ;;   (delete-char 1)
 ;;   (move-end-of-line nil)
 ;;   )
-;; 
+;;
 ;; (global-set-key [?\M--] 'insert-rule-and-comment-1)
-;; 
+;;
 ;; (defun insert-rule-and-comment-2 ()
 ;;   "Insert a commented rule with 70 equals (=). Useful to divide
 ;;    your code in sections."
@@ -176,7 +176,7 @@
 ;;   (delete-char 1)
 ;;   (move-end-of-line nil)
 ;;   )
-;; 
+;;
 ;; (global-set-key [?\M-=] 'insert-rule-and-comment-2)
 
 ;; Retorna t se linha só em espaços e nil caso contrário.
@@ -227,6 +227,51 @@
   )
 
 (global-set-key [?\C--] 'insert-rule-and-comment-3)
+
+;;----------------------------------------------------------------------
+
+(defun replace-buffer-divisions-by-Walmes-style (beg end &optional char)
+  "This functions replace divisions in R code by Walmes's style
+   code division: start with single # and have 71 dashes, total
+   length is `fill-column'. All rules greater than 44 characters
+   will be replaced until complete margin."
+  (interactive "r")
+  (save-excursion
+    (goto-char beg)
+    (let ((comment-char
+           (if char
+               char
+             (read-from-minibuffer "Comment char: "))))
+      (while
+          ;; To have a prompt to pass the comment char.
+          (re-search-forward
+           (concat "^" comment-char ".-\\{43,\\}")
+           nil t)
+        (replace-match
+         (concat comment-char
+                 (make-string
+                  (- fill-column (string-width comment-char)) ?-))
+         nil nil)))
+    ))
+
+(defun make-line-end-dashes-fill-column (beg end)
+  "This function fix those dashes at end of lines used as
+   decoration making them have a end at `fill-column'. At least
+   must have five dashes after a space, because 3 dashes are yaml
+   header and 4 are markdown horizontal rule."
+  (interactive "r")
+  (save-excursion
+    (goto-char beg)
+    (while (re-search-forward " -\\{5,\\}" end t)
+      (let (
+            (xmax fill-column)
+            (xval (match-beginning 0) )
+            (null (beginning-of-line))
+            (xmin (point)))
+        (replace-match
+         (concat " "
+                 (make-string (- xmax (- xval xmin) 1) ?-)) nil nil)
+        ))))
 
 ;;----------------------------------------------------------------------
 ;; Header.
@@ -485,7 +530,7 @@
 
 (defun ess-edit-backward-move-out-of-quotes ()
   "If inside quotes, move the point backwards out."
-  (let ((start 
+  (let ((start
 	 (save-excursion
 	   (beginning-of-line) (point))))
     (if (ess-edit-within-quotes start (point))
@@ -529,7 +574,7 @@
   (or arg (setq arg 1))
   (if (< arg 0) (error "Only backward reading of function calls possible."))
   (add-hook 'pre-command-hook 'ess-edit-pre-command-hook)
-  ;; assume correct syntax, at least beyond previous paragraph-start 
+  ;; assume correct syntax, at least beyond previous paragraph-start
   (let ((oldpoint (point))
 	(lim (save-excursion
 	       (backward-paragraph 1) (point)))
@@ -565,7 +610,7 @@
                  (if (not (= ?\) matchcar))
                      (re-search-backward
                       (char-to-string matchcar) lim t)
-                   (condition-case nil 
+                   (condition-case nil
                        (progn
                          (forward-char 1)
                          (backward-sexp) t)
