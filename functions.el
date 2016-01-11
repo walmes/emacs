@@ -91,6 +91,18 @@
 (global-set-key (kbd "M-;") 'comment-line-or-region)
 
 ;;----------------------------------------------------------------------
+;; Mark the word where the point is. -- Walmes Zeviani.
+
+(defun mark-whole-word ()
+  "Mark the word where the point is."
+  (interactive)
+  (skip-chars-backward "[[:alnum:]]._")
+  (set-mark (point))
+  (skip-chars-forward "[[:alnum:]]._"))
+
+(global-set-key "\C-cw" 'mark-whole-word)
+
+;;----------------------------------------------------------------------
 ;; Move lines.
 ;; http://www.emacswiki.org/emacs/MoveLine
 
