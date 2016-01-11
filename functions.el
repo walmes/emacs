@@ -454,6 +454,21 @@
 (add-hook 'ess-mode-hook
           (lambda () (local-set-key (kbd "C-c r") 'ess-eval-word)))
 
+(defun forward-R-assigment-symbol ()
+  "Move cursor to the next occurrence of 「<-」 「=」. Adapted from:
+   URL `http://ergoemacs.org/emacs/emacs_jump_to_punctuations.html'."
+  (interactive)
+  (search-forward-regexp "=+\\|<-" nil t))
+
+(defun backward-R-assigment-symbol ()
+  "Move cursor to the previous occurrence of 「<-」 「=」. Adapted from:
+   `http://ergoemacs.org/emacs/emacs_jump_to_punctuations.html'."
+  (interactive)
+  (search-backward-regexp "=+\\|<-" nil t))
+
+(global-set-key (kbd "<S-f9>") 'forward-R-assigment-symbol)
+(global-set-key (kbd "<S-f10>") 'backward-R-assigment-symbol)
+
 ;;----------------------------------------------------------------------
 ;; Font:
 ;; https://github.com/basille/.emacs.d/blob/master/functions/ess-indent-region-as-R-function.el
