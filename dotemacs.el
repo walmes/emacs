@@ -374,6 +374,18 @@
       0 'special-words t))
    ))
 
+(dolist (mode '(ess-mode-hook lisp-mode-hook))
+  (add-hook mode
+            '(lambda ()
+               ;; Easy navigation.
+               (global-set-key (kbd "<M-S-up>") 'backward-up-list)
+               (global-set-key (kbd "<M-S-down>") 'down-list)
+               (global-set-key (kbd "<M-right>") 'forward-sexp)
+               (global-set-key (kbd "<M-left>") 'bakward-sexp)
+               (global-set-key (kbd "<M-up>") 'backward-list)
+               (global-set-key (kbd "<M-down>") 'forward-list)
+               )))
+
 ;;----------------------------------------------------------------------
 ;; To eval line/regions in terminal open in Emacs.
 
