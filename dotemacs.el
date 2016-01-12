@@ -227,16 +227,6 @@
 (add-to-list 'auto-mode-alist '("\\.Rmd\\'" . poly-markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.Rpres\\'" . poly-markdown-mode))
 
-;; Insert a new (empty) chunk to R markdown.
-(defun insert-chunk ()
-  "Insert chunk environment Rmd sessions."
-  (interactive)
-  (insert "```{r}\n\n```")
-  (forward-line -1)
-  )
-
-(global-set-key (kbd "C-c i") 'insert-chunk)
-
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 
