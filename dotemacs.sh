@@ -61,8 +61,8 @@ function installemacs24.5 {
         * )
             echo "Skipped."; echo; echo
             ;;
-    esac 
-    
+    esac
+
     echo ------------------------------------------------------------
     echo "Install emacs-goodies-el? [y]es/[n]o"
     read opcao
@@ -75,7 +75,7 @@ function installemacs24.5 {
         * )
             echo "Skipped."; echo; echo
             ;;
-    esac 
+    esac
 }
 
 #----------------------------------------------------------------------
@@ -95,7 +95,7 @@ Version=1.0
 Name=GNU Emacs 24.5
 GenericName=Text Editor
 Comment=View and edit files
-MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;text/x-org;
+MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;text/x-org;text/x-emacs-lisp;text/x-markdown;text/x-r-markdown;text/css;application/x-yaml;text/x-r-doc;text/x-r-source;
 Exec=/usr/local/bin/emacs-24.5 %F
 TryExec=emacs-24.5
 Icon=/home/walmes/GitLab/emacs/Emacs-icon.png
@@ -116,7 +116,7 @@ EOL
 # Move emacs init files and extentions.
 
 function moveemacsfiles {
-    
+
     emacsddir="$HOME/.emacs.d/lisp/"
     if [ ! -d "$emacsddir" ]
     then
@@ -129,7 +129,7 @@ function moveemacsfiles {
         echo "$emacsddir exists."
         echo; echo
     fi
-    
+
     dotemacs="$HOME/.emacs"
     if [ -f "$dotemacs" ]
     then
@@ -148,7 +148,7 @@ function moveemacsfiles {
             * )
                 echo "Skipped."; echo; echo
                 ;;
-        esac 
+        esac
     else
         echo ------------------------------------------------------------
         echo "~/.emacs file not found."
@@ -162,7 +162,7 @@ function moveemacsfiles {
 }
 
 #----------------------------------------------------------------------
-# Send line or region for shell buffer. 
+# Send line or region for shell buffer.
 
 function downloadessh {
     file="$HOME/.emacs.d/lisp/essh.el"
@@ -180,7 +180,7 @@ function downloadessh {
             * )
                 echo "Skipped."; echo; echo
                 ;;
-        esac 
+        esac
     else
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/essh.el file not found."
@@ -215,7 +215,7 @@ do
     printf "  5. Configure remotes.\n"
     printf "  6. Open files with meld.\n"
     printf "  q. Quit.\n\n"
-    
+
     read -sn1 -p "Select (1,2,3,4,5,6,q): " input
     echo
 
