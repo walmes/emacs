@@ -509,40 +509,8 @@
 
 ;; (require 'prelude-packages)
 
-;; ;;----------------------------------------------------------------------
-;; ;; Load the local or parent bookmark file, if exists.
-;;
-;; (defun switch-to-local-bookmark-file ()
-;;   "This function search for a file that has the same na'me of the
-;;    current buffer that call it, append the extention `bmk' and
-;;    check if a such file exists in the current directory to load
-;;    it as a bookmark file. If it fails, then tries a file named
-;;    `bookmark'. If fails, tries a `bookmark' at the parent
-;;    directory. If fails, nothing happens."
-;;   (defvar current-file-dir
-;;     (file-name-directory (or load-file-name buffer-file-name)))
-;;   (let ((local-file-with-bmk-extension
-;;          (concat current-file-dir (file-name-base) ".bmk"))
-;;         (local-bookmark-file
-;;          (concat current-file-dir "bookmark"))
-;;         (parent-bookmark-file
-;;          (concat (file-name-directory
-;;                   (directory-file-name current-file-dir))
-;;                  "bookmark")))
-;;     ;; Nested if statments to search, check and load a bookmark file.
-;;     (if (file-exists-p local-file-with-bmk-extension)
-;;         (bmkp-switch-bookmark-file-create local-file-with-bmk-extension)
-;;       (if (file-exists-p local-bookmark-file)
-;;           (bmkp-switch-bookmark-file-create local-bookmark-file)
-;;         (if (file-exists-p parent-bookmark-file)
-;;             (bmkp-switch-bookmark-file-create parent-bookmark-file)
-;;           )
-;;         )
-;;       )
-;;     ))
-;;
-;; (add-hook 'find-file-hook 'switch-to-local-bookmark-file)
-;;
+;;----------------------------------------------------------------------
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

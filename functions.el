@@ -177,6 +177,37 @@
 (global-set-key (kbd "M-]") 'move-region-down)
 
 ;;----------------------------------------------------------------------
+;; Load the local or parent bookmark file, if exists.
+
+(defun switch-to-local-bookmark-file ()
+  "This function search for a file that has the same name of the
+   current buffer and append the extention `bmk'. So, it check if
+   a such file exists in the current directory to load it as a
+   bookmark file. If it fails, then tries a file named
+   `bookmark'. If fails, tries a `bookmark' at the parent
+   directory. If fails, nothing happens."
+  (defvar current-file-dir
+    (file-name-directory (or load-file-name buffer-file-name)))
+  (let ((local-file-with-bmk-extension
+         (concat current-file-dir (file-name-base) ".bmk"))
+        (local-bookmark-file
+         (concat current-file-dir "bookmark"))
+        (parent-bookmark-file
+         (concat (file-name-directory
+                  (directory-file-name current-file-dir))
+                 "bookmark")))
+    ;; Nested if statments to search, check and load a bookmark file.
+    (if (file-exists-p local-file-with-bmk-extension)
+        (bmkp-switch-bookmark-file-create local-file-with-bmk-extension)
+      (if (file-exists-p local-bookmark-file)
+          (bmkp-switch-bookmark-file-create local-bookmark-file)
+        (if (file-exists-p parent-bookmark-file)
+            (bmkp-switch-bookmark-file-create parent-bookmark-file)
+          )))))
+
+;; (add-hook 'find-file-hook 'switch-to-local-bookmark-file)
+
+;;----------------------------------------------------------------------
 ;; Commented rules to divide code.
 
 ;; (defun insert-rule-and-comment-1 ()
