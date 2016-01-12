@@ -347,11 +347,14 @@
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
 ;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
 (make-face 'special-words)
-(set-face-attribute 'special-words nil :foreground "White" :background "Firebrick")
+(set-face-attribute 'special-words nil
+                    :foreground "White"
+                    :background "Firebrick")
 
 (dolist
     (mode '(fundamental-mode
             gnus-article-mode
+            lisp-mode
             org-mode
             shell-mode
             sh-mode
