@@ -501,7 +501,7 @@
 ;; https://github.com/Fuco1/smartparens.
 
 (require 'smartparens)
-;; (require 'smartparens-config)
+(require 'smartparens-config)
 (smartparens-global-mode 1)
 
 (sp-pair "\"" nil :unless '(sp-point-after-word-p))
