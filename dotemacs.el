@@ -153,11 +153,11 @@
 ;; (load "~/.emacs.d/lisp/functions")
 (require 'functions)
 
-(add-hook 'find-file-hook
-          (lambda ()
-             (replace-buffer-divisions-by-Walmes-style
-              (point-min) (point-max) "#")
-            ))
+;; (add-hook 'find-file-hook
+;;           (lambda ()
+;;              (replace-buffer-divisions-by-Walmes-style
+;;               (point-min) (point-max) "#")
+;;             ))
 
 ;;----------------------------------------------------------------------
 ;; Extensions.
