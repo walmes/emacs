@@ -190,15 +190,9 @@
 
 (set-background-mode nil solarized-default-background-mode)
 
-;; (global-set-key (kbd "C-c t") 'switch-theme)
-
 ;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
-
-;; (setq load-path
-;;       (append '("~/.emacs.d/markdown-mode")
-;;               load-path))
 
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
@@ -213,11 +207,6 @@
 ;; R+MarkDown extensions (emacs >= 24.3.1).
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
-;; (setq load-path
-;;       (append '("~/.emacs.d/polymode/"
-;;                 "~/.emacs.d/polymode/modes")
-;;               load-path))
-
 (require 'poly-R)
 (require 'poly-markdown)
 (require 'poly-noweb)
@@ -229,9 +218,7 @@
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
-
 ;; http://ess.r-project.org/
-;; git clone git@github.com:emacs-ess/ESS.git
 
 (require 'ess-site)
 (setq-default ess-dialect "R")
@@ -364,9 +351,6 @@
 
 (require 'essh)
 
-;; (global-set-key [?\C-*] 'pipe-line-to-shell-and-step)
-;; (global-set-key [?\C-&] 'pipe-region-to-shell)
-
 ;; essh.el - ESS like shell mode.
 (add-hook
  'sh-mode-hook
@@ -394,13 +378,10 @@
 ;;----------------------------------------------------------------------
 ;; Bookmark-plus.
 
-;; (setq bookmark-default-file "~/.emacs.d/bookmarks")
 (setq
  bookmark-default-file "~/Dropbox/bookmarks"
  bookmark-save-flag 1)
 
-;; (add-to-list 'load-path
-;;              "~/.emacs.d/bookmark-plus/")
 (require 'bookmark+)
 
 ;; Create an autonamed bookmark.
@@ -420,7 +401,6 @@
 ;; Visible bookmarks. Easy movement.
 ;; https://marmalade-repo.org/packages/bm
 
-;; (add-to-list 'load-path "~/.emacs.d/bm/")
 (require 'bm)
 
 ;; http://emacsworld.blogspot.com.br/2008/09/visual-bookmarks-package-for-emacs.html
@@ -436,7 +416,6 @@
 ;; Folding code blocks based on indentation.
 ;; git clone https://github.com/zenozeng/yafolding.el.git
 
-;; (add-to-list 'load-path "~/.emacs.d/yafolding.el/")
 (require 'yafolding)
 
 (global-set-key [?\C-{] #'yafolding-hide-parent-element)
