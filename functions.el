@@ -3,6 +3,24 @@
 ;;----------------------------------------------------------------------
 
 ;;----------------------------------------------------------------------
+;; From Fernando Mayer
+;; http://git.leg.ufpr.br/fernandomayer/emacs/blob/master/emacs.el
+(defun set-background-mode (frame mode)
+  (set-frame-parameter frame 'background-mode mode)
+  (when
+      (not (display-graphic-p frame))
+    (set-terminal-parameter
+     (frame-terminal frame) 'background-mode mode))
+  (enable-theme 'solarized))
+
+(defun switch-theme ()
+  (interactive)
+  (let ((mode
+         (if (eq (frame-parameter nil 'background-mode) 'dark)
+             'light 'dark)))
+    (set-background-mode nil mode)))
+
+;;----------------------------------------------------------------------
 ;; Split window and open shell.
 
 (defun open-shell-split-window ()
