@@ -224,23 +224,7 @@
 (setq-default ess-dialect "R")
 (require 'ess-eldoc)
 
-;;----------------------------------------------------------------------
-;; Key bindings for R, Rnw and Rmd sessions.
-;; http://stackoverflow.com/questions/2901198/useful-keyboard-shortcuts-and-tips-for-ess-r
-
-;; Movement across chunks in Rnw files.
-(global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
-(global-set-key (kbd "C-S-<f6>") 'ess-eval-chunk-and-step)
-(global-set-key (kbd "C-S-<f7>") 'ess-noweb-next-code-chunk)
-(global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
-(global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
-
-;; Movement across chunks in Rmd files.
-(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
-(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
-(global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
-
-(setq-default inferior-R-args "--no-restore-history --no-save  ")
+(setq-default inferior-R-args "--no-restore-history --no-save ")
 
 (defadvice ess-eval-buffer (before really-eval-buffer compile activate)
   "Prevent call ess-eval-buffer by accident, frequently by
@@ -300,6 +284,18 @@
         (ess-R-fl-keyword:F&T . t)
         ;; (ess-R-fl-keyword:%op% . t)
         ))
+
+;; Movement across chunks in Rnw files.
+(global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
+(global-set-key (kbd "C-S-<f6>") 'ess-eval-chunk-and-step)
+(global-set-key (kbd "C-S-<f7>") 'ess-noweb-next-code-chunk)
+(global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
+(global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
+
+;; Movement across chunks in Rmd files.
+(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
+(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
+(global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
 
 ;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
