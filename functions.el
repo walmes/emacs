@@ -489,7 +489,7 @@
   (save-excursion
     (align-regexp
      (region-beginning) (region-end)
-     "\\(\\s-*\\) \\(<-\\|=\\) " 1 1 nil)))
+     "\\(\\s-*\\) *\\(<-\\|=\\) *" 1 1 nil)))
 
 (defun wz-ess-backward-break-line-here ()
   "Searches a point backward where a break there is allowed."
