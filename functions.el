@@ -210,36 +210,6 @@
 ;;----------------------------------------------------------------------
 ;; Commented rules to divide code.
 
-;; (defun insert-rule-and-comment-1 ()
-;;   "Insert a commented rule with 70 dashes (-). Useful to divide
-;;    your code in sections."
-;;   (interactive)
-;;   (insert (make-string 70 ?-))
-;;   (comment-or-uncomment-region
-;;    (line-beginning-position)
-;;    (line-beginning-position 2))
-;;   (backward-char 71)
-;;   (delete-char 1)
-;;   (move-end-of-line nil)
-;;   )
-;;
-;; (global-set-key [?\M--] 'insert-rule-and-comment-1)
-;;
-;; (defun insert-rule-and-comment-2 ()
-;;   "Insert a commented rule with 70 equals (=). Useful to divide
-;;    your code in sections."
-;;   (interactive)
-;;   (insert (make-string 70 ?=))
-;;   (comment-or-uncomment-region
-;;    (line-beginning-position)
-;;    (line-beginning-position 2))
-;;   (backward-char 71)
-;;   (delete-char 1)
-;;   (move-end-of-line nil)
-;;   )
-;;
-;; (global-set-key [?\M-=] 'insert-rule-and-comment-2)
-
 ;; Retorna t se linha só em espaços e nil caso contrário.
 ;; https://lists.gnu.org/archive/html/help-gnu-emacs/2015-11/msg00212.html
 (defun blank-line-p ()
@@ -265,8 +235,6 @@
       (insert (make-string (- fill-column (current-column)) ?=))
     (insert (make-string (- fill-column (current-column)) ?-)))
   )
-
-;; (funcall (lambda () (insert-rule-from-point-to-margin 1)))
 
 (global-set-key [?\M--] 'insert-rule-from-point-to-margin)
 (global-set-key [?\M-=]
