@@ -500,9 +500,6 @@
     (ess-eval-linewise (concat x)))
   )
 
-(add-hook 'ess-mode-hook
-          (lambda () (local-set-key (kbd "C-c r") 'ess-eval-word)))
-
 (defun forward-R-assigment-symbol ()
   "Move cursor to the next occurrence of 「<-」 「=」. Adapted from:
    URL `http://ergoemacs.org/emacs/emacs_jump_to_punctuations.html'."
@@ -515,8 +512,24 @@
   (interactive)
   (search-backward-regexp "=+\\|<-" nil t))
 
-(global-set-key (kbd "<S-f9>") 'forward-R-assigment-symbol)
-(global-set-key (kbd "<S-f10>") 'backward-R-assigment-symbol)
+(defun R-align-assigment-operator ()
+  "Função que alinha a região com a primeira ocorrência de sinais
+   ` <- ' e ` = '. Baseado em:
+   http://stackoverflow.com/questions/13315064/
+   marker-does-not-point-anywhere-from-align-regexp-emacs"
+  (interactive)
+  (save-excursion
+    (align-regexp
+     (region-beginning) (region-end)
+     "\\(\\s-*\\) \\(<-\\|=\\) " 1 1 nil)))
+
+(add-hook 'ess-mode-hook
+          '(lambda ()
+             (local-set-key (kbd "C-c r") 'ess-eval-word)
+             (global-set-key (kbd "<S-f9>") 'forward-R-assigment-symbol)
+             (global-set-key (kbd "<S-f10>") 'backward-R-assigment-symbol)
+             (global-set-key (kbd "C-c a") 'R-align-assigment-operator)
+             ))
 
 ;;----------------------------------------------------------------------
 ;; Font:
