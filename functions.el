@@ -500,19 +500,19 @@
     (ess-eval-linewise (concat x)))
   )
 
-(defun forward-R-assigment-symbol ()
+(defun wz-ess-forward-R-assigment-symbol ()
   "Move cursor to the next occurrence of 「<-」 「=」. Adapted from:
    URL `http://ergoemacs.org/emacs/emacs_jump_to_punctuations.html'."
   (interactive)
   (search-forward-regexp "=+\\|<-" nil t))
 
-(defun backward-R-assigment-symbol ()
+(defun wz-ess-backward-R-assigment-symbol ()
   "Move cursor to the previous occurrence of 「<-」 「=」. Adapted from:
    `http://ergoemacs.org/emacs/emacs_jump_to_punctuations.html'."
   (interactive)
   (search-backward-regexp "=+\\|<-" nil t))
 
-(defun R-align-assigment-operator ()
+(defun wz-ess-align-R-assigment-operators ()
   "Função que alinha a região com a primeira ocorrência de sinais
    ` <- ' e ` = '. Baseado em:
    http://stackoverflow.com/questions/13315064/
@@ -523,13 +523,30 @@
      (region-beginning) (region-end)
      "\\(\\s-*\\) \\(<-\\|=\\) " 1 1 nil)))
 
-(add-hook 'ess-mode-hook
-          '(lambda ()
-             (local-set-key (kbd "C-c r") 'ess-eval-word)
-             (global-set-key (kbd "<S-f9>") 'forward-R-assigment-symbol)
-             (global-set-key (kbd "<S-f10>") 'backward-R-assigment-symbol)
-             (global-set-key (kbd "C-c a") 'R-align-assigment-operator)
-             ))
+(defun wz-ess-backward-break-line-here ()
+  "Searches a point backward where a break there is allowed."
+  (interactive)
+  (re-search-backward "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
+  (forward-char 1))
+
+(defun wz-ess-forward-break-line-here ()
+  "Searches a point forward where a break there is allowed. I
+   don't know why, but the forward some times skips correct
+   points that backward get."
+  (interactive)
+  (re-search-forward "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
+  (forward-char -1))
+
+(add-hook
+ 'ess-mode-hook
+ '(lambda ()
+    (local-set-key (kbd "C-c r") 'ess-eval-word)
+    (global-set-key (kbd "<S-f9>") 'wz-ess-backward-R-assigment-symbol)
+    (global-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
+    (global-set-key (kbd "C-c a") 'wz-ess-align-R-assigment-operators)
+    (global-set-key (kbd "C-, ") 'wz-ess-backward-break-line-here)
+    (global-set-key (kbd "C-. ") 'wz-ess-forward-break-line-here)
+    ))
 
 ;;----------------------------------------------------------------------
 ;; Font:
