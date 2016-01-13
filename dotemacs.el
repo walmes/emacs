@@ -191,6 +191,12 @@
 (set-background-mode nil solarized-default-background-mode)
 
 ;;----------------------------------------------------------------------
+;; Magit.
+
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
