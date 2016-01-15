@@ -338,6 +338,16 @@
   )
 
 ;;----------------------------------------------------------------------
+;; Return the font face at point.
+;; http://stackoverflow.com/questions/1242352/get-font-face-under-cursor-in-emacs
+
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+;;----------------------------------------------------------------------
 ;; Improved version of occur. Quick navigation.
 ;; http://ignaciopp.wordpress.com/2009/06/10/customizing-emacs-occur/
 
