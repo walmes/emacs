@@ -196,9 +196,9 @@ function downloadessh {
 
 function confremotes {
     git remote rm origin
-    git remote add origin git@git.leg.ufpr.br:walmes/emacs.git
+    git remote add origin git@github.com:walmes/emacs.git
     git remote set-url origin --add git@gitlab.c3sl.ufpr.br:walmes/emacs.git
-    git remote set-url origin --add git@github.com:walmes/emacs.git
+    git remote set-url origin --add git@git.leg.ufpr.br:walmes/emacs.git
     git remote -v
 }
 
