@@ -190,6 +190,15 @@
 
 (set-background-mode nil solarized-default-background-mode)
 
+;; Install spacemacs-theme by melpa.
+;; https://github.com/nashamri/spacemacs-theme
+;; (load-theme 'spacemacs-dark t)
+;; (load-theme 'spacemacs-light t)
+;; (custom-set-variables '(spacemacs-theme-custom-colors
+;;                         '((act1 . "#ff0000")
+;;                           (act2 . "#0000ff")
+;;                           (base . "#ffffff"))))
+
 ;;----------------------------------------------------------------------
 ;; Magit.
 
