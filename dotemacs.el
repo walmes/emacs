@@ -450,6 +450,13 @@
 (sp-pair "'" nil :unless '(sp-point-after-word-p))
 
 ;;----------------------------------------------------------------------
+;; Smart operators with electric spacing.
+;; https://github.com/walmes/electric-spacing (fork).
+
+(require 'electric-spacing)
+(add-hook 'ess-mode-hook #'electric-spacing-mode)
+
+;;----------------------------------------------------------------------
 ;; Latex extensions.
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
