@@ -483,6 +483,10 @@
 
 (global-set-key (kbd "C-c C") 'camel-dot-snake)
 
+;; Another interesting implementation:
+;; https://www.bunkus.org/blog/2009/12/switching-identifier-naming
+;; -style-between-camel-case-and-c-style-in-emacs/
+
 ;;----------------------------------------------------------------------
 
 ;; Insert a new (empty) chunk to R markdown.
