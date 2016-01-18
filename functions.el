@@ -451,6 +451,39 @@
 (define-key global-map "\M-Q" 'unfill-region)
 
 ;;----------------------------------------------------------------------
+;; Code based on
+;; http://www.emacswiki.org/emacs/CamelCase.
+
+(defun split-name (s)
+  (split-string
+   (let ((case-fold-search nil))
+     (downcase
+      (replace-regexp-in-string
+       "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
+   "[^A-Za-z0-9]+"))
+
+(defun camel-case (s)
+  (concat (car (split-name s))
+          (mapconcat 'capitalize (cdr (split-name s)) "")))
+(defun dot-case (s)
+  (mapconcat 'downcase (split-name s) "."))
+(defun snake-case (s)
+  (mapconcat 'downcase (split-name s) "_"))
+
+(defun camel-dot-snake (beg end)
+  (interactive "r")
+  (let ((s (buffer-substring-no-properties beg end)))
+    (set-mark (point))
+    (delete-region beg end)
+    (insert
+     (cond ((string-match-p "\\." s) (snake-case s))
+           ((string-match-p "_" s)   (camel-case s))
+           (t                        (dot-case s))))
+    (goto beg)))
+
+(global-set-key (kbd "C-c C") 'camel-dot-snake)
+
+;;----------------------------------------------------------------------
 
 ;; Insert a new (empty) chunk to R markdown.
 (defun insert-chunk ()
