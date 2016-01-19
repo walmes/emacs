@@ -470,18 +470,28 @@
 (defun snake-case (s)
   (mapconcat 'downcase (split-name s) "_"))
 
-(defun camel-dot-snake (beg end)
-  (interactive "r")
-  (let ((s (buffer-substring-no-properties beg end)))
+(defun camel-dot-snake ()
+  "Cycle among camelCase, dot.case and snake_case in words. If
+   the region is not active the current word at point is used."
+  (interactive)
+  (setq trs (and transient-mark-mode mark-active))
+  (unless trs
+    (skip-chars-backward "[[:alnum:]]._")
     (set-mark (point))
-    (delete-region beg end)
-    (insert
-     (cond ((string-match-p "\\." s) (snake-case s))
-           ((string-match-p "_" s)   (camel-case s))
-           (t                        (dot-case s))))
-    (goto beg)))
+    (skip-chars-forward "[[:alnum:]]._"))
+  (let* ((beg (region-beginning))
+         (end (region-end))
+         (str (buffer-substring-no-properties beg end)))
+    (if (string-match "^\s*$" str)
+        (message "Not a word at point")
+      (delete-region beg end)
+      (insert
+       (cond ((string-match-p "\\." str) (snake-case str))
+             ((string-match-p "_"   str) (camel-case str))
+             (t                          (dot-case   str))))
+      (if trs (setq deactivate-mark nil)))))
 
-(global-set-key (kbd "C-c C") 'camel-dot-snake)
+(global-set-key (kbd "C-ç") 'camel-dot-snake)
 
 ;; Another interesting implementation:
 ;; https://www.bunkus.org/blog/2009/12/switching-identifier-naming
