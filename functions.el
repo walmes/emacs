@@ -588,6 +588,43 @@
   (indent-new-comment-line)
   (wz-ess-query-replace-gaps-for-newline))
 
+(defun wz-ess-break-or-join-lines-wizard ()
+  "Break line wizard in R scripts. This function helps break and indent
+   or join lines in R code. The keybings are:
+   <right> : go to next matching;
+   <left>  : go to previous matching;
+   <return>: break and indent newline;
+   <delete>: join lines;
+   <escape>:  unhighlight and exit;
+   If you exit accidentally, call again and press <escape> to
+   unhighlight."
+  (interactive)
+  (setq rgxp "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
+  (highlight-regexp rgxp)
+  (let ((typed (read-event "Press: right|left|return|delete|escape")))
+    (cond ((eq typed 'right)
+           (progn (re-search-forward rgxp)
+                  (forward-char -1)))
+          ((eq typed 'left)
+           (progn (re-search-backward rgxp)
+                  (forward-char 1)))
+          ((eq typed 'return)
+           (progn (indent-new-comment-line)
+                  (re-search-forward rgxp)
+                  (forward-char -1)))
+          ((eq typed 'delete)
+           (progn (next-line)
+                  (delete-indentation)
+                  (re-search-backward rgxp)
+                  (forward-char 1)))
+          ((eq typed 'escape)
+           (progn (unhighlight-regexp rgxp)
+                  (keyboard-quit)))
+          (t
+           (progn (unhighlight-regexp rgxp)
+                  (keyboard-quit))))
+    (wz-ess-break-or-join-lines-wizard)))
+
 (add-hook
  'ess-mode-hook
  '(lambda ()
