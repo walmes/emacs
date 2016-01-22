@@ -510,6 +510,16 @@
 (add-hook 'poly-markdown-mode-hook
           (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
 
+;; Based on:
+;; http://stackoverflow.com/questions/4697322/elisp-call-command-on-current-file
+(defun wz-ess-rmarkdown-render ()
+  "Run rmarkdown::render() in the buffer. Tested only in Rmd files."
+  (interactive)
+  (shell-command
+   (format "Rscript -e 'library(rmarkdown); render(\"%s\")'"
+           (shell-quote-argument (buffer-file-name))))
+  (revert-buffer t t t))
+
 ;; Mark a word at a point.
 ;; http://www.emacswiki.org/emacs/ess-edit.el
 (defun ess-edit-word-at-point ()
@@ -603,6 +613,7 @@
  'ess-mode-hook
  '(lambda ()
     (local-set-key (kbd "C-c r") 'ess-eval-word)
+    (global-set-key (kbd "S-f6") 'wz-ess-rmarkdown-render)
     (global-set-key (kbd "<S-f9>") 'wz-ess-backward-R-assigment-symbol)
     (global-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
     (global-set-key (kbd "C-c a") 'wz-ess-align-R-assigment-operators)
