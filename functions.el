@@ -562,32 +562,6 @@
   (re-search-forward "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
   (forward-char -1))
 
-(defun wz-ess-query-replace-gaps-for-newline ()
-  "Search forward for points where is possible break R line of
-   code and replace for a non indented new line."
-  (interactive)
-  (query-replace-regexp
-   "\\([-+*/%<>(,]\\|[<>=!]=\\) *\\([[:alnum:]({]\\)"
-   (quote (replace-eval-replacement
-           replace-quote
-           (format "%s\n%s"
-                   (match-string 1)
-                   (match-string 2))))
-   nil
-   (if (and transient-mark-mode mark-active)
-       (region-beginning))
-   (if (and transient-mark-mode mark-active)
-       (region-end))
-   nil))
-
-(defun wz-ess-indent-newline-and-query-again ()
-  "Put a indented new line at point and call
-   `wz-ess-query-replace-gaps-for-newline' to continue."
-  (interactive)
-  (backward-char 1)
-  (indent-new-comment-line)
-  (wz-ess-query-replace-gaps-for-newline))
-
 (defun wz-ess-break-or-join-lines-wizard ()
   "Break line wizard in R scripts. This function helps break and indent
    or join lines in R code. The keybings are:
@@ -634,8 +608,7 @@
     (global-set-key (kbd "C-c a") 'wz-ess-align-R-assigment-operators)
     (global-set-key (kbd "C-, ") 'wz-ess-backward-break-line-here)
     (global-set-key (kbd "C-. ") 'wz-ess-forward-break-line-here)
-    (global-set-key (kbd "<f7>") 'wz-ess-query-replace-gaps-for-newline)
-    (global-set-key (kbd "<f8>") 'wz-ess-indent-newline-and-query-again)
+    (global-set-key (kbd "<f7>") 'wz-ess-break-or-join-lines-wizard)
     ))
 
 ;;----------------------------------------------------------------------
