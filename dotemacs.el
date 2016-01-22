@@ -258,6 +258,7 @@
              (setq comint-scroll-to-bottom-on-input t)
              (setq comint-scroll-to-bottom-on-output t)
              (setq comint-move-point-for-output t)
+             (setq ess-smart-operators t)
              ;; No indent styles.
              (setq ess-indent-with-fancy-comments nil)
              ;; No ## as default to comment.
