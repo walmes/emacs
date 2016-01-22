@@ -83,27 +83,9 @@
 ;; http://www.emacswiki.org/InteractivelyDoThings
 (ido-mode t)
 
-;; To work the accents on Sony Vaio.
-(require 'iso-transl)
-
 ;; Open Emacs without start-up screen.
 (setq inhibit-startup-screen t)
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
-
-;; Org-mode definitions.
-;; http://emacswiki.org/emacs/OrgMode#toc7
-(setq org-replace-disputed-keys t)
-(setq org-return-follows-link t)
-
-;; Fontify code in code blocks.
-;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
-(setq org-src-fontify-natively t)
-
-;; http://orgmode.org/worg/org-dependencies.html
-(require 'ox-latex)
-(setq org-latex-listings t)
-(add-to-list 'org-latex-packages-alist '("" "listings"))
-(add-to-list 'org-latex-packages-alist '("" "color"))
 
 ;;----------------------------------------------------------------------
 ;; Add melpa repository.
@@ -162,6 +144,9 @@
 ;;----------------------------------------------------------------------
 ;; Extensions.
 ;;----------------------------------------------------------------------
+
+;; To work the accents on Sony Vaio.
+(require 'iso-transl)
 
 ;;----------------------------------------------------------------------
 ;; Solarized color theme.
@@ -478,14 +463,28 @@
 (add-to-list 'auto-mode-alist '("\\.pgs" . latex-mode))
 
 ;;----------------------------------------------------------------------
-;; Babel.
+;; Org Mode.
 
+;; http://emacswiki.org/emacs/OrgMode#toc7
+(setq org-replace-disputed-keys t)
+(setq org-return-follows-link t)
+
+;; Fontify code in code blocks.
+;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
+(setq org-src-fontify-natively t)
+
+;; http://orgmode.org/worg/org-dependencies.html
+(require 'ox-latex)
+(setq org-latex-listings t)
+(add-to-list 'org-latex-packages-alist '("" "listings"))
+(add-to-list 'org-latex-packages-alist '("" "color"))
+
+;; Babel.
 (org-babel-do-load-languages 'org-babel-load-languages
                              '((R . t)
                                (emacs-lisp . t)
                                (sh . t)
                                (python . t)))
-;; (org-confirm-babel-evaluate nil)
 (setq org-confirm-babel-evaluate nil)
 
 ;;----------------------------------------------------------------------
