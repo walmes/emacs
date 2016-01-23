@@ -201,12 +201,12 @@
                  (line-beginning-position)
                  (line-end-position) )))
 
-(defun insert-rule-from-point-to-margin (&optional rule-char)
+(defun insert-rule-from-point-to-margin (&optional char)
   "Insert a commented rule with dashes (-) from the `point' to
    the `fill-column' if the line has only spaces. If the line has
    text, fill with dashes until the `fill-column'. Useful to
-   divide your code in sections. If a non nil prefix argument is
-   passed, then (=) is used instead."
+   divide your code in sections. If a non nil optional argument is
+   passed, then it is used instead."
   (interactive)
   (if (blank-line-p)
       (progn
@@ -214,8 +214,8 @@
         (comment-line-or-region)
         (delete-char -2))
     nil)
-  (if rule-char
-      (insert (make-string (- fill-column (current-column)) ?=))
+  (if char
+      (insert (make-string (- fill-column (current-column)) char))
     (insert (make-string (- fill-column (current-column)) ?-)))
   )
 
@@ -827,13 +827,13 @@
 (global-set-key [?\M-=]
                 (lambda ()
                   (interactive)
-                  (insert-rule-from-point-to-margin 1)))
-
-(add-hook 'poly-markdown-mode-hook
-          (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
+                  (insert-rule-from-point-to-margin ?=)))
 
 (add-hook
- 'ess-mode-hook
+ 'poly-markdown-mode-hook
+ (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
+
+(add-hook 'ess-mode-hook
  (lambda ()
    (local-set-key (kbd "C-c r")   'ess-eval-word)
    (local-set-key (kbd "C-c a")   'wz-ess-align-R-assigment-operators)
