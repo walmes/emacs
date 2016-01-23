@@ -579,35 +579,36 @@
    <left>  : go to previous matching;
    <return>: break and indent newline;
    <delete>: join lines;
-   <escape>:  unhighlight and exit;
-   If you exit accidentally, call again and press <escape> to
-   unhighlight."
+   <any>   : unhighlight and exit."
   (interactive)
   (setq rgxp "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
   (highlight-regexp rgxp)
-  (let ((typed (read-event "Press: right|left|return|delete|escape")))
-    (cond ((eq typed 'right)
-           (progn (re-search-forward rgxp)
-                  (forward-char -1)))
-          ((eq typed 'left)
-           (progn (re-search-backward rgxp)
-                  (forward-char 1)))
-          ((eq typed 'return)
-           (progn (indent-new-comment-line)
-                  (re-search-forward rgxp)
-                  (forward-char -1)))
-          ((eq typed 'delete)
-           (progn (next-line)
-                  (delete-indentation)
-                  (re-search-backward rgxp)
-                  (forward-char 1)))
-          ((eq typed 'escape)
-           (progn (unhighlight-regexp rgxp)
-                  (keyboard-quit)))
-          (t
-           (progn (unhighlight-regexp rgxp)
-                  (keyboard-quit))))
-    (wz-ess-break-or-join-lines-wizard)))
+  (let (done event)
+    (while (not done)
+      (let ((inhibit-quit t))
+        (setq event (read-event
+                     "Press: right|left|return|delete|any"))
+        (if inhibit-quit (setq quit-flag nil))
+        (cond ((eq event 'right)
+               (progn (re-search-forward rgxp)
+                      (forward-char -1)))
+              ((eq event 'left)
+               (progn (re-search-backward rgxp)
+                      (forward-char 1)))
+              ((eq event 'return)
+               (progn (indent-new-comment-line)
+                      (re-search-forward rgxp)
+                      (forward-char -1)))
+              ((eq event 'delete)
+               (progn (next-line)
+                      (delete-indentation)
+                      (re-search-backward rgxp)
+                      (forward-char 1)))
+              ((eq event 'escape)
+               (setq done t))
+              (t
+               (setq done t)))))
+    (unhighlight-regexp rgxp)))
 
 (add-hook
  'ess-mode-hook
