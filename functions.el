@@ -34,8 +34,6 @@
   (other-window 1)
   )
 
-(global-set-key (kbd "C-x t") 'open-shell-split-window)
-
 ;;----------------------------------------------------------------------
 ;; Duplicate lines (like in Geany).
 ;; http://stackoverflow.com/questions/88399/how-do-i-duplicate-a-whole-line-in-emacs
@@ -48,8 +46,6 @@
   (newline)
   (yank)
   )
-
-(global-set-key (kbd "\C-c d") 'duplicate-line)
 
 ;;----------------------------------------------------------------------
 ;; Cut and copy without selection.
@@ -85,9 +81,6 @@
     )
   )
 
-(global-set-key (kbd "S-<delete>") 'cut-line-or-region)  ; cut.
-(global-set-key (kbd "C-<insert>") 'copy-line-or-region) ; copy.
-
 ;;----------------------------------------------------------------------
 ;; (un)Comment without selection.
 
@@ -106,8 +99,6 @@
     )
   )
 
-(global-set-key (kbd "M-;") 'comment-line-or-region)
-
 ;;----------------------------------------------------------------------
 ;; Mark the word where the point is. -- Walmes Zeviani.
 
@@ -117,8 +108,6 @@
   (skip-chars-backward "[[:alnum:]]._")
   (set-mark (point))
   (skip-chars-forward "[[:alnum:]]._"))
-
-(global-set-key "\C-cw" 'mark-whole-word)
 
 ;;----------------------------------------------------------------------
 ;; Move lines.
@@ -147,9 +136,6 @@
   (interactive "p")
   (move-line (if (null n) 1 n)))
 
-(global-set-key (kbd "M-<") 'move-line-up)
-(global-set-key (kbd "M->") 'move-line-down)
-
 ;;----------------------------------------------------------------------
 ;; Move regions.
 
@@ -172,9 +158,6 @@
   "Move the current line down by N lines."
   (interactive "r\np")
   (move-region start end (if (null n) 1 n)))
-
-(global-set-key (kbd "M-[") 'move-region-up)
-(global-set-key (kbd "M-]") 'move-region-down)
 
 ;;----------------------------------------------------------------------
 ;; Load the local or parent bookmark file, if exists.
@@ -236,12 +219,6 @@
     (insert (make-string (- fill-column (current-column)) ?-)))
   )
 
-(global-set-key [?\M--] 'insert-rule-from-point-to-margin)
-(global-set-key [?\M-=]
-                (lambda ()
-                  (interactive)
-                  (insert-rule-from-point-to-margin 1)))
-
 (defun insert-rule-and-comment-3 ()
   "Insert a commented rule with 43 dashes (-). Useful to divide
    your code in sections."
@@ -254,8 +231,6 @@
   (delete-char 1)
   (move-end-of-line nil)
   )
-
-(global-set-key [?\C--] 'insert-rule-and-comment-3)
 
 ;;----------------------------------------------------------------------
 
@@ -491,8 +466,6 @@
              (t                          (dot-case   str))))
       (if trs (setq deactivate-mark nil)))))
 
-(global-set-key (kbd "C-ç") 'camel-dot-snake)
-
 ;; Another interesting implementation:
 ;; https://www.bunkus.org/blog/2009/12/switching-identifier-naming
 ;; -style-between-camel-case-and-c-style-in-emacs/
@@ -506,9 +479,6 @@
   (insert "```{r}\n\n```")
   (forward-line -1)
   )
-
-(add-hook 'poly-markdown-mode-hook
-          (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
 
 ;; Based on:
 ;; http://stackoverflow.com/questions/4697322/elisp-call-command-on-current-file
@@ -610,19 +580,6 @@
                (setq done t)))))
     (unhighlight-regexp rgxp)))
 
-(add-hook
- 'ess-mode-hook
- (lambda ()
-   (local-set-key (kbd "C-c r") 'ess-eval-word)
-   (local-set-key (kbd "C-c a") 'wz-ess-align-R-assigment-operators)
-   (local-set-key (kbd "C-,") 'wz-ess-backward-break-line-here)
-   (local-set-key (kbd "C-.") 'wz-ess-forward-break-line-here)
-   (local-set-key (kbd "<f7>") 'wz-ess-break-or-join-lines-wizard)
-   (local-set-key (kbd "<S-f6>") 'wz-ess-rmarkdown-render)
-   (local-set-key (kbd "<S-f9>") 'wz-ess-backward-R-assigment-symbol)
-   (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
-   ))
-
 ;;----------------------------------------------------------------------
 ;; Font:
 ;; https://github.com/basille/.emacs.d/blob/master/functions/ess-indent-region-as-R-function.el
@@ -661,9 +618,6 @@
   (insert string)
   (delete-backward-char 2)
   ))
-
-(global-set-key (kbd "C-|")
-                'ess-indent-region-with-formatR-tidy-source)
 
 ;;----------------------------------------------------------------------
 ;; Function based in the bm-bookmark-regexp-region.
@@ -855,10 +809,44 @@
     (ess-indent-exp)
     (ess-edit-read-call arg 'go)))
 
-;; (global-set-key (kbd "C-c C-h") 'ess-eval-word)
-(add-hook 'ess-mode-hook
-          (lambda () (local-set-key (kbd "C-c C-h")
-                                    'ess-edit-indent-call-sophisticatedly)))
+;;----------------------------------------------------------------------
+
+(global-set-key (kbd "S-<delete>") 'cut-line-or-region)  ; cut.
+(global-set-key (kbd "C-<insert>") 'copy-line-or-region) ; copy.
+(global-set-key (kbd "C-c d") 'duplicate-line)
+(global-set-key (kbd "C-x w") 'mark-whole-word)
+(global-set-key (kbd "C-x t") 'open-shell-split-window)
+(global-set-key (kbd "M-;") 'comment-line-or-region)
+(global-set-key (kbd "M-<") 'move-line-up)
+(global-set-key (kbd "M->") 'move-line-down)
+(global-set-key (kbd "M-[") 'move-region-up)
+(global-set-key (kbd "M-]") 'move-region-down)
+(global-set-key (kbd "C-ç") 'camel-dot-snake)
+(global-set-key [?\M--] 'insert-rule-from-point-to-margin)
+(global-set-key [?\C--] 'insert-rule-and-comment-3)
+(global-set-key [?\M-=]
+                (lambda ()
+                  (interactive)
+                  (insert-rule-from-point-to-margin 1)))
+
+(add-hook 'poly-markdown-mode-hook
+          (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
+
+(add-hook
+ 'ess-mode-hook
+ (lambda ()
+   (local-set-key (kbd "C-c r")   'ess-eval-word)
+   (local-set-key (kbd "C-c a")   'wz-ess-align-R-assigment-operators)
+   (local-set-key (kbd "C-,")     'wz-ess-backward-break-line-here)
+   (local-set-key (kbd "C-.")     'wz-ess-forward-break-line-here)
+   (local-set-key (kbd "<f7>")    'wz-ess-break-or-join-lines-wizard)
+   (local-set-key (kbd "<S-f6>")  'wz-ess-rmarkdown-render)
+   (local-set-key (kbd "<S-f9>")  'wz-ess-backward-R-assigment-symbol)
+   (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
+   (local-set-key (kbd "C-c C-h") 'ess-edit-indent-call-sophisticatedly)
+   (local-set-key (kbd "C-|")
+                  'ess-indent-region-with-formatR-tidy-source)
+   ))
 
 ;;----------------------------------------------------------------------
 
