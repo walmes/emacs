@@ -612,16 +612,16 @@
 
 (add-hook
  'ess-mode-hook
- '(lambda ()
-    (local-set-key (kbd "C-c r") 'ess-eval-word)
-    (global-set-key (kbd "S-f6") 'wz-ess-rmarkdown-render)
-    (global-set-key (kbd "<S-f9>") 'wz-ess-backward-R-assigment-symbol)
-    (global-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
-    (global-set-key (kbd "C-c a") 'wz-ess-align-R-assigment-operators)
-    (global-set-key (kbd "C-, ") 'wz-ess-backward-break-line-here)
-    (global-set-key (kbd "C-. ") 'wz-ess-forward-break-line-here)
-    (global-set-key (kbd "<f7>") 'wz-ess-break-or-join-lines-wizard)
-    ))
+ (lambda ()
+   (local-set-key (kbd "C-c r") 'ess-eval-word)
+   (local-set-key (kbd "C-c a") 'wz-ess-align-R-assigment-operators)
+   (local-set-key (kbd "C-,") 'wz-ess-backward-break-line-here)
+   (local-set-key (kbd "C-.") 'wz-ess-forward-break-line-here)
+   (local-set-key (kbd "<f7>") 'wz-ess-break-or-join-lines-wizard)
+   (local-set-key (kbd "<S-f6>") 'wz-ess-rmarkdown-render)
+   (local-set-key (kbd "<S-f9>") 'wz-ess-backward-R-assigment-symbol)
+   (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
+   ))
 
 ;;----------------------------------------------------------------------
 ;; Font:
