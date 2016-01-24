@@ -10,11 +10,11 @@
 
 ;; http://www.emacswiki.org/wiki/EmacsNiftyTricks
 ;; “I’ve used Emacs for many years now, but have never reached its
-;;    maximum potential.” – Anon.
+;;    maximum potential.” -- Anon.
 ;;
 ;; http://www.mygooglest.com/fni/dot-emacs.html
 ;; “Show me your ~/.emacs and I will tell
-;;    you who you are.” - Bogdan Maryniuk.
+;;    you who you are.” -- Bogdan Maryniuk.
 
 ;;----------------------------------------------------------------------
 ;; Basic definitions.
@@ -96,7 +96,6 @@
 ;; Functions.
 ;;----------------------------------------------------------------------
 
-;; (load "~/.emacs.d/lisp/functions")
 (require 'functions)
 
 ;; (add-hook 'find-file-hook
@@ -189,8 +188,7 @@
 
 ;;----------------------------------------------------------------------
 
-;; To work the accents on Sony Vaio.
-(require 'iso-transl)
+(require 'iso-transl) ;; To work the accents on Sony Vaio.
 (require 'eldoc-extension)
 
 ;;----------------------------------------------------------------------
@@ -235,6 +233,74 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;;----------------------------------------------------------------------
+;; essh.el - ESS like shell mode. To eval line/regions in Emacs shell.
+
+(require 'essh)
+(add-hook
+ 'sh-mode-hook
+ '(lambda ()
+    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
+    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
+    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
+    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
+    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
+    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
+
+;;----------------------------------------------------------------------
+;; Bookmark-plus.
+
+(setq bookmark-default-file "~/Dropbox/bookmarks"
+      bookmark-save-flag 1)
+
+(require 'bookmark+)
+
+;; Create an autonamed bookmark.
+(global-set-key (kbd "<C-f3>")
+                'bmkp-toggle-autonamed-bookmark-set/delete)
+;; Go to the next bookmark in file.
+(global-set-key (kbd "<f3>")
+                'bmkp-next-bookmark-this-file/buffer-repeat)
+;; Go to the previous bookmark in file.
+(global-set-key (kbd "<f4>")
+                'bmkp-previous-bookmark-this-file/buffer-repeat)
+;; Toggle temporary/permanent bookmark.
+(global-set-key (kbd "<S-f3>")
+                'bmkp-toggle-temporary-bookmark)
+
+;;----------------------------------------------------------------------
+;; Visible bookmarks. Easy movement.
+;; https://marmalade-repo.org/packages/bm
+
+(require 'bm)
+
+;; Customize the colors by using M-x customize-group RET bm RET
+(setq bm-marker 'bm-marker-left)
+(setq bm-highlight-style 'bm-highlight-only-fringe)
+
+(global-set-key (kbd "<C-f2>") 'bm-toggle)
+(global-set-key (kbd "<f2>")   'bm-next)
+(global-set-key (kbd "<S-f2>") 'bm-previous)
+
+;;----------------------------------------------------------------------
+;; Folding code blocks based on indentation.
+;; git clone https://github.com/zenozeng/yafolding.el.git
+
+(require 'yafolding)
+(global-set-key [?\C-{] #'yafolding-hide-parent-element)
+(global-set-key [?\C-}] #'yafolding-toggle-element)
+
+;;----------------------------------------------------------------------
+;; Smart Parenthesis.
+;; https://github.com/Fuco1/smartparens.
+
+(require 'smartparens)
+(require 'smartparens-config)
+(smartparens-global-mode 1)
+
+(sp-pair "\"" nil :unless '(sp-point-after-word-p))
+(sp-pair "'" nil :unless '(sp-point-after-word-p))
+
+;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
@@ -270,7 +336,6 @@
 
 (require 'ess-site)
 (require 'ess-eldoc)
-
 (setq-default ess-dialect "R")
 (setq-default inferior-R-args "--no-restore-history --no-save ")
 
@@ -331,124 +396,15 @@
 (global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
 (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
 
-;;----------------------------------------------------------------------
-;; essh.el - ESS like shell mode. To eval line/regions in Emacs shell.
-
-(require 'essh)
-
-(add-hook
- 'sh-mode-hook
- '(lambda ()
-    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
-    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
-    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
-    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
-    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
-    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
-
-;;----------------------------------------------------------------------
-;; Bookmark-plus.
-
-(setq bookmark-default-file "~/Dropbox/bookmarks"
-      bookmark-save-flag 1)
-
-(require 'bookmark+)
-
-;; Create an autonamed bookmark.
-(global-set-key (kbd "<C-f3>")
-                'bmkp-toggle-autonamed-bookmark-set/delete)
-;; Go to the next bookmark in file.
-(global-set-key (kbd "<f3>")
-                'bmkp-next-bookmark-this-file/buffer-repeat)
-;; Go to the previous bookmark in file.
-(global-set-key (kbd "<f4>")
-                'bmkp-previous-bookmark-this-file/buffer-repeat)
-;; Toggle temporary/permanent bookmark.
-(global-set-key (kbd "<S-f3>")
-                'bmkp-toggle-temporary-bookmark)
-
-;;----------------------------------------------------------------------
-;; Visible bookmarks. Easy movement.
-;; https://marmalade-repo.org/packages/bm
-
-(require 'bm)
-
-;; Customize the colors by using M-x customize-group RET bm RET
-(setq bm-marker 'bm-marker-left)
-(setq bm-highlight-style 'bm-highlight-only-fringe)
-
-(global-set-key (kbd "<C-f2>") 'bm-toggle)
-(global-set-key (kbd "<f2>")   'bm-next)
-(global-set-key (kbd "<S-f2>") 'bm-previous)
-
-;;----------------------------------------------------------------------
-;; Folding code blocks based on indentation.
-;; git clone https://github.com/zenozeng/yafolding.el.git
-
-(require 'yafolding)
-
-(global-set-key [?\C-{] #'yafolding-hide-parent-element)
-(global-set-key [?\C-}] #'yafolding-toggle-element)
-
-;;----------------------------------------------------------------------
-;; Add highlighting for certain keywords.
-
-;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
-;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
-(make-face 'special-words)
-(set-face-attribute 'special-words nil
-                    :foreground "White"
-                    :background "Firebrick")
-
-(dolist
-    (mode '(fundamental-mode
-            gnus-article-mode
-            lisp-mode
-            org-mode
-            shell-mode
-            sh-mode
-            muse-mode
-            ess-mode
-            polymode-mode
-            markdown-mode
-            latex-mode
-            TeX-mode))
-  (font-lock-add-keywords
-   mode
-   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
-      0 'font-lock-warning-face t)
-     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
-      0 'font-lock-warning-face t)
-     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
-      0 'special-words t))
-   ))
-
 (dolist (mode '(ess-mode-hook lisp-mode-hook))
   (add-hook mode
             '(lambda ()
-               ;; Easy navigation.
-               (global-set-key (kbd "<M-S-up>") 'backward-up-list)
-               (global-set-key (kbd "<M-S-down>") 'down-list)
-               (global-set-key (kbd "<M-right>") 'forward-sexp)
-               (global-set-key (kbd "<M-left>") 'bakward-sexp)
-               (global-set-key (kbd "<M-up>") 'backward-list)
-               (global-set-key (kbd "<M-down>") 'forward-list)
-               )))
-
-;;----------------------------------------------------------------------
-;; Start yasnippet with emacs.
-;; http://barisyuksel.com/cppmode/.emacs
-;; https://www.youtube.com/watch?v=HTUE03LnaXA
-
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
-
-;; ;;----------------------------------------------------------------------
-;; ;; R snippets.
-;; ;; https://github.com/mlf176f2/r-autoyas.el
-;;
-;; (require 'r-autoyas)
-;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
+               (global-set-key (kbd "<M-right>")  'forward-sexp)
+               (global-set-key (kbd "<M-left>")   'bakward-sexp)
+               (global-set-key (kbd "<M-down>")   'forward-list)
+               (global-set-key (kbd "<M-up>")     'backward-list)
+               (global-set-key (kbd "<M-S-up>")   'backward-up-list)
+               (global-set-key (kbd "<M-S-down>") 'down-list))))
 
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
@@ -464,22 +420,26 @@
 (define-key ac-completing-map "\t" 'ac-complete)
 
 ;;----------------------------------------------------------------------
-;; Smart Parenthesis.
-;; https://github.com/Fuco1/smartparens.
-
-(require 'smartparens)
-(require 'smartparens-config)
-(smartparens-global-mode 1)
-
-(sp-pair "\"" nil :unless '(sp-point-after-word-p))
-(sp-pair "'" nil :unless '(sp-point-after-word-p))
-
-;;----------------------------------------------------------------------
 ;; Smart operators with electric spacing.
 ;; https://github.com/walmes/electric-spacing (fork).
 
 (require 'electric-spacing)
 (add-hook 'ess-mode-hook #'electric-spacing-mode)
+
+;;----------------------------------------------------------------------
+;; Start yasnippet with emacs.
+;; http://barisyuksel.com/cppmode/.emacs
+;; https://www.youtube.com/watch?v=HTUE03LnaXA
+
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
+
+;;----------------------------------------------------------------------
+;; R snippets.
+;; https://github.com/mlf176f2/r-autoyas.el
+
+;; (require 'r-autoyas)
+;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
 
 ;;----------------------------------------------------------------------
 ;; Latex extensions.
@@ -511,11 +471,34 @@
 
 ;; Babel.
 (org-babel-do-load-languages 'org-babel-load-languages
-                             '((R . t)
-                               (emacs-lisp . t)
-                               (sh . t)
-                               (python . t)))
+                             '((emacs-lisp . t)
+                               (R . t)
+                               (sh . t)))
 (setq org-confirm-babel-evaluate nil)
+
+;;----------------------------------------------------------------------
+;; Add highlighting for certain keywords.
+
+;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
+;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
+(make-face 'special-words)
+(set-face-attribute 'special-words nil
+                    :foreground "White"
+                    :background "Firebrick")
+
+(dolist
+    (mode '(fundamental-mode lisp-mode org-mode shell-mode
+            sh-mode ess-mode polymode-mode markdown-mode
+            latex-mode TeX-mode))
+  (font-lock-add-keywords
+   mode
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
+      0 'font-lock-warning-face t)
+     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
+      0 'font-lock-warning-face t)
+     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
+      0 'special-words t))
+   ))
 
 ;;----------------------------------------------------------------------
 ;; Check for packages.
