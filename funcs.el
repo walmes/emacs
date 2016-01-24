@@ -669,7 +669,8 @@
    string."
   (interactive "p")
   (or arg (setq arg 1))
-  (if (< arg 0) (error "Only backward reading of function calls possible."))
+  (if (< arg 0)
+      (error "Only backward reading of function calls possible."))
   (add-hook 'pre-command-hook 'ess-edit-pre-command-hook)
   ;; assume correct syntax, at least beyond previous paragraph-start
   (let ((oldpoint (point))
@@ -693,14 +694,16 @@
                    matchcall)
                (if (eq ?\( matchcar)
                    ;; test if sitting on proper function call
-                   (if (not (progn
-                              (skip-chars-backward "a-zA-Z0-9.")
-                              (looking-at "\\([a-zA-Z0-9.]+\\)\\((\\)")))
+                   (if (not
+                        (progn
+                          (skip-chars-backward "a-zA-Z0-9.")
+                          (looking-at "\\([a-zA-Z0-9.]+\\)\\((\\)")))
                        nil
                      (if (string= "\\(if\\|else\\|for\\)"
                                   (setq matchcall (match-string 1)))
                          t
-                       (setq beg (match-beginning 1) end (match-end 1)
+                       (setq beg (match-beginning 1)
+                             end (match-end 1)
                              fun (append (list matchcall) fun))
                        (if (= arg 1) nil (setq arg (- arg 1)))))
                  ;; skip balanced parentheses or quotes
@@ -712,13 +715,19 @@
                          (forward-char 1)
                          (backward-sexp) t)
                      (t (goto-char oldpoint)
-                        (error "Point is not in a proper function call or unbalanced parentheses paragraph."))))))))
+                        (error (concat "Point is not in a proper"
+                                       "function call or unbalanced"
+                                       "parentheses paragraph.")))))))))
     (if (not fun)
-        (progn (goto-char oldpoint)
-               (error "Point is not in a proper function call or unbalanced parentheses in this paragraph."))
+        (progn
+          (goto-char oldpoint)
+          (error (concat "Point is not in a proper"
+                         "function call or unbalanced"
+                         "parentheses paragraph.")))
       (ess-edit-highlight 0 beg end)
       (message (car fun))
-      (goto-char (if move (+ (point) (skip-chars-forward "a-zA-Z0-9."))
+      (goto-char (if move
+                     (+ (point) (skip-chars-forward "a-zA-Z0-9."))
                    oldpoint))
       (if all fun (car fun)))))
 
@@ -745,28 +754,35 @@
 	 (end (progn (forward-sexp) (point)))
 	 breaks
 	 delete-p)
-    ;;	  (eq last-command 'ess-edit-indent-call-sophisticatedly)
+    ;; (eq last-command 'ess-edit-indent-call-sophisticatedly)
     (goto-char beg)
     (while (setq match (re-search-forward "[\"\'{([,]" end t))
       (if (string= (match-string 0) ",")
-	  (setq breaks (cons (cons (point)
-				   (if (looking-at "[ \t]*\n") t nil)) breaks))
-	(if (or (string= (match-string 0) "\"")  (string= (match-string 0) "\'"))
+	  (setq breaks
+                (cons (cons (point)
+                            (if (looking-at "[ \t]*\n") t nil))
+                      breaks))
+	(if (or (string= (match-string 0) "\"")
+                (string= (match-string 0) "\'"))
 	    (re-search-forward (match-string 0) nil t)
           (backward-char 1)
           (forward-sexp))))
     ;; if there are more breaks than half the number of
     ;; arguments then delete breaks else add linebreaks
     (setq delete-p
-	  (if force nil
-	    (> (length (delete nil (mapcar 'cdr breaks))) (* 0.5 (length breaks)))))
-    (while breaks (goto-char (caar breaks))
-           (if delete-p
-               (if (cdar breaks)
-                   (delete-region (caar breaks) (+ (point) (skip-chars-forward " \t\n"))))
-             (if (not (cdar breaks))
-                 (insert "\n")))
-           (setq breaks (cdr breaks)))
+	  (if force
+              nil
+	    (> (length (delete nil (mapcar 'cdr breaks)))
+               (* 0.5 (length breaks)))))
+    (while breaks
+      (goto-char (caar breaks))
+      (if delete-p
+          (if (cdar breaks)
+              (delete-region
+               (caar breaks) (+ (point) (skip-chars-forward " \t\n"))))
+        (if (not (cdar breaks))
+            (insert "\n")))
+      (setq breaks (cdr breaks)))
     (goto-char (- beg 1))
     (ess-indent-exp)
     (ess-edit-read-call arg 'go)))
