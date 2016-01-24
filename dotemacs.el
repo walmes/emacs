@@ -199,15 +199,14 @@
 (color-theme-initialize)
 (setq color-theme-is-global t)
 
-(cond
- ((string-equal system-name "brother")
-  (setq solarized-default-background-mode 'dark))
- ((string-equal system-name "youngest")
-  (setq solarized-default-background-mode 'dark))
- ((string-equal system-name "first")
-  (setq solarized-default-background-mode 'light))
- ((string-equal system-name "class")
-  (setq solarized-default-background-mode 'light)))
+(cond ((string-equal system-name "brother")
+       (setq solarized-default-background-mode 'dark))
+      ((string-equal system-name "youngest")
+       (setq solarized-default-background-mode 'dark))
+      ((string-equal system-name "first")
+       (setq solarized-default-background-mode 'light))
+      ((string-equal system-name "class")
+       (setq solarized-default-background-mode 'light)))
 
 (load-theme 'solarized t)
 
