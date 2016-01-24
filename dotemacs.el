@@ -332,6 +332,65 @@
 (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
 
 ;;----------------------------------------------------------------------
+;; essh.el - ESS like shell mode. To eval line/regions in Emacs shell.
+
+(require 'essh)
+
+(add-hook
+ 'sh-mode-hook
+ '(lambda ()
+    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
+    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
+    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
+    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
+    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
+    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
+
+;;----------------------------------------------------------------------
+;; Bookmark-plus.
+
+(setq bookmark-default-file "~/Dropbox/bookmarks"
+      bookmark-save-flag 1)
+
+(require 'bookmark+)
+
+;; Create an autonamed bookmark.
+(global-set-key (kbd "<C-f3>")
+                'bmkp-toggle-autonamed-bookmark-set/delete)
+;; Go to the next bookmark in file.
+(global-set-key (kbd "<f3>")
+                'bmkp-next-bookmark-this-file/buffer-repeat)
+;; Go to the previous bookmark in file.
+(global-set-key (kbd "<f4>")
+                'bmkp-previous-bookmark-this-file/buffer-repeat)
+;; Toggle temporary/permanent bookmark.
+(global-set-key (kbd "<S-f3>")
+                'bmkp-toggle-temporary-bookmark)
+
+;;----------------------------------------------------------------------
+;; Visible bookmarks. Easy movement.
+;; https://marmalade-repo.org/packages/bm
+
+(require 'bm)
+
+;; Customize the colors by using M-x customize-group RET bm RET
+(setq bm-marker 'bm-marker-left)
+(setq bm-highlight-style 'bm-highlight-only-fringe)
+
+(global-set-key (kbd "<C-f2>") 'bm-toggle)
+(global-set-key (kbd "<f2>")   'bm-next)
+(global-set-key (kbd "<S-f2>") 'bm-previous)
+
+;;----------------------------------------------------------------------
+;; Folding code blocks based on indentation.
+;; git clone https://github.com/zenozeng/yafolding.el.git
+
+(require 'yafolding)
+
+(global-set-key [?\C-{] #'yafolding-hide-parent-element)
+(global-set-key [?\C-}] #'yafolding-toggle-element)
+
+;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
 
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
@@ -375,67 +434,6 @@
                (global-set-key (kbd "<M-up>") 'backward-list)
                (global-set-key (kbd "<M-down>") 'forward-list)
                )))
-
-;;----------------------------------------------------------------------
-;; To eval line/regions in terminal open in Emacs.
-
-(require 'essh)
-
-;; essh.el - ESS like shell mode.
-(add-hook
- 'sh-mode-hook
- '(lambda ()
-    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
-    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
-    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
-    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
-    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
-    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
-
-;;----------------------------------------------------------------------
-;; Bookmark-plus.
-
-(setq bookmark-default-file "~/Dropbox/bookmarks"
-      bookmark-save-flag 1)
-
-(require 'bookmark+)
-
-;; Create an autonamed bookmark.
-(global-set-key (kbd "<C-f3>")
-                'bmkp-toggle-autonamed-bookmark-set/delete)
-;; Go to the next bookmark in file.
-(global-set-key (kbd "<f3>")
-                'bmkp-next-bookmark-this-file/buffer-repeat)
-;; Go to the previous bookmark in file.
-(global-set-key (kbd "<f4>")
-                'bmkp-previous-bookmark-this-file/buffer-repeat)
-;; Toggle temporary/permanent bookmark.
-(global-set-key (kbd "<S-f3>")
-                'bmkp-toggle-temporary-bookmark)
-
-;;----------------------------------------------------------------------
-;; Visible bookmarks. Easy movement.
-;; https://marmalade-repo.org/packages/bm
-
-(require 'bm)
-
-;; http://emacsworld.blogspot.com.br/2008/09/visual-bookmarks-package-for-emacs.html
-;; Customize the colors by using M-x customize-group RET bm RET
-(setq bm-marker 'bm-marker-left)
-(setq bm-highlight-style 'bm-highlight-only-fringe)
-
-(global-set-key (kbd "<C-f2>") 'bm-toggle)
-(global-set-key (kbd "<f2>")   'bm-next)
-(global-set-key (kbd "<S-f2>") 'bm-previous)
-
-;;----------------------------------------------------------------------
-;; Folding code blocks based on indentation.
-;; git clone https://github.com/zenozeng/yafolding.el.git
-
-(require 'yafolding)
-
-(global-set-key [?\C-{] #'yafolding-hide-parent-element)
-(global-set-key [?\C-}] #'yafolding-toggle-element)
 
 ;;----------------------------------------------------------------------
 ;; Start yasnippet with emacs.
