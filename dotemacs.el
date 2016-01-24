@@ -96,7 +96,7 @@
 ;; Functions.
 ;;----------------------------------------------------------------------
 
-(require 'functions)
+(require 'funcs)
 
 ;; (add-hook 'find-file-hook
 ;;           (lambda ()
@@ -114,16 +114,17 @@
                '("melpa" . "http://melpa.org/packages/") t)
   (package-initialize))
 
-(if (require 'quelpa nil t)
-    (quelpa-self-upgrade)
-  (with-temp-buffer
-    (url-insert-file-contents
-     "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-    (eval-buffer)))
-(setq quelpa-upgrade-p nil)
+;; (if (require 'quelpa nil t)
+;;     (quelpa-self-upgrade)
+;;   (with-temp-buffer
+;;     (url-insert-file-contents
+;;      "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+;;     (eval-buffer)))
+;; (setq quelpa-upgrade-p nil)
 
 (quelpa 'helm :upgrade nil)
 (quelpa 'company :upgrade nil)
+(quelpa 'eldoc-extension :upgrade nil)
 
 ;;----------------------------------------------------------------------
 ;; helm.
