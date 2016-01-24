@@ -240,7 +240,7 @@
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'"       . markdown-mode))
 
 ;; Org-struct minor mode active in markdown mode.
 (add-hook 'markdown-mode-hook 'turn-on-orgstruct)
@@ -256,17 +256,21 @@
 
 (autoload 'poly-markdown-mode "poly-markdown-mode"
   "Major mode for editing R-Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.Rmd\\'" . poly-markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.Rpres\\'" . poly-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.[Rr]md\\'" . poly-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.Rpres\\'"  . poly-markdown-mode))
+
+;; Movement across chunks in Rmd files.
+(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
+(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/
 
 (require 'ess-site)
-(setq-default ess-dialect "R")
 (require 'ess-eldoc)
 
+(setq-default ess-dialect "R")
 (setq-default inferior-R-args "--no-restore-history --no-save ")
 
 (defadvice ess-eval-buffer (before really-eval-buffer compile activate)
