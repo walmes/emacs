@@ -88,16 +88,6 @@
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
 ;;----------------------------------------------------------------------
-;; Add melpa repository.
-;;----------------------------------------------------------------------
-
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/") t)
-  (package-initialize))
-
-;;----------------------------------------------------------------------
 ;; Key bindings.
 ;;----------------------------------------------------------------------
 
@@ -143,6 +133,86 @@
 
 ;;----------------------------------------------------------------------
 ;; Extensions.
+;;----------------------------------------------------------------------
+
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+  (package-initialize))
+
+(if (require 'quelpa nil t)
+    (quelpa-self-upgrade)
+  (with-temp-buffer
+    (url-insert-file-contents
+     "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+    (eval-buffer)))
+(setq quelpa-upgrade-p nil)
+
+(quelpa 'helm :upgrade nil)
+(quelpa 'company :upgrade nil)
+
+;;----------------------------------------------------------------------
+;; helm.
+;; http://tuhdo.github.io/helm-intro.html
+
+(require 'helm)
+(require 'helm-config)
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+(define-key helm-map (kbd "C-z") 'helm-select-action)
+
+(when (executable-find "curl")
+  (setq helm-google-suggest-use-curl-p t))
+
+(when (executable-find "ack-grep")
+  (setq helm-grep-default-command
+        "ack-grep -Hn --no-group --no-color %e %p %f"
+        helm-grep-default-recurse-command
+        "ack-grep -H --no-group --no-color %e %p %f"))
+
+(setq helm-split-window-in-side-p           t
+      helm-move-to-line-cycle-in-source     t
+      helm-ff-search-library-in-sexp        t
+      helm-scroll-amount                    8
+      helm-ff-file-name-history-use-recentf t
+      helm-M-x-fuzzy-match                  t
+      helm-buffers-fuzzy-matching           t
+      helm-recentf-fuzzy-match              t
+      helm-locate-fuzzy-match               t
+      helm-apropos-fuzzy-match              t
+      helm-lisp-fuzzy-completion            t
+      helm-semantic-fuzzy-match             t
+      helm-imenu-fuzzy-match                t)
+
+(helm-mode 1)
+(helm-autoresize-mode t)
+
+(global-set-key (kbd "C-c h")   'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+(global-set-key (kbd "M-x")     'helm-M-x)
+(global-set-key (kbd "M-y")     'helm-show-kill-ring)
+(global-set-key (kbd "C-x b")   'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
+
+(add-to-list 'helm-sources-using-default-as-input
+             'helm-source-man-pages)
+
+;;----------------------------------------------------------------------
+;; company.
+
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay             0.2
+      company-minimum-prefix-length  2
+      company-require-match          nil
+      company-dabbrev-ignore-case    nil
+      company-dabbrev-downcase       nil
+      company-frontends              '(company-pseudo-tooltip-frontend))
+
 ;;----------------------------------------------------------------------
 
 ;; To work the accents on Sony Vaio.
@@ -233,9 +303,7 @@
        (format "Are you sure you want to evaluate the %s buffer?"
                buffer-file-name))
       (message "ess-eval-buffer started.")
-    (error "ess-eval-buffer canceled!")
-    )
-  )
+    (error "ess-eval-buffer canceled!")))
 
 ;; http://www.kieranhealy.org/blog/archives/2009/10/12/make-shift-enter-do-a-lot-in-ess/
 (add-hook 'ess-mode-hook
@@ -362,24 +430,23 @@
 ;;----------------------------------------------------------------------
 ;; Bookmark-plus.
 
-(setq
- bookmark-default-file "~/Dropbox/bookmarks"
- bookmark-save-flag 1)
+(setq bookmark-default-file "~/Dropbox/bookmarks"
+      bookmark-save-flag 1)
 
 (require 'bookmark+)
 
 ;; Create an autonamed bookmark.
-(global-set-key
- (kbd "<C-f3>") 'bmkp-toggle-autonamed-bookmark-set/delete)
+(global-set-key (kbd "<C-f3>")
+                'bmkp-toggle-autonamed-bookmark-set/delete)
 ;; Go to the next bookmark in file.
-(global-set-key
- (kbd "<f3>") 'bmkp-next-bookmark-this-file/buffer-repeat)
+(global-set-key (kbd "<f3>")
+                'bmkp-next-bookmark-this-file/buffer-repeat)
 ;; Go to the previous bookmark in file.
-(global-set-key
- (kbd "<f4>") 'bmkp-previous-bookmark-this-file/buffer-repeat)
+(global-set-key (kbd "<f4>")
+                'bmkp-previous-bookmark-this-file/buffer-repeat)
 ;; Toggle temporary/permanent bookmark.
-(global-set-key
- (kbd "<S-f3>") 'bmkp-toggle-temporary-bookmark)
+(global-set-key (kbd "<S-f3>")
+                'bmkp-toggle-temporary-bookmark)
 
 ;;----------------------------------------------------------------------
 ;; Visible bookmarks. Easy movement.
@@ -393,7 +460,7 @@
 (setq bm-highlight-style 'bm-highlight-only-fringe)
 
 (global-set-key (kbd "<C-f2>") 'bm-toggle)
-(global-set-key (kbd "<f2>") 'bm-next)
+(global-set-key (kbd "<f2>")   'bm-next)
 (global-set-key (kbd "<S-f2>") 'bm-previous)
 
 ;;----------------------------------------------------------------------
