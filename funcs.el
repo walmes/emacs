@@ -3,8 +3,9 @@
 ;;----------------------------------------------------------------------
 
 ;;----------------------------------------------------------------------
-;; From Fernando Mayer
+;; From Fernando Mayer:
 ;; http://git.leg.ufpr.br/fernandomayer/emacs/blob/master/emacs.el
+
 (defun set-background-mode (frame mode)
   (set-frame-parameter frame 'background-mode mode)
   (when
@@ -31,8 +32,7 @@
   (previous-buffer) ;; 1
   (other-window 1)
   (next-buffer)     ;; 2
-  (other-window 1)
-  )
+  (other-window 1))
 
 ;;----------------------------------------------------------------------
 ;; Duplicate lines (like in Geany).
@@ -44,8 +44,7 @@
   (kill-line)
   (yank)
   (newline)
-  (yank)
-  )
+  (yank))
 
 ;;----------------------------------------------------------------------
 ;; Cut and copy without selection.
@@ -57,14 +56,10 @@
   (if (region-active-p)
       (kill-ring-save
        (region-beginning)
-       (region-end)
-       )
+       (region-end))
     (kill-ring-save
      (line-beginning-position)
-     (line-beginning-position 2)
-     )
-    )
-  )
+     (line-beginning-position 2))))
 
 (defun cut-line-or-region ()
   "Cut the current line, or current text selection."
@@ -72,14 +67,10 @@
   (if (region-active-p)
       (kill-region
        (region-beginning)
-       (region-end)
-       )
+       (region-end))
     (kill-region
      (line-beginning-position)
-     (line-beginning-position 2)
-     )
-    )
-  )
+     (line-beginning-position 2))))
 
 ;;----------------------------------------------------------------------
 ;; (un)Comment without selection.
@@ -90,14 +81,10 @@
   (if (region-active-p)
       (comment-or-uncomment-region
        (region-beginning)
-       (region-end)
-       )
+       (region-end))
     (comment-or-uncomment-region
      (line-beginning-position)
-     (line-beginning-position 2)
-     )
-    )
-  )
+     (line-beginning-position 2))))
 
 ;;----------------------------------------------------------------------
 ;; Mark the word where the point is. -- Walmes Zeviani.
@@ -160,9 +147,38 @@
   (move-region start end (if (null n) 1 n)))
 
 ;;----------------------------------------------------------------------
+;; Return the font face at point.
+;; http://stackoverflow.com/questions/1242352/get-font-face-under-cursor-in-emacs
+
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+;;----------------------------------------------------------------------
+;; Infill paragraph.
+;; http://www.emacswiki.org/emacs/UnfillParagraph
+
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line
+   of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+;; http://ergoemacs.org/emacs/emacs_unfill-paragraph.html
+(defun unfill-region (start end)
+  "Replace newline chars in region by single spaces.
+   This command does the inverse of `fill-region'."
+  (interactive "r")
+  (let ((fill-column 90002000))
+    (fill-region start end)))
+
+;;----------------------------------------------------------------------
 ;; Load the local or parent bookmark file, if exists.
 
-(defun switch-to-local-bookmark-file ()
+(defun wz-switch-to-local-bookmark-file ()
   "This function search for a file that has the same name of the
    current buffer and append the extention `bmk'. So, it check if
    a such file exists in the current directory to load it as a
@@ -188,20 +204,20 @@
             (bmkp-switch-bookmark-file-create parent-bookmark-file)
           )))))
 
-;; (add-hook 'find-file-hook 'switch-to-local-bookmark-file)
+;; (add-hook 'find-file-hook 'wz-switch-to-local-bookmark-file)
 
 ;;----------------------------------------------------------------------
 ;; Commented rules to divide code.
 
-;; Retorna t se linha só em espaços e nil caso contrário.
+;; t in line is empty (oly whitespaces), nil otherwise.
 ;; https://lists.gnu.org/archive/html/help-gnu-emacs/2015-11/msg00212.html
 (defun blank-line-p ()
   (string-match "^[[:space:]]*$"
                 (buffer-substring-no-properties
                  (line-beginning-position)
-                 (line-end-position) )))
+                 (line-end-position))))
 
-(defun insert-rule-from-point-to-margin (&optional char)
+(defun wz-insert-rule-from-point-to-margin (&optional char)
   "Insert a commented rule with dashes (-) from the `point' to
    the `fill-column' if the line has only spaces. If the line has
    text, fill with dashes until the `fill-column'. Useful to
@@ -216,10 +232,9 @@
     nil)
   (if char
       (insert (make-string (- fill-column (current-column)) char))
-    (insert (make-string (- fill-column (current-column)) ?-)))
-  )
+    (insert (make-string (- fill-column (current-column)) ?-))))
 
-(defun insert-rule-and-comment-3 ()
+(defun wz-insert-rule-and-comment-3 ()
   "Insert a commented rule with 43 dashes (-). Useful to divide
    your code in sections."
   (interactive)
@@ -229,8 +244,7 @@
    (line-beginning-position 2))
   (backward-char 44)
   (delete-char 1)
-  (move-end-of-line nil)
-  )
+  (move-end-of-line nil))
 
 ;;----------------------------------------------------------------------
 
@@ -255,10 +269,9 @@
          (concat comment-char
                  (make-string
                   (- fill-column (string-width comment-char)) ?-))
-         nil nil)))
-    ))
+         nil nil)))))
 
-(defun make-line-end-dashes-fill-column (beg end)
+(defun wz-make-line-end-dashes-fill-column (beg end)
   "This function fix those dashes at end of lines used as
    decoration making them have a end at `fill-column'. At least
    must have five dashes after a space, because 3 dashes are yaml
@@ -267,34 +280,30 @@
   (save-excursion
     (goto-char beg)
     (while (re-search-forward " -\\{5,\\}" end t)
-      (let (
-            (xmax fill-column)
+      (let ((xmax fill-column)
             (xval (match-beginning 0) )
             (null (beginning-of-line))
             (xmin (point)))
         (replace-match
-         (concat " "
-                 (make-string (- xmax (- xval xmin) 1) ?-)) nil nil)
-        ))))
+         (concat
+          " "
+          (make-string (- xmax (- xval xmin) 1) ?-)) nil nil)))))
 
 ;;----------------------------------------------------------------------
 ;; Header.
 
-(defun right-align-commented-text (text)
+(defun wz-right-align-commented-text (text)
   "Write text aligned to the right margin at `fill-column' and
    comment it out."
   (let ((number-of-spaces (- fill-column (length text)))
-        (string-length (length text))
-        )
+        (string-length (length text)))
     (insert (concat "\n" text))
     (comment-line-or-region)
     (backward-char string-length)
     (insert (make-string (- number-of-spaces 3) ? ))
-    (forward-char string-length)
-    )
-  )
+    (forward-char string-length)))
 
-(defun header ()
+(defun wz-header ()
   "Insert a header."
   (interactive)
   (insert-rule-and-comment-2)
@@ -309,121 +318,7 @@
   (insert-rule-and-comment-2)
   ;; If insert/delete new line of infomation, then de/increment a unit.
   (previous-line 6)
-  (delete-char -1)
-  )
-
-;;----------------------------------------------------------------------
-;; Return the font face at point.
-;; http://stackoverflow.com/questions/1242352/get-font-face-under-cursor-in-emacs
-
-(defun what-face (pos)
-  (interactive "d")
-  (let ((face (or (get-char-property (point) 'read-face-name)
-                  (get-char-property (point) 'face))))
-    (if face (message "Face: %s" face) (message "No face at %d" pos))))
-
-;;----------------------------------------------------------------------
-;; Improved version of occur. Quick navigation.
-;; http://ignaciopp.wordpress.com/2009/06/10/customizing-emacs-occur/
-
-(defun my-occur (&optional arg)
-  "Make sure to always put occur in a vertical split, into a
-   narrower buffer at the side. I didn't like the default
-   horizontal split, nor the way it messes up the arrangement of
-   windows in the frame or the way in which the standard way uses
-   a neighbor window."
-  (interactive "P")
-  ;; store whatever frame configuration we are currently in
-  (window-configuration-to-register ?y)
-  (occur (read-from-minibuffer "Regexp: "))
-  (if (occur-check-existence)
-      (progn
-        (delete-other-windows)
-	;; (split-window-horizontally)
-	;; (enlarge-window-horizontally -30)
-        (split-window-vertically)
-        (enlarge-window -10)
-	;; (set-cursor-color "green")
-        )
-    )
-  (occur-procede-accordingly)
-  (next-error-follow-minor-mode) ;;+
-  )
-
-(defun occur-procede-accordingly ()
-  "Switch to occur buffer or prevent opening of the occur window
-   if no matches occurred."
-  (interactive "P")
-  (if (not(get-buffer "*Occur*"))
-      (message "There are no results.")
-    (switch-to-buffer "*Occur*")))
-
-(defun occur-check-existence()
-  "Signal the existence of an occur buffer depending on the
-   number of matches."
-  (interactive)
-  (if (not(get-buffer "*Occur*")) nil t)
-  )
-
-;; Key binding.
-(define-key global-map (kbd "C-S-o") 'my-occur)
-
-;; http://www.emacswiki.org/emacs/OccurMode
-;; To show more context lines, use
-;; C-U 5 M-x occur regexp-to-search
-
-(defun occur-mode-quit ()
-  "Quit and close occur window. I want to press 'q' and leave
-   things as they were before in regard of the split of windows
-   in the frame. This is the equivalent of pressing C-x 0 and
-   reset windows in the frame, in whatever way they were, plus
-   jumping to the latest position of the cursor which might have
-   been changed by using the links out of any of the matches
-   found in occur."
-  (interactive)
-  (switch-to-buffer "*Occur*")
-  ;; in order to know where we put the cursor they might have jumped from occur
-  (other-window 1)                  ;; go to the main window
-  (point-to-register ?1)            ;; store the latest cursor position
-  (switch-to-buffer "*Occur*")      ;; go back to the occur window
-  (kill-buffer "*Occur*")           ;; delete it
-  (jump-to-register ?y)             ;; reset the original frame state
-  ;; (set-cursor-color "rgb:ff/fb/53") ;; reset cursor color
-  (register-to-point ?1))           ;; re-position cursor
-
-;; Some key bindings defined below. Use "p" ans "n" as in dired mode
-;; (without Cntrl key) for previous and next line; just show occurrence
-;; without leaving the "occur" buffer; use RET to display the line of
-;; the given occurrence, instead of jumping to i,t which you do clicking
-;; instead; also quit mode with Ctrl-g.
-
-(define-key occur-mode-map (kbd "q") 'occur-mode-quit)
-;; (define-key occur-mode-map (kbd "C-RET") 'occur-mode-goto-occurrence-other-window)
-;; (define-key occur-mode-map (kbd "C-<up>") 'occur-mode-goto-occurrence-other-window)
-;; (define-key occur-mode-map (kbd "RET") 'occur-mode-display-occurrence)
-;; (define-key occur-mode-map (kbd "p") 'previous-line)
-;; (define-key occur-mode-map (kbd "n") 'next-line)
-
-;;----------------------------------------------------------------------
-;; Infill paragraph.
-;; http://www.emacswiki.org/emacs/UnfillParagraph
-
-(defun unfill-paragraph ()
-  "Takes a multi-line paragraph and makes it into a single line
-   of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-;; http://ergoemacs.org/emacs/emacs_unfill-paragraph.html
-(defun unfill-region (start end)
-  "Replace newline chars in region by single spaces.
-   This command does the inverse of `fill-region'."
-  (interactive "r")
-  (let ((fill-column 90002000))
-    (fill-region start end)))
-
-(define-key global-map "\M-Q" 'unfill-region)
+  (delete-char -1))
 
 ;;----------------------------------------------------------------------
 ;; Code based on
@@ -477,8 +372,7 @@
   "Insert chunk environment Rmd sessions."
   (interactive)
   (insert "```{r}\n\n```")
-  (forward-line -1)
-  )
+  (forward-line -1))
 
 ;; Based on:
 ;; http://stackoverflow.com/questions/4697322/elisp-call-command-on-current-file
@@ -502,8 +396,7 @@
 (defun ess-eval-word ()
   (interactive)
   (let ((x (ess-edit-word-at-point)))
-    (ess-eval-linewise (concat x)))
-  )
+    (ess-eval-linewise (concat x))))
 
 (defun wz-ess-forward-R-assigment-symbol ()
   "Move cursor to the next occurrence of 「<-」 「=」. Adapted from:
@@ -581,6 +474,29 @@
     (unhighlight-regexp rgxp)))
 
 ;;----------------------------------------------------------------------
+;; Function based in the bm-bookmark-regexp-region.
+;; This function bookmark all chunks in *.Rnw and *.Rmd buffers.
+
+(defun wz-bm-bookmark-chunk-in-buffer ()
+  "Set bookmark on chunk header lines in Rnw and Rmd files."
+  (interactive)
+  (let ((regexp "^<<.*>>=$\\|^```{.*}$")
+        (annotation nil)
+        (count 0))
+    (save-excursion
+      (if bm-annotate-on-create
+          (setq annotation
+                (read-from-minibuffer
+                 "Annotation: " nil nil nil 'bm-annotation-history)))
+      (goto-char (point-min))
+      (while (and (< (point) (point-max))
+                  (re-search-forward regexp (point-max) t))
+        (bm-bookmark-add annotation)
+        (setq count (1+ count))
+        (forward-line 1)))
+    (message "%d bookmark(s) created." count)))
+
+;;----------------------------------------------------------------------
 ;; Font:
 ;; https://github.com/basille/.emacs.d/blob/master/functions/ess-indent-region-as-R-function.el
 
@@ -612,35 +528,81 @@
       (let ((end (point)))
 	(goto-char (point-min))
 	(goto-char (1+ (point-at-eol)))
-	(setq string (buffer-substring-no-properties (point) end))
-	))
-  (delete-region beg end)
-  (insert string)
-  (delete-backward-char 2)
-  ))
+	(setq string (buffer-substring-no-properties (point) end))))
+    (delete-region beg end)
+    (insert string)
+    (delete-backward-char 2)))
 
 ;;----------------------------------------------------------------------
-;; Function based in the bm-bookmark-regexp-region.
-;; This function bookmark all chunks in *.Rnw and *.Rmd buffers.
+;; Improved version of occur. Quick navigation.
+;; http://ignaciopp.wordpress.com/2009/06/10/customizing-emacs-occur/
 
-(defun bm-bookmark-chunk-in-buffer ()
-  "Set bookmark on chunk header lines in Rnw and Rmd files."
+(defun my-occur (&optional arg)
+  "Make sure to always put occur in a vertical split, into a
+   narrower buffer at the side. I didn't like the default
+   horizontal split, nor the way it messes up the arrangement of
+   windows in the frame or the way in which the standard way uses
+   a neighbor window."
+  (interactive "P")
+  ;; store whatever frame configuration we are currently in
+  (window-configuration-to-register ?y)
+  (occur (read-from-minibuffer "Regexp: "))
+  (if (occur-check-existence)
+      (progn
+        (delete-other-windows)
+	;; (split-window-horizontally)
+	;; (enlarge-window-horizontally -30)
+        (split-window-vertically)
+        (enlarge-window -10)
+	;; (set-cursor-color "green")
+        )
+    )
+  (occur-procede-accordingly)
+  (next-error-follow-minor-mode) ;;+
+  )
+
+(defun occur-procede-accordingly ()
+  "Switch to occur buffer or prevent opening of the occur window
+   if no matches occurred."
+  (interactive "P")
+  (if (not(get-buffer "*Occur*"))
+      (message "There are no results.")
+    (switch-to-buffer "*Occur*")))
+
+(defun occur-check-existence()
+  "Signal the existence of an occur buffer depending on the
+   number of matches."
   (interactive)
-  (let ((regexp "^<<.*>>=$\\|^```{.*}$")
-        (annotation nil)
-        (count 0))
-    (save-excursion
-      (if bm-annotate-on-create
-          (setq annotation
-                (read-from-minibuffer
-                 "Annotation: " nil nil nil 'bm-annotation-history)))
-      (goto-char (point-min))
-      (while (and (< (point) (point-max))
-                  (re-search-forward regexp (point-max) t))
-        (bm-bookmark-add annotation)
-        (setq count (1+ count))
-        (forward-line 1)))
-    (message "%d bookmark(s) created." count)))
+  (if (not(get-buffer "*Occur*")) nil t))
+
+;; http://www.emacswiki.org/emacs/OccurMode
+;; To show more context lines, use
+;; C-U 5 M-x occur regexp-to-search
+
+(defun occur-mode-quit ()
+  "Quit and close occur window. I want to press 'q' and leave
+   things as they were before in regard of the split of windows
+   in the frame. This is the equivalent of pressing C-x 0 and
+   reset windows in the frame, in whatever way they were, plus
+   jumping to the latest position of the cursor which might have
+   been changed by using the links out of any of the matches
+   found in occur."
+  (interactive)
+  (switch-to-buffer "*Occur*")
+  ;; in order to know where we put the cursor they might have jumped from occur
+  (other-window 1)                  ;; go to the main window
+  (point-to-register ?1)            ;; store the latest cursor position
+  (switch-to-buffer "*Occur*")      ;; go back to the occur window
+  (kill-buffer "*Occur*")           ;; delete it
+  (jump-to-register ?y)             ;; reset the original frame state
+  ;; (set-cursor-color "rgb:ff/fb/53") ;; reset cursor color
+  (register-to-point ?1))           ;; re-position cursor
+
+;; Some key bindings defined below. Use "p" ans "n" as in dired mode
+;; (without Cntrl key) for previous and next line; just show occurrence
+;; without leaving the "occur" buffer; use RET to display the line of
+;; the given occurrence, instead of jumping to i,t which you do clicking
+;; instead; also quit mode with Ctrl-g.
 
 ;;----------------------------------------------------------------------
 ;; All functions defined below were copied from:
@@ -811,6 +773,10 @@
 
 ;;----------------------------------------------------------------------
 
+(define-key global-map "\M-Q" 'unfill-region)
+(define-key global-map (kbd "C-S-o") 'my-occur)
+(define-key occur-mode-map (kbd "q") 'occur-mode-quit)
+
 (global-set-key (kbd "S-<delete>") 'cut-line-or-region)  ; cut.
 (global-set-key (kbd "C-<insert>") 'copy-line-or-region) ; copy.
 (global-set-key (kbd "C-c d") 'duplicate-line)
@@ -822,12 +788,12 @@
 (global-set-key (kbd "M-[") 'move-region-up)
 (global-set-key (kbd "M-]") 'move-region-down)
 (global-set-key (kbd "C-ç") 'camel-dot-snake)
-(global-set-key [?\M--] 'insert-rule-from-point-to-margin)
-(global-set-key [?\C--] 'insert-rule-and-comment-3)
+(global-set-key [?\M--] 'wz-insert-rule-from-point-to-margin)
+(global-set-key [?\C--] 'wz-insert-rule-and-comment-3)
 (global-set-key [?\M-=]
                 (lambda ()
                   (interactive)
-                  (insert-rule-from-point-to-margin ?=)))
+                  (wz-insert-rule-from-point-to-margin ?=)))
 
 (add-hook
  'poly-markdown-mode-hook
@@ -845,8 +811,7 @@
    (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
    (local-set-key (kbd "C-c C-h") 'ess-edit-indent-call-sophisticatedly)
    (local-set-key (kbd "C-|")
-                  'ess-indent-region-with-formatR-tidy-source)
-   ))
+                  'ess-indent-region-with-formatR-tidy-source)))
 
 ;;----------------------------------------------------------------------
 
