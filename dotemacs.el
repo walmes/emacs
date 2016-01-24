@@ -122,9 +122,9 @@
 ;;     (eval-buffer)))
 ;; (setq quelpa-upgrade-p nil)
 
-(quelpa 'helm :upgrade nil)
-(quelpa 'company :upgrade nil)
-(quelpa 'eldoc-extension :upgrade nil)
+;; (quelpa 'helm :upgrade nil)
+;; (quelpa 'company :upgrade nil)
+;; (quelpa 'eldoc-extension :upgrade nil)
 
 ;;----------------------------------------------------------------------
 ;; helm.
@@ -179,7 +179,7 @@
 ;; company.
 
 (require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+;; (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay             0.2
       company-minimum-prefix-length  2
       company-require-match          nil
@@ -352,6 +352,10 @@
 (add-hook
  'ess-mode-hook
  '(lambda()
+    ;; (auto-complete-mode -1)
+    ;; (company-mode 1)
+    (company-mode -1)
+    (auto-complete-mode 1)
     (setq ess-indent-with-fancy-comments nil) ;; No indent levels.
     (setq-local comment-add 0)                ;; Single # as default.
     (setq ess-smart-operators t)              ;; Smart comma.
