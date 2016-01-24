@@ -191,6 +191,7 @@
 
 ;; To work the accents on Sony Vaio.
 (require 'iso-transl)
+(require 'eldoc-extension)
 
 ;;----------------------------------------------------------------------
 ;; Solarized color theme.
@@ -282,21 +283,17 @@
       (message "ess-eval-buffer started.")
     (error "ess-eval-buffer canceled!")))
 
-;; http://www.kieranhealy.org/blog/archives/2009/10/12/make-shift-enter-do-a-lot-in-ess/
-(add-hook 'ess-mode-hook
-          '(lambda()
-             (setq comint-scroll-to-bottom-on-input t)
-             (setq comint-scroll-to-bottom-on-output t)
-             (setq comint-move-point-for-output t)
-             (setq ess-smart-operators t)
-             ;; No indent styles.
-             (setq ess-indent-with-fancy-comments nil)
-             ;; No ## as default to comment.
-             (setq-local comment-add 0)
-             ))
+(add-hook
+ 'ess-mode-hook
+ '(lambda()
+    (setq ess-indent-with-fancy-comments nil) ;; No indent levels.
+    (setq-local comment-add 0)                ;; Single # as default.
+    (setq ess-smart-operators t)              ;; Smart comma.
+    (setq comint-scroll-to-bottom-on-input t)
+    (setq comint-scroll-to-bottom-on-output t)
+    (setq comint-move-point-for-output t)))
 
-;; http://permalink.gmane.org/gmane.emacs.ess.general/8419
-;; Script font lock highlight.
+;; Script and console font lock highlight.
 (setq ess-R-font-lock-keywords
       '((ess-R-fl-keyword:modifiers . t)
         (ess-R-fl-keyword:fun-defs . t)
@@ -308,11 +305,8 @@
         (ess-fl-keyword:operators . t)
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
-        (ess-R-fl-keyword:F&T . t)
         ;; (ess-R-fl-keyword:%op% . t)
-        ))
-
-;; Console font lock highlight.
+        (ess-R-fl-keyword:F&T . t)))
 (setq inferior-R-font-lock-keywords
       '((ess-S-fl-keyword:prompt . t)
         (ess-R-fl-keyword:messages . t)
@@ -327,9 +321,8 @@
         (ess-fl-keyword:operators . t)
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
-        (ess-R-fl-keyword:F&T . t)
         ;; (ess-R-fl-keyword:%op% . t)
-        ))
+        (ess-R-fl-keyword:F&T . t)))
 
 ;; Movement across chunks in Rnw files.
 (global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
@@ -337,11 +330,6 @@
 (global-set-key (kbd "C-S-<f7>") 'ess-noweb-next-code-chunk)
 (global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
 (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
-
-;; Movement across chunks in Rmd files.
-(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
-(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
-(global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
 
 ;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
