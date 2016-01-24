@@ -225,10 +225,9 @@
    passed, then it is used instead."
   (interactive)
   (if (blank-line-p)
-      (progn
-        (insert "-")
-        (comment-line-or-region)
-        (delete-char -2))
+      (progn (insert "-")
+             (comment-line-or-region)
+             (delete-char -2))
     nil)
   (if char
       (insert (make-string (- fill-column (current-column)) char))
@@ -238,13 +237,14 @@
   "Insert a commented rule with 43 dashes (-). Useful to divide
    your code in sections."
   (interactive)
-  (insert (make-string 43 ?-))
-  (comment-or-uncomment-region
-   (line-beginning-position)
-   (line-beginning-position 2))
-  (backward-char 44)
-  (delete-char 1)
-  (move-end-of-line nil))
+  (if (blank-line-p)
+      (progn (insert "-")
+             (comment-line-or-region)
+             (delete-char -2))
+    nil)
+  (let ((column-middle (floor (* 0.625 fill-column))))
+    (if (< (current-column) column-middle)
+        (insert (make-string (- column-middle (current-column)) ?-)))))
 
 ;;----------------------------------------------------------------------
 
