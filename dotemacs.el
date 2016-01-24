@@ -413,6 +413,19 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
+(setq ac-auto-start 0
+      ac-delay 0.2
+      ac-quick-help-delay 1.
+      ac-use-fuzzy t
+      ac-fuzzy-enable t
+      ;; use 'complete when auto-complete is disabled
+      tab-always-indent 'complete
+      ac-dwim t)
+
+(setq-default ac-sources '(ac-source-abbrev
+                           ac-source-dictionary
+                           ac-source-words-in-same-mode-buffers))
+
 ;; To activate ESS auto-complete for R.
 (setq ess-use-auto-complete 'script-only)
 
