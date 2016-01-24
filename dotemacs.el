@@ -23,69 +23,43 @@
 ;; Add directory with supplementary configuration files.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-;; Highlight the cursor line.
-(global-hl-line-mode 1)
+(global-hl-line-mode 1)             ;; Highlight the cursor line.
+(visual-line-mode 1)                ;; Screen lines, not logical lines.
+(show-paren-mode 1)                 ;; Highlight matching pairs.
+(delete-selection-mode 1)           ;; Allows delete region.
+(setq column-number-mode t)         ;; Show cursor position.
+(setq auto-save-default nil)        ;; Turn off #autosave#.
+(setq make-backup-files nil)        ;; Turn off backup~.
+(setq comment-empty-lines t)        ;; Comment even in empty lines.
+(setq x-select-enable-clipboard t)  ;; Allow shared transfer area.
+(setq-default indent-tabs-mode nil) ;; Spaces to indent.
+(setq-default fill-column 72)       ;; Column width.
+(setq-default auto-fill-function
+              'do-auto-fill)        ;; Auto break long lines.
 
-;; Allows delete selected text region.
-(delete-selection-mode 1)
-
-;; Cursor position.
-(setq column-number-mode t)
-
-;; Highlight matching pairs.
-(show-paren-mode 1)
-
-;; Auto break line at 72 characters.
-(setq-default fill-column 72)
-
-;; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
-;; (require 'whitespace)
+;; Highlight whitespace.
 (setq whitespace-line-column fill-column)
 (setq whitespace-style
       '(face lines-tail trailing spaces tabs empty))
 (global-whitespace-mode +1)
-
-;; Activate auto-fill-mode to make auto break lines.
-(setq-default auto-fill-function 'do-auto-fill)
-
-;; Screen lines instead of logical lines.
-(visual-line-mode 1)
-
-;; Allow shared transfer area.
-(setq x-select-enable-clipboard t)
-
-;; Comment even in empty lines.
-(setq comment-empty-lines t)
-
-;; Remove white espace at end when save buffer.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; Turn off auto save and auto backup.
-(setq auto-save-default nil) ;; Para o #autosave#.
-(setq make-backup-files nil) ;; Para o backup~.
-
-;; Spaces to indent.
-;; http://xenon.stanford.edu/~manku/dotemacs.html
-(setq-default indent-tabs-mode nil)
-
-;; Font and size.
-(cond
- ((string-equal system-name "brother")
-  (set-default-font "Ubuntu Mono-16"))
- ((string-equal system-name "youngest")
-  (set-default-font "Ubuntu Mono-16"))
- ((string-equal system-name "first")
-  (set-default-font "Ubuntu Mono-14"))
- ((string-equal system-name "class")
-  (set-default-font "Ubuntu Mono-14")))
-
-;; Turn ido-mode on.
-;; http://www.emacswiki.org/InteractivelyDoThings
-(ido-mode t)
 
 ;; Open Emacs without start-up screen.
 (setq inhibit-startup-screen t)
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
+
+;; Font and size.
+(cond ((string-equal system-name "brother")
+       (set-default-font "Ubuntu Mono-16"))
+      ((string-equal system-name "youngest")
+       (set-default-font "Ubuntu Mono-16"))
+      ((string-equal system-name "first")
+       (set-default-font "Ubuntu Mono-14"))
+      ((string-equal system-name "class")
+       (set-default-font "Ubuntu Mono-14")))
+
+;; Turn ido-mode on.
+(ido-mode t)
 
 ;;----------------------------------------------------------------------
 ;; Key bindings.
