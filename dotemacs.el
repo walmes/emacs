@@ -10,11 +10,11 @@
 
 ;; http://www.emacswiki.org/wiki/EmacsNiftyTricks
 ;; “I’ve used Emacs for many years now, but have never reached its
-;;    maximum potential.” – Anon.
+;;    maximum potential.” -- Anon.
 ;;
 ;; http://www.mygooglest.com/fni/dot-emacs.html
 ;; “Show me your ~/.emacs and I will tell
-;;    you who you are.” - Bogdan Maryniuk.
+;;    you who you are.” -- Bogdan Maryniuk.
 
 ;;----------------------------------------------------------------------
 ;; Basic definitions.
@@ -23,79 +23,43 @@
 ;; Add directory with supplementary configuration files.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-;; Highlight the cursor line.
-(global-hl-line-mode 1)
+(global-hl-line-mode 1)             ;; Highlight the cursor line.
+(visual-line-mode 1)                ;; Screen lines, not logical lines.
+(show-paren-mode 1)                 ;; Highlight matching pairs.
+(delete-selection-mode 1)           ;; Allows delete region.
+(setq column-number-mode t)         ;; Show cursor position.
+(setq auto-save-default nil)        ;; Turn off #autosave#.
+(setq make-backup-files nil)        ;; Turn off backup~.
+(setq comment-empty-lines t)        ;; Comment even in empty lines.
+(setq x-select-enable-clipboard t)  ;; Allow shared transfer area.
+(setq-default indent-tabs-mode nil) ;; Spaces to indent.
+(setq-default fill-column 72)       ;; Column width.
+(setq-default auto-fill-function
+              'do-auto-fill)        ;; Auto break long lines.
 
-;; Allows delete selected text region.
-(delete-selection-mode 1)
-
-;; Cursor position.
-(setq column-number-mode t)
-
-;; Highlight matching pairs.
-(show-paren-mode 1)
-
-;; Auto break line at 72 characters.
-(setq-default fill-column 72)
-
-;; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
-;; (require 'whitespace)
+;; Highlight whitespace.
 (setq whitespace-line-column fill-column)
 (setq whitespace-style
       '(face lines-tail trailing spaces tabs empty))
 (global-whitespace-mode +1)
-
-;; Activate auto-fill-mode to make auto break lines.
-(setq-default auto-fill-function 'do-auto-fill)
-
-;; Screen lines instead of logical lines.
-(visual-line-mode 1)
-
-;; Allow shared transfer area.
-(setq x-select-enable-clipboard t)
-
-;; Comment even in empty lines.
-(setq comment-empty-lines t)
-
-;; Remove white espace at end when save buffer.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; Turn off auto save and auto backup.
-(setq auto-save-default nil) ;; Para o #autosave#.
-(setq make-backup-files nil) ;; Para o backup~.
-
-;; Spaces to indent.
-;; http://xenon.stanford.edu/~manku/dotemacs.html
-(setq-default indent-tabs-mode nil)
-
-;; Font and size.
-(cond
- ((string-equal system-name "brother")
-  (set-default-font "Ubuntu Mono-16"))
- ((string-equal system-name "youngest")
-  (set-default-font "Ubuntu Mono-16"))
- ((string-equal system-name "first")
-  (set-default-font "Ubuntu Mono-14"))
- ((string-equal system-name "class")
-  (set-default-font "Ubuntu Mono-14")))
-
-;; Turn ido-mode on.
-;; http://www.emacswiki.org/InteractivelyDoThings
-(ido-mode t)
 
 ;; Open Emacs without start-up screen.
 (setq inhibit-startup-screen t)
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
-;;----------------------------------------------------------------------
-;; Add melpa repository.
-;;----------------------------------------------------------------------
+;; Font and size.
+(cond ((string-equal system-name "brother")
+       (set-default-font "Ubuntu Mono-16"))
+      ((string-equal system-name "youngest")
+       (set-default-font "Ubuntu Mono-16"))
+      ((string-equal system-name "first")
+       (set-default-font "Ubuntu Mono-14"))
+      ((string-equal system-name "class")
+       (set-default-font "Ubuntu Mono-14")))
 
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/") t)
-  (package-initialize))
+;; Turn ido-mode on.
+(ido-mode t)
 
 ;;----------------------------------------------------------------------
 ;; Key bindings.
@@ -132,8 +96,7 @@
 ;; Functions.
 ;;----------------------------------------------------------------------
 
-;; (load "~/.emacs.d/lisp/functions")
-(require 'functions)
+(require 'funcs)
 
 ;; (add-hook 'find-file-hook
 ;;           (lambda ()
@@ -145,20 +108,23 @@
 ;; Extensions.
 ;;----------------------------------------------------------------------
 
-;;----------------------------------------------------------------------
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+  (package-initialize))
 
-;; (package-initialize)
 ;; (if (require 'quelpa nil t)
 ;;     (quelpa-self-upgrade)
 ;;   (with-temp-buffer
 ;;     (url-insert-file-contents
 ;;      "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
 ;;     (eval-buffer)))
+;; (setq quelpa-upgrade-p nil)
 
-(setq quelpa-upgrade-p nil)
-
-(quelpa 'helm :upgrade nil)
-(quelpa 'company :upgrade nil)
+;; (quelpa 'helm :upgrade nil)
+;; (quelpa 'company :upgrade nil)
+;; (quelpa 'eldoc-extension :upgrade nil)
 
 ;;----------------------------------------------------------------------
 ;; helm.
@@ -167,15 +133,18 @@
 (require 'helm)
 (require 'helm-config)
 
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
-
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-z") 'helm-select-action)
 
 (when (executable-find "curl")
   (setq helm-google-suggest-use-curl-p t))
+
+(when (executable-find "ack-grep")
+  (setq helm-grep-default-command
+        "ack-grep -Hn --no-group --no-color %e %p %f"
+        helm-grep-default-recurse-command
+        "ack-grep -H --no-group --no-color %e %p %f"))
 
 (setq helm-split-window-in-side-p           t
       helm-move-to-line-cycle-in-source     t
@@ -191,15 +160,11 @@
       helm-semantic-fuzzy-match             t
       helm-imenu-fuzzy-match                t)
 
-(when (executable-find "ack-grep")
-  (setq helm-grep-default-command
-        "ack-grep -Hn --no-group --no-color %e %p %f"
-        helm-grep-default-recurse-command
-        "ack-grep -H --no-group --no-color %e %p %f"))
-
 (helm-mode 1)
 (helm-autoresize-mode t)
 
+(global-set-key (kbd "C-c h")   'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
 (global-set-key (kbd "M-x")     'helm-M-x)
 (global-set-key (kbd "M-y")     'helm-show-kill-ring)
 (global-set-key (kbd "C-x b")   'helm-mini)
@@ -214,18 +179,18 @@
 ;; company.
 
 (require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay 0.2
-      company-minimum-prefix-length 2
-      company-require-match nil
-      company-dabbrev-ignore-case nil
-      company-dabbrev-downcase nil
-      company-frontends '(company-pseudo-tooltip-frontend))
+;; (add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay             0.2
+      company-minimum-prefix-length  2
+      company-require-match          nil
+      company-dabbrev-ignore-case    nil
+      company-dabbrev-downcase       nil
+      company-frontends              '(company-pseudo-tooltip-frontend))
 
 ;;----------------------------------------------------------------------
 
-;; To work the accents on Sony Vaio.
-(require 'iso-transl)
+(require 'iso-transl) ;; To work the accents on Sony Vaio.
+(require 'eldoc-extension)
 
 ;;----------------------------------------------------------------------
 ;; Solarized color theme.
@@ -234,15 +199,14 @@
 (color-theme-initialize)
 (setq color-theme-is-global t)
 
-(cond
- ((string-equal system-name "brother")
-  (setq solarized-default-background-mode 'dark))
- ((string-equal system-name "youngest")
-  (setq solarized-default-background-mode 'dark))
- ((string-equal system-name "first")
-  (setq solarized-default-background-mode 'light))
- ((string-equal system-name "class")
-  (setq solarized-default-background-mode 'light)))
+(cond ((string-equal system-name "brother")
+       (setq solarized-default-background-mode 'dark))
+      ((string-equal system-name "youngest")
+       (setq solarized-default-background-mode 'dark))
+      ((string-equal system-name "first")
+       (setq solarized-default-background-mode 'light))
+      ((string-equal system-name "class")
+       (setq solarized-default-background-mode 'light)))
 
 (load-theme 'solarized t)
 
@@ -270,13 +234,81 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;;----------------------------------------------------------------------
+;; essh.el - ESS like shell mode. To eval line/regions in Emacs shell.
+
+(require 'essh)
+(add-hook
+ 'sh-mode-hook
+ '(lambda ()
+    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
+    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
+    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
+    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
+    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
+    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
+
+;;----------------------------------------------------------------------
+;; Bookmark-plus.
+
+(setq bookmark-default-file "~/Dropbox/bookmarks"
+      bookmark-save-flag 1)
+
+(require 'bookmark+)
+
+;; Create an autonamed bookmark.
+(global-set-key (kbd "<C-f3>")
+                'bmkp-toggle-autonamed-bookmark-set/delete)
+;; Go to the next bookmark in file.
+(global-set-key (kbd "<f3>")
+                'bmkp-next-bookmark-this-file/buffer-repeat)
+;; Go to the previous bookmark in file.
+(global-set-key (kbd "<f4>")
+                'bmkp-previous-bookmark-this-file/buffer-repeat)
+;; Toggle temporary/permanent bookmark.
+(global-set-key (kbd "<S-f3>")
+                'bmkp-toggle-temporary-bookmark)
+
+;;----------------------------------------------------------------------
+;; Visible bookmarks. Easy movement.
+;; https://marmalade-repo.org/packages/bm
+
+(require 'bm)
+
+;; Customize the colors by using M-x customize-group RET bm RET
+(setq bm-marker 'bm-marker-left)
+(setq bm-highlight-style 'bm-highlight-only-fringe)
+
+(global-set-key (kbd "<C-f2>") 'bm-toggle)
+(global-set-key (kbd "<f2>")   'bm-next)
+(global-set-key (kbd "<S-f2>") 'bm-previous)
+
+;;----------------------------------------------------------------------
+;; Folding code blocks based on indentation.
+;; git clone https://github.com/zenozeng/yafolding.el.git
+
+(require 'yafolding)
+(global-set-key [?\C-{] #'yafolding-hide-parent-element)
+(global-set-key [?\C-}] #'yafolding-toggle-element)
+
+;;----------------------------------------------------------------------
+;; Smart Parenthesis.
+;; https://github.com/Fuco1/smartparens.
+
+(require 'smartparens)
+(require 'smartparens-config)
+(smartparens-global-mode 1)
+
+(sp-pair "\"" nil :unless '(sp-point-after-word-p))
+(sp-pair "'" nil :unless '(sp-point-after-word-p))
+
+;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'"       . markdown-mode))
 
 ;; Org-struct minor mode active in markdown mode.
 (add-hook 'markdown-mode-hook 'turn-on-orgstruct)
@@ -292,17 +324,20 @@
 
 (autoload 'poly-markdown-mode "poly-markdown-mode"
   "Major mode for editing R-Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.Rmd\\'" . poly-markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.Rpres\\'" . poly-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.[Rr]md\\'" . poly-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.Rpres\\'"  . poly-markdown-mode))
+
+;; Movement across chunks in Rmd files.
+(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
+(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/
 
 (require 'ess-site)
-(setq-default ess-dialect "R")
 (require 'ess-eldoc)
-
+(setq-default ess-dialect "R")
 (setq-default inferior-R-args "--no-restore-history --no-save ")
 
 (defadvice ess-eval-buffer (before really-eval-buffer compile activate)
@@ -312,25 +347,23 @@
        (format "Are you sure you want to evaluate the %s buffer?"
                buffer-file-name))
       (message "ess-eval-buffer started.")
-    (error "ess-eval-buffer canceled!")
-    )
-  )
+    (error "ess-eval-buffer canceled!")))
 
-;; http://www.kieranhealy.org/blog/archives/2009/10/12/make-shift-enter-do-a-lot-in-ess/
-(add-hook 'ess-mode-hook
-          '(lambda()
-             (setq comint-scroll-to-bottom-on-input t)
-             (setq comint-scroll-to-bottom-on-output t)
-             (setq comint-move-point-for-output t)
-             (setq ess-smart-operators t)
-             ;; No indent styles.
-             (setq ess-indent-with-fancy-comments nil)
-             ;; No ## as default to comment.
-             (setq-local comment-add 0)
-             ))
+(add-hook
+ 'ess-mode-hook
+ '(lambda()
+    ;; (auto-complete-mode -1)
+    ;; (company-mode 1)
+    (company-mode -1)
+    (auto-complete-mode 1)
+    (setq ess-indent-with-fancy-comments nil) ;; No indent levels.
+    (setq-local comment-add 0)                ;; Single # as default.
+    (setq ess-smart-operators t)              ;; Smart comma.
+    (setq comint-scroll-to-bottom-on-input t)
+    (setq comint-scroll-to-bottom-on-output t)
+    (setq comint-move-point-for-output t)))
 
-;; http://permalink.gmane.org/gmane.emacs.ess.general/8419
-;; Script font lock highlight.
+;; Script and console font lock highlight.
 (setq ess-R-font-lock-keywords
       '((ess-R-fl-keyword:modifiers . t)
         (ess-R-fl-keyword:fun-defs . t)
@@ -342,11 +375,8 @@
         (ess-fl-keyword:operators . t)
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
-        (ess-R-fl-keyword:F&T . t)
         ;; (ess-R-fl-keyword:%op% . t)
-        ))
-
-;; Console font lock highlight.
+        (ess-R-fl-keyword:F&T . t)))
 (setq inferior-R-font-lock-keywords
       '((ess-S-fl-keyword:prompt . t)
         (ess-R-fl-keyword:messages . t)
@@ -361,9 +391,8 @@
         (ess-fl-keyword:operators . t)
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
-        (ess-R-fl-keyword:F&T . t)
         ;; (ess-R-fl-keyword:%op% . t)
-        ))
+        (ess-R-fl-keyword:F&T . t)))
 
 ;; Movement across chunks in Rnw files.
 (global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
@@ -372,138 +401,34 @@
 (global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
 (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
 
-;; Movement across chunks in Rmd files.
-(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
-(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
-(global-set-key (kbd "S-<f9>") 'polymode-insert-new-chunk)
-
-;;----------------------------------------------------------------------
-;; Add highlighting for certain keywords.
-
-;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
-;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
-(make-face 'special-words)
-(set-face-attribute 'special-words nil
-                    :foreground "White"
-                    :background "Firebrick")
-
-(dolist
-    (mode '(fundamental-mode
-            gnus-article-mode
-            lisp-mode
-            org-mode
-            shell-mode
-            sh-mode
-            muse-mode
-            ess-mode
-            polymode-mode
-            markdown-mode
-            latex-mode
-            TeX-mode))
-  (font-lock-add-keywords
-   mode
-   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
-      0 'font-lock-warning-face t)
-     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
-      0 'font-lock-warning-face t)
-     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
-      0 'special-words t))
-   ))
-
 (dolist (mode '(ess-mode-hook lisp-mode-hook))
   (add-hook mode
             '(lambda ()
-               ;; Easy navigation.
-               (global-set-key (kbd "<M-S-up>") 'backward-up-list)
-               (global-set-key (kbd "<M-S-down>") 'down-list)
-               (global-set-key (kbd "<M-right>") 'forward-sexp)
-               (global-set-key (kbd "<M-left>") 'bakward-sexp)
-               (global-set-key (kbd "<M-up>") 'backward-list)
-               (global-set-key (kbd "<M-down>") 'forward-list)
-               )))
-
-;;----------------------------------------------------------------------
-;; To eval line/regions in terminal open in Emacs.
-
-(require 'essh)
-
-;; essh.el - ESS like shell mode.
-(add-hook
- 'sh-mode-hook
- '(lambda ()
-    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
-    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
-    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
-    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
-    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
-    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
-
-;;----------------------------------------------------------------------
-;; Bookmark-plus.
-
-(setq
- bookmark-default-file "~/Dropbox/bookmarks"
- bookmark-save-flag 1)
-
-(require 'bookmark+)
-
-;; Create an autonamed bookmark.
-(global-set-key
- (kbd "<C-f3>") 'bmkp-toggle-autonamed-bookmark-set/delete)
-;; Go to the next bookmark in file.
-(global-set-key
- (kbd "<f3>") 'bmkp-next-bookmark-this-file/buffer-repeat)
-;; Go to the previous bookmark in file.
-(global-set-key
- (kbd "<f4>") 'bmkp-previous-bookmark-this-file/buffer-repeat)
-;; Toggle temporary/permanent bookmark.
-(global-set-key
- (kbd "<S-f3>") 'bmkp-toggle-temporary-bookmark)
-
-;;----------------------------------------------------------------------
-;; Visible bookmarks. Easy movement.
-;; https://marmalade-repo.org/packages/bm
-
-(require 'bm)
-
-;; http://emacsworld.blogspot.com.br/2008/09/visual-bookmarks-package-for-emacs.html
-;; Customize the colors by using M-x customize-group RET bm RET
-(setq bm-marker 'bm-marker-left)
-(setq bm-highlight-style 'bm-highlight-only-fringe)
-
-(global-set-key (kbd "<C-f2>") 'bm-toggle)
-(global-set-key (kbd "<f2>") 'bm-next)
-(global-set-key (kbd "<S-f2>") 'bm-previous)
-
-;;----------------------------------------------------------------------
-;; Folding code blocks based on indentation.
-;; git clone https://github.com/zenozeng/yafolding.el.git
-
-(require 'yafolding)
-
-(global-set-key [?\C-{] #'yafolding-hide-parent-element)
-(global-set-key [?\C-}] #'yafolding-toggle-element)
-
-;;----------------------------------------------------------------------
-;; Start yasnippet with emacs.
-;; http://barisyuksel.com/cppmode/.emacs
-;; https://www.youtube.com/watch?v=HTUE03LnaXA
-
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
-
-;; ;;----------------------------------------------------------------------
-;; ;; R snippets.
-;; ;; https://github.com/mlf176f2/r-autoyas.el
-;;
-;; (require 'r-autoyas)
-;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
+               (global-set-key (kbd "<M-right>")  'forward-sexp)
+               (global-set-key (kbd "<M-left>")   'bakward-sexp)
+               (global-set-key (kbd "<M-down>")   'forward-list)
+               (global-set-key (kbd "<M-up>")     'backward-list)
+               (global-set-key (kbd "<M-S-up>")   'backward-up-list)
+               (global-set-key (kbd "<M-S-down>") 'down-list))))
 
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
 
 (require 'auto-complete-config)
 (ac-config-default)
+
+(setq ac-auto-start 0
+      ac-delay 0.2
+      ac-quick-help-delay 1.
+      ac-use-fuzzy t
+      ac-fuzzy-enable t
+      ;; use 'complete when auto-complete is disabled
+      tab-always-indent 'complete
+      ac-dwim t)
+
+(setq-default ac-sources '(ac-source-abbrev
+                           ac-source-dictionary
+                           ac-source-words-in-same-mode-buffers))
 
 ;; To activate ESS auto-complete for R.
 (setq ess-use-auto-complete 'script-only)
@@ -513,22 +438,26 @@
 (define-key ac-completing-map "\t" 'ac-complete)
 
 ;;----------------------------------------------------------------------
-;; Smart Parenthesis.
-;; https://github.com/Fuco1/smartparens.
-
-(require 'smartparens)
-(require 'smartparens-config)
-(smartparens-global-mode 1)
-
-(sp-pair "\"" nil :unless '(sp-point-after-word-p))
-(sp-pair "'" nil :unless '(sp-point-after-word-p))
-
-;;----------------------------------------------------------------------
 ;; Smart operators with electric spacing.
 ;; https://github.com/walmes/electric-spacing (fork).
 
 (require 'electric-spacing)
 (add-hook 'ess-mode-hook #'electric-spacing-mode)
+
+;;----------------------------------------------------------------------
+;; Start yasnippet with emacs.
+;; http://barisyuksel.com/cppmode/.emacs
+;; https://www.youtube.com/watch?v=HTUE03LnaXA
+
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
+
+;;----------------------------------------------------------------------
+;; R snippets.
+;; https://github.com/mlf176f2/r-autoyas.el
+
+;; (require 'r-autoyas)
+;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
 
 ;;----------------------------------------------------------------------
 ;; Latex extensions.
@@ -560,11 +489,34 @@
 
 ;; Babel.
 (org-babel-do-load-languages 'org-babel-load-languages
-                             '((R . t)
-                               (emacs-lisp . t)
-                               (sh . t)
-                               (python . t)))
+                             '((emacs-lisp . t)
+                               (R . t)
+                               (sh . t)))
 (setq org-confirm-babel-evaluate nil)
+
+;;----------------------------------------------------------------------
+;; Add highlighting for certain keywords.
+
+;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
+;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
+(make-face 'special-words)
+(set-face-attribute 'special-words nil
+                    :foreground "White"
+                    :background "Firebrick")
+
+(dolist
+    (mode '(fundamental-mode lisp-mode org-mode shell-mode
+            sh-mode ess-mode polymode-mode markdown-mode
+            latex-mode TeX-mode))
+  (font-lock-add-keywords
+   mode
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
+      0 'font-lock-warning-face t)
+     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
+      0 'font-lock-warning-face t)
+     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
+      0 'special-words t))
+   ))
 
 ;;----------------------------------------------------------------------
 ;; Check for packages.

@@ -141,7 +141,7 @@ function moveemacsfiles {
             y )
                 cd $HOME/GitLab/emacs/
                 cp -v dotemacs.el ~/.emacs
-                cp -v functions.el ~/.emacs.d/lisp/
+                cp -v funcs.el ~/.emacs.d/lisp/
                 cp -v prelude-packages.el ~/.emacs.d/lisp/
                 echo; echo
                 ;;
