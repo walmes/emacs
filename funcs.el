@@ -435,6 +435,14 @@
   (re-search-forward "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
   (forward-char -1))
 
+(defun string-face-p ()
+  "Return t if font-face at point is string-face, nil otherwise."
+  (eq 'font-lock-string-face (get-char-property (point) 'face)))
+
+(defun comment-face-p ()
+  "Return t if font-face at point is comment-face, nil otherwise."
+  (eq 'font-lock-comment-face (get-char-property (point) 'face)))
+
 (defun wz-ess-break-or-join-lines-wizard ()
   "Break line wizard in R scripts. This function helps break and indent
    or join lines in R code. The keybings are:
