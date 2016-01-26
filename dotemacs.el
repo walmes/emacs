@@ -515,9 +515,10 @@
                     :background "Firebrick")
 
 (dolist
-    (mode '(fundamental-mode lisp-mode org-mode shell-mode
-            sh-mode ess-mode polymode-mode markdown-mode
-            latex-mode TeX-mode))
+    (mode '(fundamental-mode emacs-lisp-mode lisp-mode org-mode
+            shell-mode sh-mode ess-mode polymode-mode
+            markdown-mode latex-mode TeX-mode))
+  (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
    '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
