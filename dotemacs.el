@@ -302,6 +302,16 @@
 (sp-pair "'" nil :unless '(sp-point-after-word-p))
 
 ;;----------------------------------------------------------------------
+;; Expand Region.
+;; https://github.com/magnars/expand-region.el
+
+(when (not (package-installed-p 'expand-region))
+  (package-install 'expand-region))
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
