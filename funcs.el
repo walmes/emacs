@@ -438,11 +438,15 @@
 (defun wz-ess-break-or-join-lines-wizard ()
   "Break line wizard in R scripts. This function helps break and indent
    or join lines in R code. The keybings are:
-   <right> : go to next matching;
-   <left>  : go to previous matching;
-   <return>: break and indent newline;
-   <delete>: join lines;
-   <any>   : unhighlight and exit."
+   <right>    : go to next matching;
+   <left>     : go to previous matching;
+   <down>     : go to next line;
+   <up>       : go to previous line;
+   <return>   : break and indent newline;
+   <delete>   : join line below;
+   <backspace>: join line above;
+   <C-z>      : undo;
+   <any>      : unhighlight and exit."
   (interactive)
   (setq rgxp "\\([-+*/%<>(,]\\|[<>=!]=\\) *[[:alnum:]({]")
   (highlight-regexp rgxp)
@@ -467,6 +471,16 @@
                       (delete-indentation)
                       (re-search-backward rgxp)
                       (forward-char 1)))
+              ((eq event 'backspace)
+               (progn (delete-indentation)
+                      (re-search-backward rgxp)
+                      (forward-char 1)))
+              ((eq event 'down)
+               (next-line))
+              ((eq event 'up)
+               (previous-line))
+              ((eq event ?\C-z)
+               (undo))
               ((eq event 'escape)
                (setq done t))
               (t
