@@ -130,8 +130,12 @@
 ;; helm.
 ;; http://tuhdo.github.io/helm-intro.html
 
+(when (not (package-installed-p 'helm))
+  (package-install 'helm))
+
 (require 'helm)
 (require 'helm-config)
+;; (require 'helm-R)
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
@@ -178,6 +182,9 @@
 ;;----------------------------------------------------------------------
 ;; company.
 
+(when (not (package-installed-p 'company))
+  (package-install 'company))
+
 (require 'company)
 ;; (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay             0.2
@@ -190,6 +197,9 @@
 ;;----------------------------------------------------------------------
 
 (require 'iso-transl) ;; To work the accents on Sony Vaio.
+
+(when (not (package-installed-p 'eldoc-extension))
+  (package-install 'eldoc-extension))
 (require 'eldoc-extension)
 
 ;;----------------------------------------------------------------------
