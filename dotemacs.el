@@ -40,7 +40,7 @@
 ;; Highlight whitespace.
 (setq whitespace-line-column fill-column)
 (setq whitespace-style
-      '(face lines-tail trailing spaces tabs empty))
+      '(face lines-tail trailing tabs empty))
 (global-whitespace-mode +1)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -209,33 +209,38 @@
 (color-theme-initialize)
 (setq color-theme-is-global t)
 
-(cond ((string-equal system-name "brother")
-       (setq solarized-default-background-mode 'dark))
-      ((string-equal system-name "youngest")
-       (setq solarized-default-background-mode 'dark))
-      ((string-equal system-name "first")
-       (setq solarized-default-background-mode 'light))
-      ((string-equal system-name "class")
-       (setq solarized-default-background-mode 'light)))
-
-(load-theme 'solarized t)
-
-(add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (set-background-mode
-             frame
-             solarized-default-background-mode)))
-
-(set-background-mode nil solarized-default-background-mode)
+;; (cond ((string-equal system-name "brother")
+;;        (setq solarized-default-background-mode 'dark))
+;;       ((string-equal system-name "youngest")
+;;        (setq solarized-default-background-mode 'dark))
+;;       ((string-equal system-name "first")
+;;        (setq solarized-default-background-mode 'light))
+;;       ((string-equal system-name "class")
+;;        (setq solarized-default-background-mode 'light)))
+;;
+;; (load-theme 'solarized t)
+;;
+;; (add-hook 'after-make-frame-functions
+;;           (lambda (frame)
+;;             (set-background-mode
+;;              frame
+;;              solarized-default-background-mode)))
+;;
+;; (set-background-mode nil solarized-default-background-mode)
 
 ;; Install spacemacs-theme by melpa.
 ;; https://github.com/nashamri/spacemacs-theme
+;; (when (not (package-installed-p 'spacemacs-theme))
+;;   (package-install 'spacemacs-theme))
 ;; (load-theme 'spacemacs-dark t)
 ;; (load-theme 'spacemacs-light t)
-;; (custom-set-variables '(spacemacs-theme-custom-colors
-;;                         '((act1 . "#ff0000")
-;;                           (act2 . "#0000ff")
-;;                           (base . "#ffffff"))))
+
+;; https://emacsthemes.com/
+(when (not (package-installed-p 'gotham-theme))
+  (package-install 'gotham-theme))
+(load-theme 'gotham t)
+(custom-set-faces
+ '(font-lock-comment-face ((t (:foreground "#245361" :slant italic)))))
 
 ;;----------------------------------------------------------------------
 ;; Magit.
