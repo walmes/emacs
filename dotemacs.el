@@ -524,10 +524,14 @@
 
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
 ;; http://emacs.1067599.n5.nabble.com/Adding-keywords-for-font-lock-experts-td95645.html
-(make-face 'special-words)
-(set-face-attribute 'special-words nil
+(make-face 'bad-words)
+(set-face-attribute 'bad-words nil
                     :foreground "White"
                     :background "Firebrick")
+(make-face 'good-words)
+(set-face-attribute 'good-words nil
+                    :foreground "LightSeaGreen"
+                    :background "White")
 
 (dolist
     (mode '(fundamental-mode emacs-lisp-mode lisp-mode org-mode
@@ -536,12 +540,14 @@
   (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
-   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|DONE\\|STOP\\)"
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\)"
       0 'font-lock-warning-face t)
      ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
       0 'font-lock-warning-face t)
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
-      0 'special-words t))
+      0 'bad-words t)
+     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\)"
+      0 'good-words t))
    ))
 
 ;;----------------------------------------------------------------------
