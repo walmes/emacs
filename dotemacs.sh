@@ -139,7 +139,7 @@ function moveemacsfiles {
         read opcao
         case $opcao in
             y )
-                cd $HOME/GitLab/emacs/
+                cd $HOME/repos/emacs/
                 cp -v dotemacs.el ~/.emacs
                 cp -v funcs.el ~/.emacs.d/lisp/
                 cp -v prelude-packages.el ~/.emacs.d/lisp/
