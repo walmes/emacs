@@ -205,6 +205,12 @@
 ;;----------------------------------------------------------------------
 ;; Solarized color theme.
 
+(when (not (package-installed-p 'color-theme))
+  (package-install 'color-theme))
+
+(when (not (package-installed-p 'color-theme-solarized))
+  (package-install 'color-theme-solarized))
+
 (require 'color-theme)
 (color-theme-initialize)
 (setq color-theme-is-global t)
@@ -245,6 +251,9 @@
 ;;----------------------------------------------------------------------
 ;; Magit.
 
+(when (not (package-installed-p 'magit))
+  (package-install 'magit))
+
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -268,6 +277,9 @@
 (setq bookmark-default-file "~/Dropbox/bookmarks"
       bookmark-save-flag 1)
 
+(when (not (package-installed-p 'bookmark+))
+  (package-install 'bookmark+))
+
 (require 'bookmark+)
 
 ;; Create an autonamed bookmark.
@@ -287,6 +299,9 @@
 ;; Visible bookmarks. Easy movement.
 ;; https://marmalade-repo.org/packages/bm
 
+(when (not (package-installed-p 'bm))
+  (package-install 'bm))
+
 (require 'bm)
 
 ;; Customize the colors by using M-x customize-group RET bm RET
@@ -301,6 +316,9 @@
 ;; Folding code blocks based on indentation.
 ;; git clone https://github.com/zenozeng/yafolding.el.git
 
+(when (not (package-installed-p 'yafolding))
+  (package-install 'yafolding))
+
 (require 'yafolding)
 (global-set-key [?\C-{] #'yafolding-hide-parent-element)
 (global-set-key [?\C-}] #'yafolding-toggle-element)
@@ -308,6 +326,9 @@
 ;;----------------------------------------------------------------------
 ;; Smart Parenthesis.
 ;; https://github.com/Fuco1/smartparens.
+
+(when (not (package-installed-p 'smartparens))
+  (package-install 'smartparens))
 
 (require 'smartparens)
 (require 'smartparens-config)
@@ -330,6 +351,9 @@
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
+(when (not (package-installed-p 'markdown-mode))
+  (package-install 'markdown-mode))
+
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
@@ -342,6 +366,9 @@
 ;;----------------------------------------------------------------------
 ;; R+MarkDown extensions (emacs >= 24.3.1).
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
+
+(when (not (package-installed-p 'polymode))
+  (package-install 'polymode))
 
 (require 'poly-R)
 (require 'poly-markdown)
@@ -359,6 +386,9 @@
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/
+
+(when (not (package-installed-p 'ess))
+  (package-install 'ess))
 
 (require 'ess-site)
 (require 'ess-eldoc)
@@ -439,6 +469,9 @@
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
 
+(when (not (package-installed-p 'auto-complete))
+  (package-install 'auto-complete))
+
 (require 'auto-complete-config)
 (ac-config-default)
 
@@ -507,6 +540,7 @@
 (setq org-src-fontify-natively t)
 
 ;; http://orgmode.org/worg/org-dependencies.html
+
 (require 'ox-latex)
 (setq org-latex-listings t)
 (add-to-list 'org-latex-packages-alist '("" "listings"))
