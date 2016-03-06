@@ -153,7 +153,7 @@ function moveemacsfiles {
         echo ------------------------------------------------------------
         echo "~/.emacs file not found."
         echo "It will be created."
-        cd $HOME/GitLab/emacs/
+        cd $HOME/repos/emacs/
         cp -v dotemacs.el ~/.emacs
         cp -v functions.el ~/.emacs.d/lisp/
         cp -v prelude-packages.el ~/.emacs.d/lisp/
