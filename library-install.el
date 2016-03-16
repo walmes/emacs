@@ -40,10 +40,21 @@
 (package-install 'polymode)
 (package-install 'smartparens)
 (package-install 'yafolding)
-;(package-install 'async)
-;(package-install 'ctable)
-;(package-install 'dash)
-;(package-install 'git-commit)
-;(package-install 'julia-mode)
-;(package-install 'popup)
-;(package-install 'with-editor)
+;; (package-install 'async)
+;; (package-install 'ctable)
+;; (package-install 'dash)
+;; (package-install 'git-commit)
+;; (package-install 'julia-mode)
+;; (package-install 'popup)
+;; (package-install 'with-editor)
+
+;; Forked electric-spacing.el.
+(shell-command-to-string
+ (concat "cd ../ &&"
+         "git clone git@github.com:walmes/electric-spacing.git"))
+
+(shell-command-to-string
+ (concat
+  "cd ../electric-spacing &&"
+  "git checkout restart &&"
+  "cp -v ess-electric-spacing.el ~/.emacs.d/lisp/electric-spacing.el"))
