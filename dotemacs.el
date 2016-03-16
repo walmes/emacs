@@ -51,6 +51,8 @@
 ;; Font and size.
 (cond ((string-equal system-name "brother")
        (set-default-font "Ubuntu Mono-16"))
+      ((string-equal system-name "ulisses")
+       (set-default-font "Ubuntu Mono-16"))
       ((string-equal system-name "youngest")
        (set-default-font "Ubuntu Mono-16"))
       ((string-equal system-name "first")
@@ -216,6 +218,8 @@
 (setq color-theme-is-global t)
 
 (cond ((string-equal system-name "brother")
+       (setq solarized-default-background-mode 'dark))
+      ((string-equal system-name "ulisses")
        (setq solarized-default-background-mode 'dark))
       ((string-equal system-name "youngest")
        (setq solarized-default-background-mode 'dark))
