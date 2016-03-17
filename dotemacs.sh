@@ -4,13 +4,13 @@
 # Welcome message.
 
 cat << EOF
---------------------------------------------------------------------------
+------------------------------------------------------------------------
 
   This will guide you to install Emacs 24.5, his friends and additional
   files to have, at least, a small part of the all power that Emacs
   has. Press ENTER to continue.
 
---------------------------------------------------------------------------
+------------------------------------------------------------------------
 EOF
 
 #----------------------------------------------------------------------
@@ -139,7 +139,7 @@ function moveemacsfiles {
         read opcao
         case $opcao in
             y )
-                cd $HOME/GitLab/emacs/
+                cd $HOME/repos/emacs/
                 cp -v dotemacs.el ~/.emacs
                 cp -v funcs.el ~/.emacs.d/lisp/
                 cp -v prelude-packages.el ~/.emacs.d/lisp/
@@ -153,7 +153,7 @@ function moveemacsfiles {
         echo ------------------------------------------------------------
         echo "~/.emacs file not found."
         echo "It will be created."
-        cd $HOME/GitLab/emacs/
+        cd $HOME/repos/emacs/
         cp -v dotemacs.el ~/.emacs
         cp -v functions.el ~/.emacs.d/lisp/
         cp -v prelude-packages.el ~/.emacs.d/lisp/
