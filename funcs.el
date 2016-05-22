@@ -560,6 +560,34 @@
     (insert string)
     (delete-backward-char 2)))
 
+(defun wz-ess-stringi-escape-unicode (beg end)
+  "Replace non-ASCII by the corresponding unicode. Select the text
+   without the quotes and apply the function. By Walmes Zeviani."
+  (interactive "r")
+  (let ((string
+         (replace-regexp-in-string
+          "\"" "\\\\\\&"
+          (replace-regexp-in-string
+           "\\\\\"" "\\\\\\&"
+           (buffer-substring-no-properties beg end))))
+	(buf (get-buffer-create "*ess-command-output*")))
+    (ess-force-buffer-current "Process to load into:")
+    (ess-command
+     (format
+      "local({
+          cat(stringi::stri_escape_unicode(\"%s\"),
+             \"\\n\") })\n"
+      string) buf)
+    (with-current-buffer buf
+      (goto-char (point-max))
+      (let ((end (point)))
+	(goto-char (point-min))
+        (skip-chars-forward " +")
+	(setq string (buffer-substring-no-properties (point) end))))
+    (delete-region beg end)
+    (insert string)
+    (delete-backward-char 2)))
+
 ;;----------------------------------------------------------------------
 ;; Improved version of occur. Quick navigation.
 ;; http://ignaciopp.wordpress.com/2009/06/10/customizing-emacs-occur/
@@ -854,7 +882,9 @@
    (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
    (local-set-key (kbd "C-c C-h") 'ess-edit-indent-call-sophisticatedly)
    (local-set-key (kbd "C-|")
-                  'ess-indent-region-with-formatR-tidy-source)))
+                  'ess-indent-region-with-formatR-tidy-source)
+   (local-set-key (kbd "C-?")
+                  'wz-ess-stringi-escape-unicode)))
 
 ;;----------------------------------------------------------------------
 

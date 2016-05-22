@@ -538,6 +538,7 @@
 ;; http://emacswiki.org/emacs/OrgMode#toc7
 (setq org-replace-disputed-keys t)
 (setq org-return-follows-link t)
+(setq org-descriptive-links nil)
 
 ;; Fontify code in code blocks.
 ;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
