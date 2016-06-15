@@ -558,7 +558,7 @@
 	(setq string (buffer-substring-no-properties (point) end))))
     (delete-region beg end)
     (insert string)
-    (delete-backward-char 2)))
+    (delete-backward-char 0)))
 
 (defun wz-ess-stringi-escape-unicode (beg end)
   "Replace non-ASCII by the corresponding unicode. Select the text
