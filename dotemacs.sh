@@ -35,22 +35,8 @@ function installemacs24.5 {
             echo "Running \"apt-get build-dep emacs24\""
             sudo apt-get build-dep emacs24 -y
             echo
-            echo "Running \"apt-get build-dep emacs24\""
-            sudo apt-get install emacs24 -y
-            echo; echo
-            ;;
-        * )
-            echo "Skipped."; echo; echo
-            ;;
-    esac
-
-    echo ------------------------------------------------------------
-    echo "Install emacs-goodies-el? [y]es/[n]o"
-    read opcao
-    case $opcao in
-        y )
-            echo "Install Emacs' friends."
-            sudo apt-get install emacs-goodies-el -y
+            echo "Running \"apt-get build-dep emacs24 emacs-goodies-el\""
+            sudo apt-get install emacs24 emacs-goodies-el -y
             echo; echo
             ;;
         * )
@@ -101,7 +87,7 @@ function moveemacsfiles {
         echo "It will be created."
         cd $HOME/repos/emacs/
         cp -v dotemacs.el ~/.emacs
-        cp -v functions.el ~/.emacs.d/lisp/
+        cp -v funcs.el ~/.emacs.d/lisp/
         echo; echo
     fi
 }
@@ -179,16 +165,6 @@ function moveelectricspacing {
 }
 
 #----------------------------------------------------------------------
-# Configure remotes.
-
-function confremotes {
-    git remote rm origin
-    git remote add origin git@github.com:walmes/emacs.git
-    git remote set-url origin --add git@gitlab.c3sl.ufpr.br:walmes/emacs.git
-    git remote -v
-}
-
-#----------------------------------------------------------------------
 # Cicle among options.
 
 while :
@@ -197,21 +173,19 @@ do
     printf "  1. Install GNU Emacs 24.5.1\n"
     printf "  2. Move .emacs and .emacs.d/.\n"
     printf "  3. Download and move essh.el.\n"
-    printf "  4. Configure remotes.\n"
+    printf "  4. Move electric-spacing.el.\n"
     printf "  5. Open files with meld.\n"
-    printf "  6. Move electric-spacing.el.\n"
     printf "  q. Quit.\n\n"
 
-    read -sn1 -p "Select (1,2,3,4,5,6,q): " input
+    read -sn1 -p "Select (1, 2, 3, 4, 5, q): " input
     echo
 
     case $input in
         1) installemacs24.5 ;;
         2) moveemacsfiles ;;
         3) downloadessh ;;
-        4) confremotes ;;
+        4) moveelectricspacing ;;
         5) meld dotemacs.el ~/.emacs ;;
-        6) moveelectricspacing ;;
         q) break ;;
         *) echo "Invalid seletion" ;;
     esac
@@ -224,7 +198,7 @@ cat << EOF
 
 ------------------------------------------------------------------------
 
-  You have finished the installation of Emacs. Congratulations!
+  You have finished the customization of Emacs. Congratulations!
 
 ------------------------------------------------------------------------
 EOF
