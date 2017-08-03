@@ -129,7 +129,6 @@ function downloadessh {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/essh.el file not found."
         echo "It will be created."
-        cd $HOME/.emacs.d/lisp/
         wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
         echo; echo
     fi

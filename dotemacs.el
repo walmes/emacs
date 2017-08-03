@@ -1,11 +1,11 @@
 ;;======================================================================
-;; Configuration file to Emacs (>=24.3.1) by Walmes Zeviani.
+;; Configuration file to Emacs (>=24.5.1) by Walmes Zeviani.
 ;;
-;; This file is hosted at https://github.com/walmes/emacs2.
+;; This file is hosted at https://github.com/walmes/emacs.
 ;;
 ;; Almost all the content available here was obtained/inspired by
 ;; queries on the internet. Please, send questions, problems and/or
-;; suggestions as an issue on GitHub directory of this file.
+;; suggestions as an issue on GitHub project of this file.
 ;;======================================================================
 
 ;; http://www.emacswiki.org/wiki/EmacsNiftyTricks
@@ -237,20 +237,6 @@
              solarized-default-background-mode)))
 
 (set-background-mode nil solarized-default-background-mode)
-
-;; Install spacemacs-theme by melpa.
-;; https://github.com/nashamri/spacemacs-theme
-;; (when (not (package-installed-p 'spacemacs-theme))
-;;   (package-install 'spacemacs-theme))
-;; (load-theme 'spacemacs-dark t)
-;; (load-theme 'spacemacs-light t)
-
-;; https://emacsthemes.com/
-;; (when (not (package-installed-p 'gotham-theme))
-;;   (package-install 'gotham-theme))
-;; (load-theme 'gotham t)
-;; (custom-set-faces
-;;  '(font-lock-comment-face ((t (:foreground "#245361" :slant italic)))))
 
 ;;----------------------------------------------------------------------
 ;; Magit.
