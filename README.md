@@ -53,20 +53,20 @@ configurations files. The `dotemacs.el` file must be renamed to
 `funcs.el` contains function and key bindings definitions.  It is loaded
 by the `.emacs` file.
 
-The `dotemacs.sh` is a bash file that do almost all the setup I need:
+The `setup.sh` is a bash file that do almost all the setup I need:
 install Emacs and his friends, clone repositories, move files to the
 right directories and so on.
 
 ```bash
-# Download of dotemacs.sh.
+# Download of setup.sh.
 cd ~/Downloads/
-wget https://raw.githubusercontent.com/walmes/emacs2/master/dotemacs.sh
+wget https://raw.githubusercontent.com/walmes/emacs/master/setup.sh
 
 # Give executable permission.
-chmod +x dotemacs.sh
+chmod +x setup.sh
 
 # Execute it.
-./dotemacs.sh
+./setup.sh
 ```
 
 The file `install-packages.el` should be executed in the emacs batch
