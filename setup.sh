@@ -49,7 +49,7 @@ function installemacs24.5 {
     read opcao
     case $opcao in
         y )
-            echo "Install Emacs' friends."
+            echo "Installing emacs-goodies-el (a set of useful packages)."
             sudo apt-get install emacs-goodies-el -y
             echo; echo
             ;;
@@ -119,8 +119,7 @@ function downloadessh {
         read opcao
         case $opcao in
             y )
-                cd $HOME/.emacs.d/lisp/
-                wget -N 'http://www.emacswiki.org/emacs/download/essh.el'
+                wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
                 ;;
             * )
                 echo "Skipped."; echo; echo
@@ -131,7 +130,7 @@ function downloadessh {
         echo "~/.emacs.d/lisp/essh.el file not found."
         echo "It will be created."
         cd $HOME/.emacs.d/lisp/
-        wget -N 'http://www.emacswiki.org/emacs/download/essh.el'
+        wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
         echo; echo
     fi
 }
