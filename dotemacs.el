@@ -545,6 +545,37 @@
 (setq org-confirm-babel-evaluate nil)
 
 ;;----------------------------------------------------------------------
+;; Python configuration.
+
+;; Install first: M-x package-list-packages C-s elpy.
+(elpy-enable)
+
+;; use flycheck not flymake with elpy
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; enable autopep8 formatting on save
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+(custom-set-variables
+ '(python-shell-interpreter "python3"))
+(custom-set-faces)
+
+;;Corrigindo alguns bugs do Elpy
+;;(define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
+;;(define-key global-map (kbd "C-c o") 'iedit-mode)
+;; Adicionando o jedi mode, ajuda com o autocomplete
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+;; ;;Python3 console, C-c C-p para abrir o console
+;; (defcustom python-shell-interpreter "python3"
+;;   "Default Python interpreter for shell."
+;;   :type 'string
+;;   :group 'python)
+
+;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
 
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt
