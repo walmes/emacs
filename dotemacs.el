@@ -551,29 +551,37 @@
 (elpy-enable)
 
 ;; use flycheck not flymake with elpy
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 ;; enable autopep8 formatting on save
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-(custom-set-variables
- '(python-shell-interpreter "python3"))
-(custom-set-faces)
+;; (require 'py-autopep8)
+;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-;;Corrigindo alguns bugs do Elpy
-;;(define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
-;;(define-key global-map (kbd "C-c o") 'iedit-mode)
+;; ATTENTION: this uses que Anaconda Python shell installed in the user HOME.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+;; '(package-selected-packages
+;;   (quote
+;;    (virtualenv jedi py-autopep8 multiple-cursors material-theme flycheck elpy ein better-defaults)))
+ '(python-shell-interpreter "~/anaconda/bin/python3"))
+
+;; Corrigindo alguns bugs do Elpy
+;; (define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
+;; (define-key global-map (kbd "C-c o") 'iedit-mode)
 ;; Adicionando o jedi mode, ajuda com o autocomplete
-(add-hook 'python-mode-hook 'jedi:setup)
+;; (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
-;; ;;Python3 console, C-c C-p para abrir o console
-;; (defcustom python-shell-interpreter "python3"
-;;   "Default Python interpreter for shell."
-;;   :type 'string
-;;   :group 'python)
+;; Python3 console, C-c C-p para abrir o console
+(defcustom python-shell-interpreter "python3"
+  "Default Python interpreter for shell."
+  :type 'string
+  :group 'python)
 
 ;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
