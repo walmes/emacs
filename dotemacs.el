@@ -559,7 +559,6 @@
 ;; (require 'py-autopep8)
 ;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-;; ATTENTION: this uses que Anaconda Python shell installed in the user HOME.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -568,7 +567,11 @@
 ;; '(package-selected-packages
 ;;   (quote
 ;;    (virtualenv jedi py-autopep8 multiple-cursors material-theme flycheck elpy ein better-defaults)))
- '(python-shell-interpreter "~/anaconda/bin/python3"))
+ ;; This uses que Anaconda Python shell installed in the user HOME.
+ ;; '(python-shell-interpreter "~/anaconda/bin/python3")
+ ;; This uses the Python 3 of the SO.
+ '(python-shell-interpreter "/usr/bin/python3")
+ )
 
 ;; Corrigindo alguns bugs do Elpy
 ;; (define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
