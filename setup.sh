@@ -14,13 +14,16 @@ cat << EOF
 EOF
 
 #----------------------------------------------------------------------
-# Install Emacs-24.5.
+# Install Emacs.
 
-function installemacs24.5 {
+# TODO TODO
+# git clone https://github.com/emacsmirror/bookmark-plus.git ~/.emacs.d/elpa/bookmark+
 
-    if which emacs24 >/dev/null
+function installemacs {
+
+    if which emacs >/dev/null
     then
-        MSG="$(emacs24 --version | head -n 1) is installed. Do you want reinstall it? [y]es/[n]o"
+        MSG="$(emacs --version | head -n 1) is installed. Do you want reinstall it? [y]es/[n]o"
         echo; echo
     else
         MSG="Emacs 24 isn't installed. Do you want install it? [y]es/[n]o"
@@ -32,11 +35,11 @@ function installemacs24.5 {
     read opcao
     case $opcao in
         y )
-            echo "Running \"apt-get build-dep emacs24\""
-            sudo apt-get build-dep emacs24 -y
+            echo "Running \"apt-get build-dep emacs\""
+            sudo apt-get build-dep emacs -y
             echo
-            echo "Running \"apt-get build-dep emacs24\""
-            sudo apt-get install emacs24 -y
+            echo "Running \"apt-get build-dep emacs\""
+            sudo apt-get install emacs -y
             echo; echo
             ;;
         * )
@@ -77,17 +80,17 @@ function moveemacsfiles {
         echo; echo
     fi
 
-    dotemacs="$HOME/.emacs"
+    dotemacs="$HOME/.emacs.d/init.el"
     if [ -f "$dotemacs" ]
     then
         echo ------------------------------------------------------------
-        echo "~/.emacs file found."
+        echo "~/.emacs.d/init.el file found."
         echo "Do you want replace it? [y]es/[q]uit"
         read opcao
         case $opcao in
             y )
-                cd $HOME/repos/emacs/
-                cp -v dotemacs.el ~/.emacs
+                cd $HOME/Projects/emacs/
+                cp -v init.el ~/.emacs.d/init.el
                 cp -v funcs.el ~/.emacs.d/lisp/
                 echo; echo
                 ;;
@@ -97,10 +100,10 @@ function moveemacsfiles {
         esac
     else
         echo ------------------------------------------------------------
-        echo "~/.emacs file not found."
+        echo "~/.emacs.d/init.el file not found."
         echo "It will be created."
-        cd $HOME/repos/emacs/
-        cp -v dotemacs.el ~/.emacs
+        cd $HOME/Projects/emacs/
+        cp -v init.el ~/.emacs.d/init.el
         cp -v functions.el ~/.emacs.d/lisp/
         echo; echo
     fi
@@ -138,22 +141,22 @@ function downloadessh {
 # Electric-spacings.
 
 function moveelectricspacing {
-    file="$HOME/.emacs.d/lisp/electric-spacing.el"
+    file="$HOME/.emacs.d/lisp/electric-spacing-r.el"
     if [ -f "$file" ]
     then
         echo ------------------------------------------------------------
-        echo "~/.emacs.d/lisp/electric-spacings.el file found."
+        echo "~/.emacs.d/lisp/electric-spacings-r.el file found."
         echo "Do you want update it? [y]es/[q]uit"
         read opcao
         case $opcao in
             y )
-                if [ ! -f ~/repos/electric-spacing/ess-electric-spacing.el ]
+                if [ ! -f ~/Projects/electric-spacing/electric-spacing-r.el ]
                 then
-                    echo "File ess-electric-spacing.el no found!"
+                    echo "File electric-spacing-r.el no found!"
                     echo "Check if directory exists and in on correct branch!"
                 else
-                    cp -v ~/repos/electric-spacing/ess-electric-spacing.el \
-                       ~/.emacs.d/lisp/electric-spacing.el
+                    cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
+                       ~/.emacs.d/lisp/electric-spacing-r.el
                 fi
                 ;;
             * )
@@ -162,15 +165,15 @@ function moveelectricspacing {
         esac
     else
         echo ------------------------------------------------------------
-        echo "~/.emacs.d/lisp/ess-electric-spacing.el file not found."
+        echo "~/.emacs.d/lisp/electric-spacing-r.el file not found."
         echo "It will be created."
-        if [ ! -f ~/repos/electric-spacing/ess-electric-spacing.el ]
+        if [ ! -f ~/Projects/electric-spacing/electric-spacing-r.el ]
         then
-            echo "File ess-electric-spacing.el no found!"
+            echo "File electric-spacing.el no found!"
             echo "Check if directory exists and in on correct branch!"
         else
-            cp -v ~/repos/electric-spacing/ess-electric-spacing.el \
-               ~/.emacs.d/lisp/electric-spacing.el
+            cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
+               ~/.emacs.d/lisp/electric-spacing-r.el
         fi
         echo; echo
     fi
@@ -192,23 +195,23 @@ function confremotes {
 while :
 do
     printf "\nMenu of options\n\n"
-    printf "  1. Install GNU Emacs 24.5.1\n"
-    printf "  2. Move .emacs and .emacs.d/.\n"
+    printf "  1. Install GNU Emacs\n"
+    printf "  2. Move init.el and func.el.\n"
     printf "  3. Download and move essh.el.\n"
     printf "  4. Configure remotes.\n"
     printf "  5. Open files with meld.\n"
-    printf "  6. Move electric-spacing.el.\n"
+    printf "  6. Move electric-spacing-r.el.\n"
     printf "  q. Quit.\n\n"
 
     read -sn1 -p "Select (1,2,3,4,5,6,q): " input
     echo
 
     case $input in
-        1) installemacs24.5 ;;
+        1) installemacs ;;
         2) moveemacsfiles ;;
         3) downloadessh ;;
         4) confremotes ;;
-        5) meld dotemacs.el ~/.emacs ;;
+        5) meld init.el ~/.emacs.d/init.el;;
         6) moveelectricspacing ;;
         q) break ;;
         *) echo "Invalid seletion" ;;
