@@ -1,5 +1,5 @@
 ;;======================================================================
-;; Configuration file to Emacs (>=24.5.1) by Walmes Zeviani.
+;; Configuration file to Emacs (>=25.2.2) by Walmes Zeviani.
 ;;
 ;; This file is hosted at https://github.com/walmes/emacs.
 ;;
@@ -95,8 +95,11 @@
 (global-set-key (kbd "<S-f12>") 'toggle-tool-bar-mode-from-frame)
 
 ;;----------------------------------------------------------------------
-;; Functions.
+;; My functions.
 ;;----------------------------------------------------------------------
+
+;; Byte compile file.
+;; (byte-compile-file "~/.emacs.d/lisp/funcs.el")
 
 (require 'funcs)
 
@@ -115,6 +118,13 @@
   (add-to-list 'package-archives
                '("melpa" . "http://melpa.org/packages/") t)
   (package-initialize))
+
+;;----------------------------------------------------------------------
+;; Monokai color theme.
+
+;; (load-theme 'solarized t)
+(load-theme 'monokai t)
+(set-face-attribute hl-line-face nil :background "#171816")
 
 ;;----------------------------------------------------------------------
 ;; helm.
@@ -170,7 +180,7 @@
              'helm-source-man-pages)
 
 ;;----------------------------------------------------------------------
-;; company.
+;; Company.
 
 ;; (when (not (package-installed-p 'company))
 ;;   (package-install 'company))
@@ -189,12 +199,6 @@
 (require 'iso-transl) ;; To work the accents on Sony Vaio.
 
 ;;----------------------------------------------------------------------
-;; Monokai color theme.
-
-;; (load-theme 'solarized t)
-(load-theme 'monokai t)
-
-;;----------------------------------------------------------------------
 ;; Magit.
 
 ;; (when (not (package-installed-p 'magit))
@@ -205,6 +209,9 @@
 
 ;;----------------------------------------------------------------------
 ;; essh.el - ESS like shell mode. To eval line/regions in Emacs shell.
+
+;; Byte compile file.
+;; (byte-compile-file "~/.emacs.d/lisp/essh.el")
 
 (require 'essh)
 (add-hook
@@ -225,6 +232,10 @@
 
 ;; (when (not (package-installed-p 'bookmark+))
 ;;   (package-install 'bookmark+))
+
+;; Byte compile file.  Faster load and execution.
+;; http://ergoemacs.org/emacs/emacs_byte_compile.html
+;; (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
 
 (add-to-list 'load-path "~/.emacs.d/elpa/bookmark+")
 
@@ -436,6 +447,9 @@
 ;;----------------------------------------------------------------------
 ;; Smart operators with electric spacing.
 ;; https://github.com/walmes/electric-spacing (fork).
+
+;; Byte compile file.
+;; (byte-compile-file "~/.emacs.d/lisp/electric-spacing-r.el")
 
 (require 'electric-spacing-r)
 (add-hook 'ess-mode-hook #'electric-spacing-mode)
