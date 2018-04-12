@@ -211,7 +211,7 @@ do
         2) moveemacsfiles ;;
         3) downloadessh ;;
         4) confremotes ;;
-        5) meld init.el ~/.emacs.d/init.el;;
+        5) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
         6) moveelectricspacing ;;
         q) break ;;
         *) echo "Invalid seletion" ;;
