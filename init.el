@@ -34,8 +34,8 @@
 (setq x-select-enable-clipboard t)  ;; Allow shared transfer area.
 (setq-default indent-tabs-mode nil) ;; Spaces to indent.
 (setq-default fill-column 72)       ;; Column width.
-(setq-default auto-fill-function
-              'do-auto-fill)        ;; Auto break long lines.
+;; (setq-default auto-fill-function
+;;               'do-auto-fill)        ;; Auto break long lines.
 
 ;; Highlight whitespace.
 (setq whitespace-line-column fill-column)
@@ -116,24 +116,12 @@
                '("melpa" . "http://melpa.org/packages/") t)
   (package-initialize))
 
-;; (if (require 'quelpa nil t)
-;;     (quelpa-self-upgrade)
-;;   (with-temp-buffer
-;;     (url-insert-file-contents
-;;      "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-;;     (eval-buffer)))
-;; (setq quelpa-upgrade-p nil)
-
-;; (quelpa 'helm :upgrade nil)
-;; (quelpa 'company :upgrade nil)
-;; (quelpa 'eldoc-extension :upgrade nil)
-
 ;;----------------------------------------------------------------------
 ;; helm.
 ;; http://tuhdo.github.io/helm-intro.html
 
-(when (not (package-installed-p 'helm))
-  (package-install 'helm))
+;; (when (not (package-installed-p 'helm))
+;;   (package-install 'helm))
 
 (require 'helm)
 (require 'helm-config)
@@ -184,8 +172,8 @@
 ;;----------------------------------------------------------------------
 ;; company.
 
-(when (not (package-installed-p 'company))
-  (package-install 'company))
+;; (when (not (package-installed-p 'company))
+;;   (package-install 'company))
 
 (require 'company)
 ;; (add-hook 'after-init-hook 'global-company-mode)
@@ -200,49 +188,17 @@
 
 (require 'iso-transl) ;; To work the accents on Sony Vaio.
 
-(when (not (package-installed-p 'eldoc-extension))
-  (package-install 'eldoc-extension))
-(require 'eldoc-extension)
-
 ;;----------------------------------------------------------------------
-;; Solarized color theme.
+;; Monokai color theme.
 
-(when (not (package-installed-p 'color-theme))
-  (package-install 'color-theme))
-
-(when (not (package-installed-p 'color-theme-solarized))
-  (package-install 'color-theme-solarized))
-
-(require 'color-theme)
-(color-theme-initialize)
-(setq color-theme-is-global t)
-
-(cond ((string-equal system-name "brother")
-       (setq solarized-default-background-mode 'dark))
-      ((string-equal system-name "ulisses")
-       (setq solarized-default-background-mode 'dark))
-      ((string-equal system-name "youngest")
-       (setq solarized-default-background-mode 'dark))
-      ((string-equal system-name "first")
-       (setq solarized-default-background-mode 'light))
-      ((string-equal system-name "class")
-       (setq solarized-default-background-mode 'light)))
-
-(load-theme 'solarized t)
-
-(add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (set-background-mode
-             frame
-             solarized-default-background-mode)))
-
-(set-background-mode nil solarized-default-background-mode)
+;; (load-theme 'solarized t)
+(load-theme 'monokai t)
 
 ;;----------------------------------------------------------------------
 ;; Magit.
 
-(when (not (package-installed-p 'magit))
-  (package-install 'magit))
+;; (when (not (package-installed-p 'magit))
+;;   (package-install 'magit))
 
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -267,8 +223,10 @@
 (setq bookmark-default-file "~/Dropbox/bookmarks"
       bookmark-save-flag 1)
 
-(when (not (package-installed-p 'bookmark+))
-  (package-install 'bookmark+))
+;; (when (not (package-installed-p 'bookmark+))
+;;   (package-install 'bookmark+))
+
+(add-to-list 'load-path "~/.emacs.d/elpa/bookmark+")
 
 (require 'bookmark+)
 
@@ -289,8 +247,8 @@
 ;; Visible bookmarks. Easy movement.
 ;; https://marmalade-repo.org/packages/bm
 
-(when (not (package-installed-p 'bm))
-  (package-install 'bm))
+;; (when (not (package-installed-p 'bm))
+;;   (package-install 'bm))
 
 (require 'bm)
 
@@ -306,8 +264,8 @@
 ;; Folding code blocks based on indentation.
 ;; git clone https://github.com/zenozeng/yafolding.el.git
 
-(when (not (package-installed-p 'yafolding))
-  (package-install 'yafolding))
+;; (when (not (package-installed-p 'yafolding))
+;;   (package-install 'yafolding))
 
 (require 'yafolding)
 (global-set-key [?\C-{] #'yafolding-hide-parent-element)
@@ -317,8 +275,8 @@
 ;; Smart Parenthesis.
 ;; https://github.com/Fuco1/smartparens.
 
-(when (not (package-installed-p 'smartparens))
-  (package-install 'smartparens))
+;; (when (not (package-installed-p 'smartparens))
+;;   (package-install 'smartparens))
 
 (require 'smartparens)
 (require 'smartparens-config)
@@ -328,21 +286,11 @@
 (sp-pair "'" nil :unless '(sp-point-after-word-p))
 
 ;;----------------------------------------------------------------------
-;; Expand Region.
-;; https://github.com/magnars/expand-region.el
-
-(when (not (package-installed-p 'expand-region))
-  (package-install 'expand-region))
-
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
-(when (not (package-installed-p 'markdown-mode))
-  (package-install 'markdown-mode))
+;; (when (not (package-installed-p 'markdown-mode))
+;;   (package-install 'markdown-mode))
 
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
@@ -357,8 +305,8 @@
 ;; R+MarkDown extensions (emacs >= 24.3.1).
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
-(when (not (package-installed-p 'polymode))
-  (package-install 'polymode))
+;; (when (not (package-installed-p 'polymode))
+;;   (package-install 'polymode))
 
 (require 'poly-R)
 (require 'poly-markdown)
@@ -377,8 +325,8 @@
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/
 
-(when (not (package-installed-p 'ess))
-  (package-install 'ess))
+;; (when (not (package-installed-p 'ess))
+;;   (package-install 'ess))
 
 (require 'ess-site)
 (require 'ess-eldoc)
@@ -459,8 +407,8 @@
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
 
-(when (not (package-installed-p 'auto-complete))
-  (package-install 'auto-complete))
+;; (when (not (package-installed-p 'auto-complete))
+;;   (package-install 'auto-complete))
 
 (require 'auto-complete-config)
 (ac-config-default)
@@ -489,23 +437,8 @@
 ;; Smart operators with electric spacing.
 ;; https://github.com/walmes/electric-spacing (fork).
 
-(require 'electric-spacing)
+(require 'electric-spacing-r)
 (add-hook 'ess-mode-hook #'electric-spacing-mode)
-
-;;----------------------------------------------------------------------
-;; Start yasnippet with emacs.
-;; http://barisyuksel.com/cppmode/.emacs
-;; https://www.youtube.com/watch?v=HTUE03LnaXA
-
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
-
-;;----------------------------------------------------------------------
-;; R snippets.
-;; https://github.com/mlf176f2/r-autoyas.el
-
-;; (require 'r-autoyas)
-;; (add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
 
 ;;----------------------------------------------------------------------
 ;; Latex extensions.
@@ -616,13 +549,6 @@
      ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\)"
       0 'good-words t))
    ))
-
-;;----------------------------------------------------------------------
-;; Check for packages.
-;;----------------------------------------------------------------------
-
-;; (require 'prelude-packages)
-
 ;;----------------------------------------------------------------------
 
 (custom-set-variables
