@@ -60,3 +60,9 @@
 (package-install 'markdown-mode)
 (package-install 'markdown-toc)
 (package-install 'polymode)
+
+;; NOTE: after install `jedi` and `jedy-core`, run `M-x
+;; jedi:install-server` in a new GNU Emacs session to enable proper auto
+;; completation for Python scripts.
+
+;;----------------------------------------------------------------------
