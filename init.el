@@ -534,6 +534,28 @@
   :group 'python)
 
 ;;----------------------------------------------------------------------
+;; A Emacs tree plugin like NerdTree for Vim.
+;; https://github.com/jaypei/emacs-neotree
+;; M-x package-install RET neotree
+
+(require 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+
+;;----------------------------------------------------------------------
+;; File navigation like in Sublime.
+;; https://github.com/zk-phi/sublimity
+;; https://www.emacswiki.org/emacs/Sublimity
+;; M-x package-install RET sublimity
+
+(require 'sublimity)
+(require 'sublimity-scroll)
+(require 'sublimity-map)
+(sublimity-mode 1)
+
+(setq sublimity-scroll-weight 10
+      sublimity-scroll-drift-length 5)
+
+;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
 
 ;; http://lists.gnu.org/archive/html/emacs-orgmode/2010-09/txtb5ChQJCDny.txt

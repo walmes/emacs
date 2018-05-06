@@ -60,6 +60,8 @@
 (package-install 'markdown-mode)
 (package-install 'markdown-toc)
 (package-install 'polymode)
+(package-install 'neotree)
+(package-install 'sublimity)
 
 ;; NOTE: after install `jedi` and `jedy-core`, run `M-x
 ;; jedi:install-server` in a new GNU Emacs session to enable proper auto
