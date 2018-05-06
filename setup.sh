@@ -6,9 +6,9 @@
 cat << EOF
 ------------------------------------------------------------------------
 
-  This will guide you to install Emacs 24.5.1, his friends and
+  This will guide you to install GNU Emacs, his friends and
   additional files to have, at least, a small part of the all power that
-  Emacs has. Press ENTER to continue.
+  GNU Emacs has. Press ENTER to continue.
 
 ------------------------------------------------------------------------
 EOF
@@ -16,17 +16,14 @@ EOF
 #----------------------------------------------------------------------
 # Install Emacs.
 
-# TODO TODO
-# git clone https://github.com/emacsmirror/bookmark-plus.git ~/.emacs.d/elpa/bookmark+
-
-function installemacs {
+function installEmacs {
 
     if which emacs >/dev/null
     then
         MSG="$(emacs --version | head -n 1) is installed. Do you want reinstall it? [y]es/[n]o"
         echo; echo
     else
-        MSG="Emacs 24 isn't installed. Do you want install it? [y]es/[n]o"
+        MSG="GNU Emacs isn't installed. Do you want install it? [y]es/[n]o"
         echo; echo
     fi
 
@@ -35,10 +32,10 @@ function installemacs {
     read opcao
     case $opcao in
         y )
-            echo "Running \"apt-get build-dep emacs\""
+            echo "Running \"apt-get build-dep emacs\"."
             sudo apt-get build-dep emacs -y
             echo
-            echo "Running \"apt-get build-dep emacs\""
+            echo "Running \"apt-get install emacs\"."
             sudo apt-get install emacs -y
             echo; echo
             ;;
@@ -48,12 +45,26 @@ function installemacs {
     esac
 
     echo ------------------------------------------------------------
-    echo "Install emacs-goodies-el? [y]es/[n]o"
+    echo "Install `emacs-goodies-el` (a set of useful packages)? [y]es/[n]o"
     read opcao
     case $opcao in
         y )
-            echo "Installing emacs-goodies-el (a set of useful packages)."
+            echo "Installing `emacs-goodies-el`."
             sudo apt-get install emacs-goodies-el -y
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac
+
+    echo ------------------------------------------------------------
+    echo "Install `virtualenv` (Needed for Python auto complete)? [y]es/[n]o"
+    read opcao
+    case $opcao in
+        y )
+            echo "Installing `virtualenv`."
+            sudo apt-get install virtualenv -y
             echo; echo
             ;;
         * )
@@ -65,7 +76,12 @@ function installemacs {
 #----------------------------------------------------------------------
 # Move emacs init files and extentions.
 
-function moveemacsfiles {
+function moveEmacsFiles {
+    cp -v init.el ~/.emacs.d/init.el
+    cp -v funcs.el ~/.emacs.d/lisp/
+}
+
+function createEmacsFiles {
 
     emacsddir="$HOME/.emacs.d/lisp/"
     if [ ! -d "$emacsddir" ]
@@ -89,9 +105,8 @@ function moveemacsfiles {
         read opcao
         case $opcao in
             y )
-                cd $HOME/Projects/emacs/
-                cp -v init.el ~/.emacs.d/init.el
-                cp -v funcs.el ~/.emacs.d/lisp/
+                # cd $HOME/Projects/emacs/
+		moveEmacsFiles
                 echo; echo
                 ;;
             * )
@@ -102,9 +117,8 @@ function moveemacsfiles {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/init.el file not found."
         echo "It will be created."
-        cd $HOME/Projects/emacs/
-        cp -v init.el ~/.emacs.d/init.el
-        cp -v functions.el ~/.emacs.d/lisp/
+        # cd $HOME/Projects/emacs/
+	moveEmacsFiles
         echo; echo
     fi
 }
@@ -112,7 +126,11 @@ function moveemacsfiles {
 #----------------------------------------------------------------------
 # Send line or region for shell buffer.
 
-function downloadessh {
+function downloadEssh {
+    wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
+}
+
+function createEssh {
     file="$HOME/.emacs.d/lisp/essh.el"
     if [ -f "$file" ]
     then
@@ -122,7 +140,7 @@ function downloadessh {
         read opcao
         case $opcao in
             y )
-                wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
+		downloadEssh
                 ;;
             * )
                 echo "Skipped."; echo; echo
@@ -132,32 +150,34 @@ function downloadessh {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/essh.el file not found."
         echo "It will be created."
-        wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
+	downloadEssh
         echo; echo
     fi
 }
 
-#-----------------------------------------------------------------------
-# Electric-spacings.
+#----------------------------------------------------------------------
+# Bookmark+.
 
-function moveelectricspacing {
-    file="$HOME/.emacs.d/lisp/electric-spacing-r.el"
-    if [ -f "$file" ]
+function downloadBookmark {
+    # wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
+    # git clone https://github.com/emacsmirror/bookmark-plus.git ~/.emacs.d/elpa/bookmark+
+    wget -N https://github.com/emacsmirror/bookmark-plus/archive/master.zip -P $HOME/.emacs.d/elpa/
+    unzip $HOME/.emacs.d/elpa/master.zip -d $HOME/.emacs.d/elpa/
+    mv -v $HOME/.emacs.d/elpa/bookmark-plus-master $HOME/.emacs.d/elpa/bookmark+
+    rm -v $HOME/.emacs.d/elpa/master.zip
+}
+
+function createBookmark {
+    hasBookmark=$(ls $HOME/.emacs.d/elpa/ | grep 'bookmark+')
+    if [ "$hasBookmark" == "" ];
     then
         echo ------------------------------------------------------------
-        echo "~/.emacs.d/lisp/electric-spacings-r.el file found."
-        echo "Do you want update it? [y]es/[q]uit"
+        echo "~/.emacs.d/lisp/bookmark+ folder not found."
+        echo "Do you want download and update it? [y]es/[q]uit"
         read opcao
         case $opcao in
             y )
-                if [ ! -f ~/Projects/electric-spacing/electric-spacing-r.el ]
-                then
-                    echo "File electric-spacing-r.el no found!"
-                    echo "Check if directory exists and in on correct branch!"
-                else
-                    cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
-                       ~/.emacs.d/lisp/electric-spacing-r.el
-                fi
+		downloadBookmark
                 ;;
             * )
                 echo "Skipped."; echo; echo
@@ -165,28 +185,71 @@ function moveelectricspacing {
         esac
     else
         echo ------------------------------------------------------------
-        echo "~/.emacs.d/lisp/electric-spacing-r.el file not found."
-        echo "It will be created."
-        if [ ! -f ~/Projects/electric-spacing/electric-spacing-r.el ]
-        then
-            echo "File electric-spacing.el no found!"
-            echo "Check if directory exists and in on correct branch!"
-        else
-            cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
-               ~/.emacs.d/lisp/electric-spacing-r.el
-        fi
-        echo; echo
+        echo "~/.emacs.d/lisp/bookmark+ folder found."
+        echo "Do you want download and update it? [y]es/[q]uit"
+        read opcao
+        case $opcao in
+            y )
+		downloadBookmark
+                ;;
+            * )
+                echo "Skipped."; echo; echo
+                ;;
+        esac
     fi
+
 }
 
-#----------------------------------------------------------------------
-# Configure remotes.
+#-----------------------------------------------------------------------
+# Electric-spacings.
 
-function confremotes {
-    git remote rm origin
-    git remote add origin git@github.com:walmes/emacs.git
-    git remote set-url origin --add git@gitlab.c3sl.ufpr.br:walmes/emacs.git
-    git remote -v
+function downloadElectricSpacing {
+    echo "Do you want download it? [y]es/[q]uit"
+    read opcao
+    case $opcao in
+	y )
+	    wget -N 'https://raw.githubusercontent.com/walmes/electric-spacing/master/electric-spacing-r.el' -P $HOME/.emacs.d/lisp/
+	    ;;
+	* )
+	    echo "Skipped."; echo; echo
+	    break
+	    ;;
+    esac
+}
+
+function createElectricSpacing {
+    read opcao
+    case $opcao in
+        y )
+            if [ ! -f ~/Projects/electric-spacing/electric-spacing-r.el ]
+            then
+                echo "File electric-spacing-r.el not found!"
+		downloadElectricSpacing
+            else
+                cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
+                   ~/.emacs.d/lisp/electric-spacing-r.el
+            fi
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac
+}
+
+function moveElectricSpacing {
+    file="$HOME/.emacs.d/lisp/electric-spacing-r.el"
+    if [ -f "$file" ]
+    then
+        echo ------------------------------------------------------------
+        echo "~/.emacs.d/lisp/electric-spacings-r.el file found."
+        echo "Do you want update it? [y]es/[q]uit"
+	createElectricSpacing
+    else
+        echo ------------------------------------------------------------
+        echo "~/.emacs.d/lisp/electric-spacing-r.el file not found."
+        echo "It will be created."
+	createElectricSpacing
+    fi
 }
 
 #----------------------------------------------------------------------
@@ -196,23 +259,23 @@ while :
 do
     printf "\nMenu of options\n\n"
     printf "  1. Install GNU Emacs\n"
-    printf "  2. Move init.el and func.el.\n"
+    printf "  2. Move init.el and funcs.el.\n"
     printf "  3. Download and move essh.el.\n"
-    printf "  4. Configure remotes.\n"
-    printf "  5. Open files with meld.\n"
-    printf "  6. Move electric-spacing-r.el.\n"
+    printf "  4. Download or move electric-spacing-r.el.\n"
+    printf "  5. Download bookmark+.\n"
+    printf "  6. Open files with meld.\n"
     printf "  q. Quit.\n\n"
 
-    read -sn1 -p "Select (1,2,3,4,5,6,q): " input
+    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, q): " input
     echo
 
     case $input in
-        1) installemacs ;;
-        2) moveemacsfiles ;;
-        3) downloadessh ;;
-        4) confremotes ;;
-        5) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
-        6) moveelectricspacing ;;
+        1) installEmacs ;;
+        2) createEmacsFiles ;;
+        3) createEssh ;;
+        4) moveElectricSpacing ;;
+        5) createBookmark ;;
+        6) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
         q) break ;;
         *) echo "Invalid seletion" ;;
     esac
@@ -225,7 +288,7 @@ cat << EOF
 
 ------------------------------------------------------------------------
 
-  You have finished the installation of Emacs. Congratulations!
+  You have finished the installation of GNU Emacs. Congratulations!
 
 ------------------------------------------------------------------------
 EOF
