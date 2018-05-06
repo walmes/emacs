@@ -45,11 +45,11 @@ function installEmacs {
     esac
 
     echo ------------------------------------------------------------
-    echo "Install `emacs-goodies-el` (a set of useful packages)? [y]es/[n]o"
+    echo "Install \"emacs-goodies-el\" (a set of useful packages)? [y]es/[n]o"
     read opcao
     case $opcao in
         y )
-            echo "Installing `emacs-goodies-el`."
+            echo "Installing \"emacs-goodies-el\"."
             sudo apt-get install emacs-goodies-el -y
             echo; echo
             ;;
@@ -59,16 +59,38 @@ function installEmacs {
     esac
 
     echo ------------------------------------------------------------
-    echo "Install `virtualenv` (Needed for Python auto complete)? [y]es/[n]o"
+    echo "Install \"virtualenv\" (Needed for Python auto complete)? [y]es/[n]o"
     read opcao
     case $opcao in
         y )
-            echo "Installing `virtualenv`."
+            echo "Installing \"virtualenv\"."
             sudo apt-get install virtualenv -y
             echo; echo
             ;;
         * )
             echo "Skipped."; echo; echo
+            ;;
+    esac
+}
+
+#----------------------------------------------------------------------
+# Install packages.
+
+function installPackages {
+    echo ------------------------------------------------------------
+    echo "Do you want to install GNU Emacs packages listed in \"install-packages.el\" file?" [y]es/[q]uit
+    read opcao
+    case $opcao in
+        y )
+	    emacs --script install-packages.el
+            echo; echo "Packages instaled. This is the directory tree:"
+            tree -L 1 $HOME/.emacs.d/elpa/
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            echo "This is the directory tree of the installed packages:"
+            tree -L 1 $HOME/.emacs.d/elpa/
             ;;
     esac
 }
@@ -260,22 +282,24 @@ do
     printf "\nMenu of options\n\n"
     printf "  1. Install GNU Emacs\n"
     printf "  2. Move init.el and funcs.el.\n"
-    printf "  3. Download and move essh.el.\n"
-    printf "  4. Download or move electric-spacing-r.el.\n"
-    printf "  5. Download bookmark+.\n"
-    printf "  6. Open files with meld.\n"
+    printf "  3. Install GNU Emacs packages.\n"
+    printf "  4. Download and move essh.el.\n"
+    printf "  5. Download or move electric-spacing-r.el.\n"
+    printf "  6. Download bookmark+.\n"
+    printf "  7. Open files with meld.\n"
     printf "  q. Quit.\n\n"
 
-    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, q): " input
+    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, 7, q): " input
     echo
 
     case $input in
         1) installEmacs ;;
         2) createEmacsFiles ;;
-        3) createEssh ;;
-        4) moveElectricSpacing ;;
-        5) createBookmark ;;
-        6) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
+        3) installPackages ;;
+        4) createEssh ;;
+        5) moveElectricSpacing ;;
+        6) createBookmark ;;
+        7) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
         q) break ;;
         *) echo "Invalid seletion" ;;
     esac
