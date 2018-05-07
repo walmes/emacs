@@ -6,9 +6,9 @@
 cat << EOF
 ------------------------------------------------------------------------
 
-  This will guide you to install GNU Emacs, his friends and
-  additional files to have, at least, a small part of the all power that
-  GNU Emacs has. Press ENTER to continue.
+  This will guide you to install GNU Emacs, his friends and additional
+  files to have, at least, a small part of the all power that GNU Emacs
+  has. Press ENTER to continue.
 
 ------------------------------------------------------------------------
 EOF
@@ -77,35 +77,41 @@ function installEmacs {
 # Install packages.
 
 function installPackages {
+
     echo ------------------------------------------------------------
-    echo "Do you want to install GNU Emacs packages listed in \"install-packages.el\" file?" [y]es/[q]uit
+    echo "Do you want to install GNU Emacs packages listed"
+    echo "in \"install-packages.el\" file?" [y]es/[q]uit
     read opcao
     case $opcao in
         y )
 	    emacs --script install-packages.el
-            echo; echo "Packages instaled. This is the directory tree:"
-            tree -L 1 $HOME/.emacs.d/elpa/
-            echo; echo
+            echo; echo "Packages installed."
             ;;
         * )
             echo "Skipped."; echo; echo
-            echo "This is the directory tree of the installed packages:"
-            tree -L 1 $HOME/.emacs.d/elpa/
             ;;
     esac
+
+    echo "This is the directory tree of the installed packages:"
+    tree -L 1 $HOME/.emacs.d/elpa/
+
 }
 
 #----------------------------------------------------------------------
 # Move emacs init files and extentions.
 
 function moveEmacsFiles {
+
     cp -v init.el ~/.emacs.d/init.el
     cp -v funcs.el ~/.emacs.d/lisp/
+    emacs --batch --eval '(byte-compile-file "~/.emacs.d/lisp/funcs.el")'
+
 }
 
 function createEmacsFiles {
 
     emacsddir="$HOME/.emacs.d/lisp/"
+
     if [ ! -d "$emacsddir" ]
     then
         echo ------------------------------------------------------------
@@ -119,6 +125,7 @@ function createEmacsFiles {
     fi
 
     dotemacs="$HOME/.emacs.d/init.el"
+
     if [ -f "$dotemacs" ]
     then
         echo ------------------------------------------------------------
@@ -127,7 +134,6 @@ function createEmacsFiles {
         read opcao
         case $opcao in
             y )
-                # cd $HOME/Projects/emacs/
 		moveEmacsFiles
                 echo; echo
                 ;;
@@ -139,7 +145,6 @@ function createEmacsFiles {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/init.el file not found."
         echo "It will be created."
-        # cd $HOME/Projects/emacs/
 	moveEmacsFiles
         echo; echo
     fi
@@ -149,11 +154,16 @@ function createEmacsFiles {
 # Send line or region for shell buffer.
 
 function downloadEssh {
+
     wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
+    emacs --batch --eval '(byte-compile-file "~/.emacs.d/lisp/essh.el")'
+
 }
 
 function createEssh {
+
     file="$HOME/.emacs.d/lisp/essh.el"
+
     if [ -f "$file" ]
     then
         echo ------------------------------------------------------------
@@ -175,49 +185,46 @@ function createEssh {
 	downloadEssh
         echo; echo
     fi
+
 }
 
 #----------------------------------------------------------------------
 # Bookmark+.
 
 function downloadBookmark {
-    # wget -N 'http://www.emacswiki.org/emacs/download/essh.el' -P $HOME/.emacs.d/lisp/
-    # git clone https://github.com/emacsmirror/bookmark-plus.git ~/.emacs.d/elpa/bookmark+
-    wget -N https://github.com/emacsmirror/bookmark-plus/archive/master.zip -P $HOME/.emacs.d/elpa/
-    unzip $HOME/.emacs.d/elpa/master.zip -d $HOME/.emacs.d/elpa/
-    mv -v $HOME/.emacs.d/elpa/bookmark-plus-master $HOME/.emacs.d/elpa/bookmark+
-    rm -v $HOME/.emacs.d/elpa/master.zip
+
+        read opcao
+        case $opcao in
+            y )
+                # https://github.com/emacsmirror/bookmark-plus
+                wget -N https://github.com/emacsmirror/bookmark-plus/archive/master.zip -P $HOME/.emacs.d/elpa/
+                unzip $HOME/.emacs.d/elpa/master.zip -d $HOME/.emacs.d/elpa/
+                mv -v $HOME/.emacs.d/elpa/bookmark-plus-master $HOME/.emacs.d/elpa/bookmark+
+                rm -v $HOME/.emacs.d/elpa/master.zip
+                # emacs --batch --eval '(byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)'
+                ;;
+            * )
+                echo "Skipped."; echo; echo
+                ;;
+        esac
+
 }
 
 function createBookmark {
+
     hasBookmark=$(ls $HOME/.emacs.d/elpa/ | grep 'bookmark+')
+
     if [ "$hasBookmark" == "" ];
     then
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/bookmark+ folder not found."
         echo "Do you want download and update it? [y]es/[q]uit"
-        read opcao
-        case $opcao in
-            y )
-		downloadBookmark
-                ;;
-            * )
-                echo "Skipped."; echo; echo
-                ;;
-        esac
+        downloadBookmark
     else
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/bookmark+ folder found."
         echo "Do you want download and update it? [y]es/[q]uit"
-        read opcao
-        case $opcao in
-            y )
-		downloadBookmark
-                ;;
-            * )
-                echo "Skipped."; echo; echo
-                ;;
-        esac
+        downloadBookmark
     fi
 
 }
@@ -226,20 +233,23 @@ function createBookmark {
 # Electric-spacings.
 
 function downloadElectricSpacing {
+
     echo "Do you want download it? [y]es/[q]uit"
     read opcao
     case $opcao in
 	y )
 	    wget -N 'https://raw.githubusercontent.com/walmes/electric-spacing/master/electric-spacing-r.el' -P $HOME/.emacs.d/lisp/
+            emacs --batch --eval '(byte-compile-file "~/.emacs.d/lisp/electric-spacing-r.el")'
 	    ;;
 	* )
-	    echo "Skipped."; echo; echo
+	    echo "Download skipped."; echo; echo
 	    break
 	    ;;
     esac
 }
 
 function createElectricSpacing {
+
     read opcao
     case $opcao in
         y )
@@ -256,10 +266,13 @@ function createElectricSpacing {
             echo "Skipped."; echo; echo
             ;;
     esac
+
 }
 
 function moveElectricSpacing {
+
     file="$HOME/.emacs.d/lisp/electric-spacing-r.el"
+
     if [ -f "$file" ]
     then
         echo ------------------------------------------------------------
@@ -272,12 +285,13 @@ function moveElectricSpacing {
         echo "It will be created."
 	createElectricSpacing
     fi
+
 }
 
 #----------------------------------------------------------------------
 # Cicle among options.
 
-while :
+while:
 do
     printf "\nMenu of options\n\n"
     printf "  1. Install GNU Emacs\n"
@@ -301,7 +315,7 @@ do
         6) createBookmark ;;
         7) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
         q) break ;;
-        *) echo "Invalid seletion" ;;
+        *) echo "Invalid option!" ;;
     esac
 done
 
