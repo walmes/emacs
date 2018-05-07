@@ -1,7 +1,10 @@
-# GNU Emacs configuration
+<img src="https://www.gnu.org/software/emacs/images/emacs.png" align="right" display="block">
 
-> Saying that GNU Emacs is just a text editor is like calling iPhone just a
-> phone. [(Luke - Terminally Incoherent)](http://www.terminally-incoherent.com/blog/2007/12/13/emacs-with-auctex-as-a-latex-ide/)
+GNU Emacs configuration
+=============================
+
+> Saying that GNU Emacs is just a text editor is like calling iPhone
+> just a phone. [(Luke - Terminally Incoherent)](http://www.terminally-incoherent.com/blog/2007/12/13/emacs-with-auctex-as-a-latex-ide/)
 
 > While any text editor can save your files, only GNU Emacs can save
 > your soul. (Per Abrahamsen)
@@ -9,9 +12,9 @@
 > Show me your ~/.emacs and I will tell you who you are. (Bogdan
 > Maryniuk)
 
-> The reasonable man adapts himself to GNU Emacs; the unreasonable one
-> persists in trying to adapt GNU Emacs to himself. Therefore all
-> progress depends on the unreasonable man. (G.B. Shaw)
+> The reasonable man adapts himself to GNU Emacs.  The unreasonable one
+> persists in trying to adapt GNU Emacs to himself.  Therefore all
+> progress depends on the unreasonable man. (G. B. Shaw)
 
 [GNU Emacs](http://www.gnu.org/software/emacs/tour/) is my favorite text
 editor for R, LaTeX, Markdown, Shell, and related files due its high
@@ -29,7 +32,7 @@ Linux terminal inside GNU Emacs and even play
 [tetris](http://www.youtube.com/watch?v=5A8knEALaIY), without mention
 [the psychoanalyst](http://www.eeggs.com/items/49593.html) embedded.
 
-GNU Emacs customizations are defined in the `.emacs` file ou in the
+GNU Emacs customizations are defined in the `.emacs` file or in the
 `~/.emacs.d/init.el`. On Linux systems, this file is found, by default,
 in the user home folder.  To me, the path is
 `/home/walmes/.emacs.d/init.el`. I prefer put in the `init.el` rather
@@ -39,7 +42,7 @@ To have proper code highlight in R sessions you need to have installed
 [ESS](http://ess.r-project.org/).  To work with LaTeX it is recommended
 install [AUCTeX](http://www.gnu.org/software/auctex/).  GNU Emacs also
 have resources to edit MarkDown (`.md`) and even R+MarkDown (`.Rmd`).
-Look the packages `markdown-mode` and `polymode`.  To work wtih Python,
+Look the packages `markdown-mode` and `polymode`.  To work with Python,
 install `elpy` and `jedi`.
 
 Most of the content in my `init.el` file was inspired or copied from the
@@ -80,7 +83,7 @@ mode to install the packages packages.  The `setup.sh` already file has
 an entry to do this.
 
 ```bash
-# Executes GNU Emacs in th batch mode.
+# Executes GNU Emacs in the batch mode.
 emacs --script install-packages.el
 ```
 
