@@ -455,6 +455,38 @@
 (add-hook 'ess-mode-hook #'electric-spacing-mode)
 
 ;;----------------------------------------------------------------------
+;; Key combos.
+;; https://github.com/emacs-ess/ESS/issues/96
+
+(require 'key-combo)
+
+(key-combo-mode 1)
+
+(add-hook 'ess-mode-hook
+          '(lambda() (key-combo-mode t)))
+(add-hook 'inferior-ess-mode-hook
+          '(lambda() (key-combo-mode t)))
+
+(defvar key-combo-ess-default
+  '((">"  . (" > " " %>% "))
+    ("<"  . (" < " " <<- "))
+    ("$"  . ("$" " %$% "))
+    ("<>" . " %<>% ")
+    ;; ("*"  . ("*" " * "))
+    ;; ("%" . ("%" "%*%" "%%"))
+    ;; ("^"  . ("^" " ^ "))
+    ("/"  . ("/" " %/% " " %% "))
+    ;; ("~" . " ~ ")
+    ;; (":" . (":" "::" ":::"))
+    ;; (":="  . " := ") ; data.table
+    ("->"  . " -> ")
+    ("."  . ("." "_" "..."))))
+
+(key-combo-define-hook '(ess-mode-hook inferior-ess-mode-hook)
+                       'ess-key-combo-load-default
+                       key-combo-ess-default)
+
+;;----------------------------------------------------------------------
 ;; Latex extensions.
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
