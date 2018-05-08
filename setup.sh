@@ -246,6 +246,7 @@ function downloadElectricSpacing {
 	    break
 	    ;;
     esac
+
 }
 
 function createElectricSpacing {
@@ -291,8 +292,9 @@ function moveElectricSpacing {
 #----------------------------------------------------------------------
 # Cicle among options.
 
-while:
+while true
 do
+
     printf "\nMenu of options\n\n"
     printf "  1. Install GNU Emacs\n"
     printf "  2. Move init.el and funcs.el.\n"
@@ -317,6 +319,7 @@ do
         q) break ;;
         *) echo "Invalid option!" ;;
     esac
+
 done
 
 #----------------------------------------------------------------------
