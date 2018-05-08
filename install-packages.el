@@ -4,10 +4,10 @@
 (require 'package)
 (package-initialize)
 
-;;(add-to-list 'package-archives
+;; (add-to-list 'package-archives
 ;;             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
-;;(add-to-list 'package-archives
+;; (add-to-list 'package-archives
 ;;             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (add-to-list 'package-archives
@@ -53,9 +53,6 @@
 (package-install 'yafolding)
 (package-install 'ess)
 (package-install 'ess-R-data-view)
-(package-install 'elpy)
-(package-install 'jedi)
-(package-install 'jedi-core)
 (package-install 'magit)
 (package-install 'markdown-mode)
 (package-install 'markdown-toc)
@@ -63,6 +60,9 @@
 (package-install 'neotree)
 (package-install 'sublimity)
 (package-install 'key-combo)
+(package-install 'elpy)
+(package-install 'jedi)
+(package-install 'jedi-core)
 
 ;; NOTE: after install `jedi` and `jedy-core`, run `M-x
 ;; jedi:install-server` in a new GNU Emacs session to enable proper auto
