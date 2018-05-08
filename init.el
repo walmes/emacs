@@ -528,42 +528,33 @@
 
 ;; Install first: M-x package-list-packages C-s elpy.
 (elpy-enable)
+(setq python-shell-interpreter "/usr/bin/python3")
 
-;; use flycheck not flymake with elpy
-;; (when (require 'flycheck nil t)
-;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; Seguir: http://tkf.github.io/emacs-jedi/latest/
+;;   Terminal : sudo apt-get install virtualenv
+;;   Emacs    : M-x package-install RET jedi RET
+;;   Emacs    : M-x jedi:install-server RET
 
-;; enable autopep8 formatting on save
-;; (require 'py-autopep8)
-;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-;; '(package-selected-packages
-;;   (quote
-;;    (virtualenv jedi py-autopep8 multiple-cursors material-theme flycheck elpy ein better-defaults)))
- ;; This uses que Anaconda Python shell installed in the user HOME.
- ;; '(python-shell-interpreter "~/anaconda/bin/python3")
- ;; This uses the Python 3 of the SO.
- '(python-shell-interpreter "/usr/bin/python3")
- )
-
-;; Corrigindo alguns bugs do Elpy
-;; (define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
-;; (define-key global-map (kbd "C-c o") 'iedit-mode)
-;; Adicionando o jedi mode, ajuda com o autocomplete
-;; (add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
-;; Python3 console, C-c C-p para abrir o console
-(defcustom python-shell-interpreter "python3"
-  "Default Python interpreter for shell."
-  :type 'string
-  :group 'python)
+;;----------------------------------------------------------------------
+;; Alternatives for highlight indentation:
+;; https://github.com/DarthFennec/highlight-indent-guides.
+;; https://github.com/antonj/Highlight-Indentation-for-Emacs
+
+;; To disable highlight-indentation for Python do
+;;   M-x highlight-indentation-mode.
+;; To disable permanently:
+;;   M-x customize-variable RET elpy-modules RET
+;; and disable checkbox. Apply and save.
+
+;; This uses `highlight-indentation` package.
+;; Desable it in Python.
+(add-hook 'python-mode-hook
+          '(lambda () (highlight-indentation-mode 0)) t)
+;; (highlight-indentation-current-column-mode)
+;; (set-face-background 'highlight-indentation-face "#990000")
 
 ;;----------------------------------------------------------------------
 ;; A Emacs tree plugin like NerdTree for Vim.
@@ -579,13 +570,13 @@
 ;; https://www.emacswiki.org/emacs/Sublimity
 ;; M-x package-install RET sublimity
 
-(require 'sublimity)
-(require 'sublimity-scroll)
-(require 'sublimity-map)
-(sublimity-mode 1)
-
-(setq sublimity-scroll-weight 10
-      sublimity-scroll-drift-length 5)
+;; (require 'sublimity)
+;; (require 'sublimity-scroll)
+;; (require 'sublimity-map)
+;; (sublimity-mode 1)
+;;
+;; (setq sublimity-scroll-weight 10
+;;       sublimity-scroll-drift-length 5)
 
 ;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
