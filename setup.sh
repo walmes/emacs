@@ -3,8 +3,15 @@
 #----------------------------------------------------------------------
 # Welcome message.
 
+# ASCII Art.
+# http://patorjk.com/software/taag/#p=display&f=Calvin%20S&t=GNU%20Emacs
+
 cat << EOF
 ------------------------------------------------------------------------
+
+  ╔═╗╔╗╔╦ ╦  ╔═╗┌┬┐┌─┐┌─┐┌─┐
+  ║ ╦║║║║ ║  ║╣ │││├─┤│  └─┐
+  ╚═╝╝╚╝╚═╝  ╚═╝┴ ┴┴ ┴└─┘└─┘
 
   This will guide you to install GNU Emacs, his friends and additional
   files to have, at least, a small part of the all power that GNU Emacs
@@ -20,10 +27,10 @@ function installEmacs {
 
     if which emacs >/dev/null
     then
-        MSG="$(emacs --version | head -n 1) is installed. Do you want reinstall it? [y]es/[n]o"
+        MSG="$(emacs --version | head -n 1) is installed. Do you want reinstall it? [y]es/[n]o and next"
         echo; echo
     else
-        MSG="GNU Emacs isn't installed. Do you want install it? [y]es/[n]o"
+        MSG="GNU Emacs isn't installed. Do you want install it? [y]es/[n]o and next"
         echo; echo
     fi
 
@@ -45,7 +52,7 @@ function installEmacs {
     esac
 
     echo ------------------------------------------------------------
-    echo "Install \"emacs-goodies-el\" (a set of useful packages)? [y]es/[n]o"
+    echo "Install \"emacs-goodies-el\" (a set of useful packages)? [y]es/[n]o and next"
     read opcao
     case $opcao in
         y )
@@ -59,7 +66,7 @@ function installEmacs {
     esac
 
     echo ------------------------------------------------------------
-    echo "Install \"virtualenv\" (Needed for Python auto complete)? [y]es/[n]o"
+    echo "Install \"virtualenv\" (Needed for Python auto complete)? [y]es/[n]o and quit"
     read opcao
     case $opcao in
         y )
@@ -84,7 +91,7 @@ function installPackages {
     read opcao
     case $opcao in
         y )
-	    emacs --script install-packages.el
+            emacs --script install-packages.el
             echo; echo "Packages installed."
             ;;
         * )
@@ -134,7 +141,7 @@ function createEmacsFiles {
         read opcao
         case $opcao in
             y )
-		moveEmacsFiles
+                moveEmacsFiles
                 echo; echo
                 ;;
             * )
@@ -145,7 +152,7 @@ function createEmacsFiles {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/init.el file not found."
         echo "It will be created."
-	moveEmacsFiles
+        moveEmacsFiles
         echo; echo
     fi
 }
@@ -172,7 +179,7 @@ function createEssh {
         read opcao
         case $opcao in
             y )
-		downloadEssh
+                downloadEssh
                 ;;
             * )
                 echo "Skipped."; echo; echo
@@ -182,7 +189,7 @@ function createEssh {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/essh.el file not found."
         echo "It will be created."
-	downloadEssh
+        downloadEssh
         echo; echo
     fi
 
@@ -237,27 +244,26 @@ function downloadElectricSpacing {
     echo "Do you want download it? [y]es/[q]uit"
     read opcao
     case $opcao in
-	y )
-	    wget -N 'https://raw.githubusercontent.com/walmes/electric-spacing/master/electric-spacing-r.el' -P $HOME/.emacs.d/lisp/
+        y )
+            wget -N 'https://raw.githubusercontent.com/walmes/electric-spacing/master/electric-spacing-r.el' -P $HOME/.emacs.d/lisp/
             emacs --batch --eval '(byte-compile-file "~/.emacs.d/lisp/electric-spacing-r.el")'
-	    ;;
-	* )
-	    echo "Download skipped."; echo; echo
-	    break
-	    ;;
+            ;;
+        * )
+            echo "Download skipped."; echo; echo
+            break
+            ;;
     esac
 
 }
 
 function createElectricSpacing {
 
-    read opcao
     case $opcao in
         y )
             if [ ! -f ~/Projects/electric-spacing/electric-spacing-r.el ]
             then
-                echo "File electric-spacing-r.el not found!"
-		downloadElectricSpacing
+                echo "Git project file electric-spacing-r.el not found!"
+                downloadElectricSpacing
             else
                 cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
                    ~/.emacs.d/lisp/electric-spacing-r.el
@@ -279,15 +285,34 @@ function moveElectricSpacing {
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/electric-spacings-r.el file found."
         echo "Do you want update it? [y]es/[q]uit"
-	createElectricSpacing
+        read opcao
+        createElectricSpacing
     else
         echo ------------------------------------------------------------
         echo "~/.emacs.d/lisp/electric-spacing-r.el file not found."
         echo "It will be created."
-	createElectricSpacing
+        opcao="y"
+        createElectricSpacing
     fi
 
 }
+
+#-----------------------------------------------------------------------
+# Remember after installation.
+
+read -r -d '' REMEMBER <<EOM
+
+------------------------------------------------------------------------
+
+    This to do the first time you open GNU Emacs:
+
+    1. Byte compile \`bookmark+\` directory. Run in a LISP buffer:
+       (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
+    2. Conclude \`jedi\` installation:
+       M-x jedi:install-server RET
+
+------------------------------------------------------------------------
+EOM
 
 #----------------------------------------------------------------------
 # Cicle among options.
@@ -295,27 +320,29 @@ function moveElectricSpacing {
 while true
 do
 
-    printf "\nMenu of options\n\n"
-    printf "  1. Install GNU Emacs\n"
-    printf "  2. Move init.el and funcs.el.\n"
-    printf "  3. Install GNU Emacs packages.\n"
-    printf "  4. Download and move essh.el.\n"
-    printf "  5. Download or move electric-spacing-r.el.\n"
-    printf "  6. Download bookmark+.\n"
-    printf "  7. Open files with meld.\n"
+    printf "\nMenu of options:\n\n"
+    printf "  1. Install GNU Emacs, \`emacs-goodies-el\` and \`virtualenv\`\n"
+    printf "  2. Install GNU Emacs packages listed in \`install-packages.el\`.\n"
+    printf "  3. Move and byte compile \`init.el\` and \`funcs.el\`.\n"
+    printf "  4. Download and byte compile \`essh.el\`.\n"
+    printf "  5. Download and byte compile \`electric-spacing-r.el\`.\n"
+    printf "  6. Download \`bookmark+\`.\n"
+    printf "  7. Open \`init.el\` and \`funcs.el\` with Meld.\n"
+    printf "  8. List of things to do when open GNU Emacs the first time.\n"
     printf "  q. Quit.\n\n"
 
-    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, 7, q): " input
+    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, 7, 8, q): " input
     echo
 
     case $input in
         1) installEmacs ;;
-        2) createEmacsFiles ;;
-        3) installPackages ;;
+        2) installPackages ;;
+        3) createEmacsFiles ;;
         4) createEssh ;;
         5) moveElectricSpacing ;;
         6) createBookmark ;;
         7) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
+        8) echo "$REMEMBER" ;;
         q) break ;;
         *) echo "Invalid option!" ;;
     esac
