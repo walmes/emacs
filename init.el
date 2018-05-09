@@ -120,11 +120,27 @@
   (package-initialize))
 
 ;;----------------------------------------------------------------------
-;; Monokai color theme.
+;; Color themes. Options > Customize Emacs > Custom Themes
+;; https://emacsthemes.com/
 
-;; (load-theme 'solarized t)
-(load-theme 'monokai t)
-(set-face-attribute hl-line-face nil :background "#171816")
+;; M-x disable-theme
+;; M-x load-theme RET <theme> RET
+
+;;-------------------------------------------
+;; Dark.
+
+;; (load-theme 'monokai t)
+;; (set-face-attribute hl-line-face nil :background "#171816")
+
+;; (load-theme 'molokai t)
+(load-theme 'gotham t)
+;; (load-theme 'solarized-dark t)
+
+;;-------------------------------------------
+;; Light.
+
+;; (load-theme 'leuven t)
+;; (load-theme 'solarized-light t)
 
 ;;----------------------------------------------------------------------
 ;; helm.

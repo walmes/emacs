@@ -48,7 +48,6 @@
 (package-install 'company)
 (package-install 'bm)
 (package-install 'bookmark)
-(package-install 'monokai-theme)
 (package-install 'smartparens)
 (package-install 'yafolding)
 (package-install 'ess)
@@ -63,6 +62,12 @@
 (package-install 'elpy)
 (package-install 'jedi)
 (package-install 'jedi-core)
+
+(package-install 'monokai-theme)
+(package-install 'molokai-theme)
+(package-install 'solarized-theme)
+(package-install 'gotham-theme)
+(package-install 'leuven-theme)
 
 ;; NOTE: after install `jedi` and `jedy-core`, run `M-x
 ;; jedi:install-server` in a new GNU Emacs session to enable proper auto
