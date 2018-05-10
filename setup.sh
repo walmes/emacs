@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------
 # Welcome message.
 
-# ASCII Art.
+# ASCII Art. 87487
 # http://patorjk.com/software/taag/#p=display&f=Calvin%20S&t=GNU%20Emacs
 
 cat << EOF
@@ -246,7 +246,6 @@ function downloadElectricSpacing {
     case $opcao in
         y )
             wget -N 'https://raw.githubusercontent.com/walmes/electric-spacing/master/electric-spacing-r.el' -P $HOME/.emacs.d/lisp/
-            emacs --batch --eval '(byte-compile-file "~/.emacs.d/lisp/electric-spacing-r.el")'
             ;;
         * )
             echo "Download skipped."; echo; echo
@@ -268,6 +267,7 @@ function createElectricSpacing {
                 cp -v ~/Projects/electric-spacing/electric-spacing-r.el \
                    ~/.emacs.d/lisp/electric-spacing-r.el
             fi
+            emacs --batch --eval '(byte-compile-file "~/.emacs.d/lisp/electric-spacing-r.el")'
             ;;
         * )
             echo "Skipped."; echo; echo
@@ -341,7 +341,7 @@ do
         4) createEssh ;;
         5) moveElectricSpacing ;;
         6) createBookmark ;;
-        7) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el;;
+        7) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el ;;
         8) echo "$REMEMBER" ;;
         q) break ;;
         *) echo "Invalid option!" ;;
