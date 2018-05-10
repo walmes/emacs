@@ -44,24 +44,25 @@
 
 ;; Runs the installation of each package.
 (package-install 'helm)
+(package-install 'ess)
+(package-install 'ess-view)
+(package-install 'polymode)
+;; (package-install 'ess-R-data-view)
 (package-install 'auto-complete)
 (package-install 'company)
 (package-install 'bm)
-(package-install 'bookmark)
+;; (package-install 'bookmark)
 (package-install 'smartparens)
 (package-install 'yafolding)
-(package-install 'ess)
-(package-install 'ess-R-data-view)
 (package-install 'magit)
 (package-install 'markdown-mode)
 (package-install 'markdown-toc)
-(package-install 'polymode)
 (package-install 'neotree)
-(package-install 'sublimity)
+;; (package-install 'sublimity)
 (package-install 'key-combo)
 (package-install 'elpy)
 (package-install 'jedi)
-(package-install 'jedi-core)
+;; (package-install 'jedi-core)
 
 (package-install 'monokai-theme)
 (package-install 'molokai-theme)
@@ -72,5 +73,7 @@
 ;; NOTE: after install `jedi` and `jedy-core`, run `M-x
 ;; jedi:install-server` in a new GNU Emacs session to enable proper auto
 ;; completation for Python scripts.
+
+;; (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
 
 ;;----------------------------------------------------------------------
