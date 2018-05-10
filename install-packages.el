@@ -15,32 +15,34 @@
 
 (package-list-packages)
 
+;;----------------------------------------------------------------------
+;; https://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
+
+;; ;; List the packages you want.
+;; (setq package-list '(ess-view
+;;                      leuven-theme
+;;                      gotham-theme
+;;                      molokai-theme
+;;                      solarized-theme
+;;                      key-combo))
+;;
+;; ;; Activate all the packages (in particular autoloads).
+;; (package-initialize)
+;;
+;; ;; Fetch the list of packages available.
+;; (unless package-archive-contents
+;;   (package-refresh-contents))
+;;
+;; ;; Install the missing packages.
+;; (dolist (package package-list)
+;;   (unless (package-installed-p package)
+;;     (package-install package)))
+
+;;----------------------------------------------------------------------
+
 ;; To install a package.
 ;; (when (not (package-installed-p 'smartparens))
 ;;  (package-install 'smartparens))
-
-;; ;; List of packages.
-;; (defvar prelude-packages
-;;   "A list of packages to ensure are installed at launch."
-;;   '(helm
-;;     auto-complete
-;;     company
-;;     auctex
-;;     bm
-;;     bookmark+
-;;     color-theme color-theme-solarized
-;;     ess ess-R-data-view ess-R-object-popup
-;;     magit magit-popup
-;;     markdown-mode markdown-toc
-;;     polymode
-;;     smartparens
-;;     yafolding))
-
-;; ;; Loop that check presence and install.
-;; (cl-loop
-;;  for p in prelude-packages
-;;  when (not (package-installed-p p))
-;;  do (package-install p))
 
 ;; Runs the installation of each package.
 (package-install 'helm)
