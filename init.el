@@ -49,7 +49,16 @@
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
 ;; Font and size.
-(set-default-font "Noto Sans Mono-14")
+(cond
+ ((find-font (font-spec :name "Inconsolata"))
+  (set-default-font "Inconsolata-14"))
+ ((find-font (font-spec :name "Noto Sans Mono"))
+  (set-default-font "Noto Sans Mono-14"))
+ (t
+  (set-default-font "Ubuntu Mono-14")))
+
+;; (set-default-font "Noto Sans Mono-14")
+;; (set-default-font "Inconsolata-14")
 ;; (cond ((string-equal system-name "camus")
 ;;        (set-default-font "Noto Sans Mono-14"))
 ;;       ((string-equal system-name "ulisses")
