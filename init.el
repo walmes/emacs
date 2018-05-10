@@ -360,6 +360,9 @@
 (setq-default ess-dialect "R")
 (setq-default inferior-R-args "--no-restore-history --no-save ")
 
+(require 'ess-view)
+(setq ess-view--spreadsheet-program "gnumeric")
+
 (defadvice ess-eval-buffer (before really-eval-buffer compile activate)
   "Prevent call ess-eval-buffer by accident, frequently by
    hitting C-c C-b instead of C-c C-n."
