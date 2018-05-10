@@ -49,16 +49,15 @@
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
 ;; Font and size.
-(cond ((string-equal system-name "brother")
-       (set-default-font "Ubuntu Mono-16"))
-      ((string-equal system-name "ulisses")
-       (set-default-font "Ubuntu Mono-16"))
-      ((string-equal system-name "youngest")
-       (set-default-font "Ubuntu Mono-16"))
-      ((string-equal system-name "first")
-       (set-default-font "Ubuntu Mono-14"))
-      ((string-equal system-name "class")
-       (set-default-font "Ubuntu Mono-14")))
+(set-default-font "Noto Sans Mono-14")
+;; (cond ((string-equal system-name "camus")
+;;        (set-default-font "Noto Sans Mono-14"))
+;;       ((string-equal system-name "ulisses")
+;;        (set-default-font "Ubuntu Mono-16"))
+;;       ((string-equal system-name "youngest")
+;;        (set-default-font "Ubuntu Mono-16"))
+;;       ((string-equal system-name "class")
+;;        (set-default-font "Ubuntu Mono-14")))
 
 ;; Turn ido-mode on.
 (ido-mode t)
