@@ -298,6 +298,47 @@ function moveElectricSpacing {
 }
 
 #-----------------------------------------------------------------------
+
+function installMeld {
+
+    echo "Do you want to install \`meld\`? [y]es/[n]o"
+    read opcao
+    case $opcao in
+        y )
+            echo "Running \"apt-get install meld\"."
+            sudo apt-get install meld -y
+            echo; echo
+            ;;
+        * )
+            echo "Skipped."; echo; echo
+            ;;
+    esac
+
+}
+
+function useMeld {
+
+    meld init.el ~/.emacs.d/init.el && \
+        meld funcs.el ~/.emacs.d/lisp/funcs.el
+
+}
+
+function callMeld {
+
+    if which meld >/dev/null
+    then
+        callMeld
+        echo; echo
+    else
+        echo "The program \`meld\` ins't installed."
+        installMeld
+        callMeld
+        echo; echo
+    fi
+
+}
+
+#-----------------------------------------------------------------------
 # Remember after installation.
 
 read -r -d '' REMEMBER <<EOM
@@ -341,7 +382,7 @@ do
         4) createEssh ;;
         5) moveElectricSpacing ;;
         6) createBookmark ;;
-        7) meld init.el ~/.emacs.d/init.el && meld funcs.el ~/.emacs.d/lisp/funcs.el ;;
+        7) callMeld ;;
         8) echo "$REMEMBER" ;;
         q) break ;;
         *) echo "Invalid option!" ;;
