@@ -46,6 +46,7 @@
 
 ;; Runs the installation of each package.
 (package-install 'helm)
+(package-install 'auctex)
 (package-install 'ess)
 (package-install 'ess-view)
 (package-install 'polymode)
