@@ -19,12 +19,28 @@
 ;; https://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
 
 ;; ;; List the packages you want.
-;; (setq package-list '(ess-view
-;;                      leuven-theme
-;;                      gotham-theme
+;; (setq package-list '(helm
+;;                      auctex
+;;                      ess
+;;                      ess-view
+;;                      polymode
+;;                      auto-complete
+;;                      company
+;;                      bm
+;;                      smartparens
+;;                      yafolding
+;;                      magit
+;;                      markdown-mode
+;;                      markdown-toc
+;;                      neotree
+;;                      key-combo
+;;                      elpy
+;;                      jedi
+;;                      monokai-theme
 ;;                      molokai-theme
 ;;                      solarized-theme
-;;                      key-combo))
+;;                      gotham-theme
+;;                      leuven-theme))
 ;;
 ;; ;; Activate all the packages (in particular autoloads).
 ;; (package-initialize)
@@ -78,5 +94,9 @@
 ;; completation for Python scripts.
 
 ;; (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
+
+;; NOTE: install `sudo apt-get install python3-pip` is important to Elpy
+;; works properly may due some things that are installed along side with
+;; pip3.
 
 ;;----------------------------------------------------------------------
