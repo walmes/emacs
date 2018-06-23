@@ -1,3 +1,4 @@
+;;----------------------------------------------------------------------
 ;; ATTENTION: Run it in terminal in batch mode.
 ;;   emacs --script install-packages.el
 
@@ -33,6 +34,7 @@
 ;;                      markdown-mode
 ;;                      markdown-toc
 ;;                      neotree
+;;                      imenu-list
 ;;                      key-combo
 ;;                      elpy
 ;;                      jedi
@@ -77,6 +79,7 @@
 (package-install 'markdown-mode)
 (package-install 'markdown-toc)
 (package-install 'neotree)
+(package-install 'imenu-list)
 ;; (package-install 'sublimity)
 (package-install 'key-combo)
 (package-install 'elpy)

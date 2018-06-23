@@ -336,6 +336,19 @@
 (add-hook 'markdown-mode-hook 'turn-on-orgstruct)
 (add-hook 'markdown-mode-hook 'turn-on-orgstruct++)
 
+;; Enable Index at the menu bar with the TOC of markdown document.
+(add-hook 'markdown-mode-hook 'imenu-add-menubar-index)
+(setq imenu-auto-rescan t)
+
+(require 'imenu-list)
+(setq imenu-list-focus-after-activation t
+      imenu-list-auto-resize nil)
+
+(add-hook
+ 'markdown-mode-hook
+ '(lambda()
+    (global-set-key (kbd "<f10>") 'imenu-list-smart-toggle)))
+
 ;;----------------------------------------------------------------------
 ;; R+MarkDown extensions (emacs >= 24.3.1).
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
