@@ -340,14 +340,15 @@
 (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)
 (setq imenu-auto-rescan t)
 
+;; https://leanpub.com/markdown-mode/read -> section 4.6.
 (require 'imenu-list)
 (setq imenu-list-focus-after-activation t
       imenu-list-auto-resize nil)
 
-(add-hook
- 'markdown-mode-hook
- '(lambda()
-    (global-set-key (kbd "<f10>") 'imenu-list-smart-toggle)))
+;; Uses F10 to toggle the TOC sidebar for easy navigation.
+(add-hook 'markdown-mode-hook
+          '(lambda()
+             (global-set-key (kbd "<f10>") 'imenu-list-smart-toggle)))
 
 ;;----------------------------------------------------------------------
 ;; R+MarkDown extensions (emacs >= 24.3.1).
