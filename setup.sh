@@ -327,12 +327,12 @@ function callMeld {
 
     if which meld >/dev/null
     then
-        callMeld
+        useMeld
         echo; echo
     else
         echo "The program \`meld\` ins't installed."
         installMeld
-        callMeld
+        useMeld
         echo; echo
     fi
 
