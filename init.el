@@ -378,7 +378,7 @@
 ;;   (package-install 'ess))
 
 ;; (require 'ess-site)
-(require 'ess-eldoc)
+;; (require 'ess-eldoc)
 (setq-default ess-dialect "R")
 (setq-default inferior-R-args "--no-restore-history --no-save ")
 
