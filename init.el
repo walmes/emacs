@@ -494,6 +494,7 @@
 
 (require 'electric-spacing-r)
 (add-hook 'ess-mode-hook #'electric-spacing-mode)
+(add-hook 'python-mode-hook #'electric-spacing-mode)
 
 ;;----------------------------------------------------------------------
 ;; Key combos.
