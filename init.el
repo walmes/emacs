@@ -147,8 +147,15 @@
 ;;-------------------------------------------
 ;; Light.
 
+;; (load-theme 'flatui t)
 ;; (load-theme 'leuven t)
-;; (load-theme 'solarized-light t)
+;; (load-theme 'solarized t)
+
+;; (require 'use-package)
+;; (use-package spacemacs-theme
+;;   :ensure t
+;;   :init
+;;   (load-theme 'spacemacs-light t))
 
 ;;----------------------------------------------------------------------
 ;; helm.

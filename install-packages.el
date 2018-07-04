@@ -42,7 +42,9 @@
 ;;                      molokai-theme
 ;;                      solarized-theme
 ;;                      gotham-theme
-;;                      leuven-theme))
+;;                      leuven-theme
+;;                      flatui-theme
+;;                      spacemacs-theme))
 ;;
 ;; ;; Activate all the packages (in particular autoloads).
 ;; (package-initialize)
@@ -86,11 +88,16 @@
 (package-install 'jedi)
 ;; (package-install 'jedi-core)
 
+;; Light.
 (package-install 'monokai-theme)
 (package-install 'molokai-theme)
-(package-install 'solarized-theme)
 (package-install 'gotham-theme)
+;; Dark.
 (package-install 'leuven-theme)
+(package-install 'flatui-theme)
+;; Both.
+(package-install 'solarized-theme)
+(package-install 'spacemacs-theme)
 
 ;; NOTE: after install `jedi` and `jedy-core`, run `M-x
 ;; jedi:install-server` in a new GNU Emacs session to enable proper auto
