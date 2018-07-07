@@ -292,32 +292,32 @@
 ;;----------------------------------------------------------------------
 ;; Header.
 
-;; (defun wz-right-align-commented-text (text)
-;;   "Write text aligned to the right margin at `fill-column' and
-;;    comment it out."
-;;   (let ((number-of-spaces (- fill-column (length text)))
-;;         (string-length (length text)))
-;;     (insert (concat "\n" text))
-;;     (comment-line-or-region)
-;;     (backward-char string-length)
-;;     (insert (make-string (- number-of-spaces 3) ? ))
-;;     (forward-char string-length)))
+(defun wz-right-align-commented-text (text)
+  "Write text aligned to the right margin at `fill-column' and
+   comment it out."
+  (let ((number-of-spaces (- fill-column (length text)))
+        (string-length (length text)))
+    (insert (concat "\n" text))
+    (comment-line-or-region)
+    (backward-char string-length)
+    (insert (make-string (- number-of-spaces 3) ? ))
+    (forward-char string-length)))
 
 (defun wz-header ()
   "Insert a header."
   (interactive)
-  (insert-rule-and-comment-2)
-  (insert "\n?")
-  (comment-line-or-region)
-  (right-align-commented-text "Walmes Zeviani")
-  (right-align-commented-text "www.leg.ufpr.br/~walmes")
-  (right-align-commented-text "walmes [@] ufpr.br")
-  (right-align-commented-text "LEG/UFPR")
-  (right-align-commented-text (format-time-string "%Y-%m-%d"))
+  (wz-insert-rule-from-point-to-margin)
+  ;; (insert "\n?")
+  ;; (comment-line-or-region)
+  (wz-right-align-commented-text "Prof. Dr. Walmes M. Zeviani")
+  (wz-right-align-commented-text "leg.ufpr.br/~walmes · github.com/walmes")
+  (wz-right-align-commented-text "walmes@ufpr.br · @walmeszeviani")
+  (wz-right-align-commented-text "Department of Statistics · Federal University Of Paraná")
+  (wz-right-align-commented-text (concat (format-time-string "%Y-%b-%d") " · Curitiba/PR/Brazil"))
   (insert "\n")
-  (insert-rule-and-comment-2)
+  (wz-insert-rule-from-point-to-margin)
   ;; If insert/delete new line of infomation, then de/increment a unit.
-  (previous-line 6)
+  (forward-line -6)
   (delete-char -1))
 
 ;;----------------------------------------------------------------------
