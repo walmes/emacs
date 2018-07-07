@@ -366,12 +366,12 @@
 
 (require 'poly-R)
 (require 'poly-markdown)
-(require 'poly-noweb)
 
-(autoload 'poly-markdown-mode "poly-markdown-mode"
-  "Major mode for editing R-Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.[Rr]md\\'" . poly-markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.Rpres\\'"  . poly-markdown-mode))
+;; (autoload 'poly-markdown-mode "poly-markdown-mode"
+;;   "Major mode for editing R-Markdown files" t)
+;; (add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown+r-mode))
+(add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
 
 ;; Movement across chunks in Rmd files.
 (global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
