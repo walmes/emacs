@@ -480,7 +480,7 @@
                       (re-search-forward rgxp)
                       (forward-char -1)))
               ((eq event 'delete)
-               (progn (next-line)
+               (progn (forward-line)
                       (delete-indentation)
                       (re-search-backward rgxp)
                       (forward-char 1)))
@@ -489,9 +489,9 @@
                       (re-search-backward rgxp)
                       (forward-char 1)))
               ((eq event 'down)
-               (next-line))
+               (forward-line))
               ((eq event 'up)
-               (previous-line))
+               (forward-line -1))
               ((eq event ?\C-z)
                (undo))
               ((eq event 'escape)
@@ -557,8 +557,7 @@
         (goto-char (1+ (point-at-eol)))
         (setq string (buffer-substring-no-properties (point) end))))
     (delete-region beg end)
-    (insert string)
-    (delete-backward-char 0)))
+    (insert string)))
 
 (defun wz-ess-stringi-escape-unicode (beg end)
   "Replace non-ASCII by the corresponding unicode. Select the text
@@ -586,7 +585,7 @@
         (setq string (buffer-substring-no-properties (point) end))))
     (delete-region beg end)
     (insert string)
-    (delete-backward-char 2)))
+    (delete-char -2)))
 
 ;;----------------------------------------------------------------------
 ;; Improved version of occur. Quick navigation.
