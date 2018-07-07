@@ -541,7 +541,7 @@
           (replace-regexp-in-string ;; how to avoid this double matching?
            "\\\\\"" "\\\\\\&"
            (buffer-substring-no-properties beg end))))
-	(buf (get-buffer-create "*ess-command-output*")))
+        (buf (get-buffer-create "*ess-command-output*")))
     (ess-force-buffer-current "Process to load into:")
     (ess-command
      (format
@@ -553,9 +553,9 @@
       (goto-char (point-max))
       ;; (skip-chars-backward "\n")
       (let ((end (point)))
-	(goto-char (point-min))
-	(goto-char (1+ (point-at-eol)))
-	(setq string (buffer-substring-no-properties (point) end))))
+        (goto-char (point-min))
+        (goto-char (1+ (point-at-eol)))
+        (setq string (buffer-substring-no-properties (point) end))))
     (delete-region beg end)
     (insert string)
     (delete-backward-char 0)))
@@ -570,7 +570,7 @@
           (replace-regexp-in-string
            "\\\\\"" "\\\\\\&"
            (buffer-substring-no-properties beg end))))
-	(buf (get-buffer-create "*ess-command-output*")))
+        (buf (get-buffer-create "*ess-command-output*")))
     (ess-force-buffer-current "Process to load into:")
     (ess-command
      (format
@@ -581,9 +581,9 @@
     (with-current-buffer buf
       (goto-char (point-max))
       (let ((end (point)))
-	(goto-char (point-min))
+        (goto-char (point-min))
         (skip-chars-forward " +")
-	(setq string (buffer-substring-no-properties (point) end))))
+        (setq string (buffer-substring-no-properties (point) end))))
     (delete-region beg end)
     (insert string)
     (delete-backward-char 2)))
@@ -605,11 +605,11 @@
   (if (occur-check-existence)
       (progn
         (delete-other-windows)
-	;; (split-window-horizontally)
-	;; (enlarge-window-horizontally -30)
+        ;; (split-window-horizontally)
+        ;; (enlarge-window-horizontally -30)
         (split-window-vertically)
         (enlarge-window -10)
-	;; (set-cursor-color "green")
+        ;; (set-cursor-color "green")
         )
     )
   (occur-procede-accordingly)
@@ -668,34 +668,34 @@
 ;;   "If inside comments, move the point backwards out."
 ;;   (let ((opoint (point)) stop)
 ;;     (if (save-excursion
-;; 	  (beginning-of-line)
-;; 	  (search-forward "#" opoint 'move))
-;; 	(while (not stop)
-;; 	  (skip-chars-backward " \t\n\f" lim)
-;; 	  (setq opoint (point))
-;; 	  (beginning-of-line)
-;; 	  (search-forward "#" opoint 'move)
-;; 	  (skip-chars-backward " \t#")
-;; 	  (setq stop (or (/= (preceding-char) ?\n) (<= (point) lim)))
-;; 	  (if stop (point)
-;; 	    (beginning-of-line))))))
+;;           (beginning-of-line)
+;;           (search-forward "#" opoint 'move))
+;;         (while (not stop)
+;;           (skip-chars-backward " \t\n\f" lim)
+;;           (setq opoint (point))
+;;           (beginning-of-line)
+;;           (search-forward "#" opoint 'move)
+;;           (skip-chars-backward " \t#")
+;;           (setq stop (or (/= (preceding-char) ?\n) (<= (point) lim)))
+;;           (if stop (point)
+;;             (beginning-of-line))))))
 ;;
 ;; (defun ess-edit-backward-move-out-of-quotes ()
 ;;   "If inside quotes, move the point backwards out."
 ;;   (let ((start
-;; 	 (save-excursion
-;; 	   (beginning-of-line) (point))))
+;;          (save-excursion
+;;            (beginning-of-line) (point))))
 ;;     (if (ess-edit-within-quotes start (point))
-;; 	(re-search-backward "[\'\"]" nil t))))
+;;         (re-search-backward "[\'\"]" nil t))))
 ;;
 ;; (defun ess-edit-within-quotes (beg end)
 ;;   "Return t if the number of quotes between BEG and END is odd.
 ;;    Quotes are single and double."
 ;;   (let (
-;; 	;; (countsq (ess-edit-how-many-quotes-region "\\(^\\|[^\\\\]\\)\'" beg end))
-;; 	;; (countdq (ess-edit-how-many-quotes-region "\\(^\\|[^\\\\]\\|^\"\"\\)\"" beg end)))
-;; 	(countsq (ess-edit-how-many-quotes-region beg end))
-;; 	(countdq (ess-edit-how-many-quotes-region beg end)))
+;;         ;; (countsq (ess-edit-how-many-quotes-region "\\(^\\|[^\\\\]\\)\'" beg end))
+;;         ;; (countdq (ess-edit-how-many-quotes-region "\\(^\\|[^\\\\]\\|^\"\"\\)\"" beg end)))
+;;         (countsq (ess-edit-how-many-quotes-region beg end))
+;;         (countdq (ess-edit-how-many-quotes-region beg end)))
 ;;     ;; (countsq (ess-edit-how-many-region "\'" beg end))
 ;;     ;; (countdq (ess-edit-how-many-region "\"" beg end)))
 ;;     (or (= (mod countsq 2) 1) (= (mod countdq 2) 1))))
@@ -706,14 +706,14 @@
 ;;   (let ((count 0))
 ;;     (save-excursion
 ;;       (save-match-data
-;; 	(goto-char beg)
-;; 	(while (re-search-forward "\"\\|\'" end t)
-;; 	  (if (or (save-excursion
-;; 		    (backward-char 3)
-;; 		    (looking-at "\\\\"))
-;; 		  (looking-at "\"\\|\'"))
-;; 	      (forward-char 1)
-;; 	    (setq count (1+ count))))))
+;;         (goto-char beg)
+;;         (while (re-search-forward "\"\\|\'" end t)
+;;           (if (or (save-excursion
+;;                     (backward-char 3)
+;;                     (looking-at "\\\\"))
+;;                   (looking-at "\"\\|\'"))
+;;               (forward-char 1)
+;;             (setq count (1+ count))))))
 ;;     count))
 ;;
 ;; (defun ess-edit-read-call (&optional arg move all)
@@ -729,21 +729,21 @@
 ;;   (add-hook 'pre-command-hook 'ess-edit-pre-command-hook)
 ;;   ;; assume correct syntax, at least beyond previous paragraph-start
 ;;   (let ((oldpoint (point))
-;; 	(lim (save-excursion
-;; 	       (backward-paragraph 1) (point)))
-;; 	fun beg end)
+;;         (lim (save-excursion
+;;                (backward-paragraph 1) (point)))
+;;         fun beg end)
 ;;     ;; move outside comments and quotes first
 ;;     (ess-edit-backward-move-out-of-comments lim)
 ;;     (ess-edit-backward-move-out-of-quotes)
 ;;     ;;what if we are sitting on a function call?
 ;;     (if (save-excursion
-;; 	  (skip-chars-backward "a-zA-Z0-9.")
-;; 	  (looking-at "\\([a-zA-Z0-9.]+\\)\\((\\)"))
-;; 	(setq beg (match-beginning 1) end (match-end 1)
-;; 	      fun (list (match-string 1))
-;; 	      arg (- arg 1)))
+;;           (skip-chars-backward "a-zA-Z0-9.")
+;;           (looking-at "\\([a-zA-Z0-9.]+\\)\\((\\)"))
+;;         (setq beg (match-beginning 1) end (match-end 1)
+;;               fun (list (match-string 1))
+;;               arg (- arg 1)))
 ;;     (while
-;; 	(and (> arg 0)
+;;         (and (> arg 0)
 ;;              (re-search-backward "[\"\'()]" lim t)
 ;;              (let ((matchcar (char-before (match-end 0)))
 ;;                    matchcall)
@@ -804,30 +804,30 @@
 ;; (defun ess-edit-indent-call-sophisticatedly (&optional arg force)
 ;;   (interactive "p")
 ;;   (let* ((arg (or arg 1))
-;; 	 (fun (ess-edit-read-call arg 'go))
-;; 	 (beg (+ (point) 1))
-;; 	 (end (progn (forward-sexp) (point)))
-;; 	 breaks
-;; 	 delete-p)
+;;          (fun (ess-edit-read-call arg 'go))
+;;          (beg (+ (point) 1))
+;;          (end (progn (forward-sexp) (point)))
+;;          breaks
+;;          delete-p)
 ;;     ;; (eq last-command 'ess-edit-indent-call-sophisticatedly)
 ;;     (goto-char beg)
 ;;     (while (setq match (re-search-forward "[\"\'{([,]" end t))
 ;;       (if (string= (match-string 0) ",")
-;; 	  (setq breaks
+;;           (setq breaks
 ;;                 (cons (cons (point)
 ;;                             (if (looking-at "[ \t]*\n") t nil))
 ;;                       breaks))
-;; 	(if (or (string= (match-string 0) "\"")
+;;         (if (or (string= (match-string 0) "\"")
 ;;                 (string= (match-string 0) "\'"))
-;; 	    (re-search-forward (match-string 0) nil t)
+;;             (re-search-forward (match-string 0) nil t)
 ;;           (backward-char 1)
 ;;           (forward-sexp))))
 ;;     ;; if there are more breaks than half the number of
 ;;     ;; arguments then delete breaks else add linebreaks
 ;;     (setq delete-p
-;; 	  (if force
+;;           (if force
 ;;               nil
-;; 	    (> (length (delete nil (mapcar 'cdr breaks)))
+;;             (> (length (delete nil (mapcar 'cdr breaks)))
 ;;                (* 0.5 (length breaks)))))
 ;;     (while breaks
 ;;       (goto-char (caar breaks))
@@ -870,7 +870,8 @@
  'poly-markdown-mode-hook
  (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
 
-(add-hook 'ess-mode-hook
+(add-hook
+ 'ess-mode-hook
  (lambda ()
    (local-set-key (kbd "C-c r")   'ess-eval-word)
    (local-set-key (kbd "C-c a")   'wz-ess-align-R-assigment-operators)
