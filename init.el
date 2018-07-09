@@ -522,33 +522,33 @@
 ;; Key combos.
 ;; https://github.com/emacs-ess/ESS/issues/96
 
-(require 'key-combo)
-
-(defvar key-combo-ess-default
-  '((">"  . (" > " " %>% " " %>%\n"))
-    ("<"  . (" < " " <<- "))
-    ("$"  . ("$" " %$% "))
-    ("<>" . " %<>% ")
-    ("%" . " %")
-    ("#" . "# ")
-    ;; ("*"  . ("*" " * "))
-    ;; ("%" . ("%" "%*%" "%%"))
-    ;; ("^"  . ("^" " ^ "))
-    ("/"  . ("/" " %/% " " %% "))
-    ;; ("~" . " ~ ")
-    ;; (":" . (":" "::" ":::"))
-    ;; (":="  . " := ") ; data.table
-    ("->"  . " -> ")
-    ("."  . ("." "_" "..."))))
-
-(add-hook 'ess-mode-hook
-          '(lambda() (key-combo-mode t)))
-(add-hook 'inferior-ess-mode-hook
-          '(lambda() (key-combo-mode t)))
-
-(key-combo-define-hook '(ess-mode-hook inferior-ess-mode-hook)
-                       'ess-key-combo-load-default
-                       key-combo-ess-default)
+;; (require 'key-combo)
+;;
+;; (defvar key-combo-ess-default
+;;   '((">"  . (" > " " %>% " " %>%\n"))
+;;     ("<"  . (" < " " <<- "))
+;;     ("$"  . ("$" " %$% "))
+;;     ("<>" . " %<>% ")
+;;     ("%" . " %")
+;;     ("#" . "# ")
+;;     ;; ("*"  . ("*" " * "))
+;;     ;; ("%" . ("%" "%*%" "%%"))
+;;     ;; ("^"  . ("^" " ^ "))
+;;     ("/"  . ("/" " %/% " " %% "))
+;;     ;; ("~" . " ~ ")
+;;     ;; (":" . (":" "::" ":::"))
+;;     ;; (":="  . " := ") ; data.table
+;;     ("->"  . " -> ")
+;;     ("."  . ("." "_" "..."))))
+;;
+;; (add-hook 'ess-mode-hook
+;;           '(lambda() (key-combo-mode t)))
+;; (add-hook 'inferior-ess-mode-hook
+;;           '(lambda() (key-combo-mode t)))
+;;
+;; (key-combo-define-hook '(ess-mode-hook inferior-ess-mode-hook)
+;;                        'ess-key-combo-load-default
+;;                        key-combo-ess-default)
 
 ;;----------------------------------------------------------------------
 ;; Latex extensions.
