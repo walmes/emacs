@@ -292,7 +292,7 @@
 ;;----------------------------------------------------------------------
 ;; Header.
 
-(defun wz-right-align-commented-text (text)
+(defun wz-right-align-commented-text (text comment-char-size)
   "Write text aligned to the right margin at `fill-column' and
    comment it out."
   (let ((number-of-spaces (- fill-column (length text)))
@@ -300,26 +300,38 @@
     (insert (concat "\n" text))
     (comment-line-or-region)
     (backward-char string-length)
-    (insert (make-string (- number-of-spaces 3) ? ))
+    (insert (make-string (- number-of-spaces comment-char-size) ? ))
     (forward-char string-length)))
 
 (defun wz-header ()
   "Insert a header."
   (interactive)
   (wz-insert-rule-from-point-to-margin)
-  ;; (insert "\n?")
-  ;; (comment-line-or-region)
-  (wz-right-align-commented-text "Prof. Dr. Walmes M. Zeviani")
-  (wz-right-align-commented-text "leg.ufpr.br/~walmes · github.com/walmes")
-  (wz-right-align-commented-text "walmes@ufpr.br · @walmeszeviani")
-  (wz-right-align-commented-text "Laboratory of Statistics and Geoinformation (LEG)")
-  (wz-right-align-commented-text "Department of Statistics · Federal University of Paraná")
-  (wz-right-align-commented-text (concat (format-time-string "%Y-%b-%d") " · Curitiba/PR/Brazil"))
+  ;; Get the number of characters used as comment.
+  (let ((comment-char-size
+         (- (+ fill-column 1)
+            (how-many "-" (line-beginning-position) (point) t))))
+    (wz-right-align-commented-text
+     "Prof. Dr. Walmes M. Zeviani"
+     comment-char-size)
+    (wz-right-align-commented-text
+     "leg.ufpr.br/~walmes · github.com/walmes"
+     comment-char-size)
+    (wz-right-align-commented-text
+     "walmes@ufpr.br · @walmeszeviani"
+     comment-char-size)
+    (wz-right-align-commented-text
+     "Laboratory of Statistics and Geoinformation (LEG)"
+     comment-char-size)
+    (wz-right-align-commented-text
+     "Department of Statistics · Federal University of Paraná"
+     comment-char-size)
+    (wz-right-align-commented-text
+     (concat (format-time-string "%Y-%b-%d") " · Curitiba/PR/Brazil")
+     comment-char-size)
+    )
   (insert "\n")
-  (wz-insert-rule-from-point-to-margin)
-  ;; If insert/delete new line of infomation, then de/increment a unit.
-  (forward-line -6)
-  (delete-char -1))
+  (wz-insert-rule-from-point-to-margin))
 
 ;;----------------------------------------------------------------------
 ;; Code based on
