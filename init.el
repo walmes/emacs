@@ -663,15 +663,16 @@
   (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
-   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\)"
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\)\\>"
       0 'font-lock-warning-face t)
-     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)"
+     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)\\>"
       0 'font-lock-warning-face t)
-     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)"
+     ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)\\>"
       0 'bad-words t)
-     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\)"
+     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\)\\>"
       0 'good-words t))
    ))
+
 ;;----------------------------------------------------------------------
 
 (custom-set-variables
