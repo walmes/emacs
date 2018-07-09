@@ -871,20 +871,21 @@
 (global-set-key (kbd "M-[") 'move-region-up)
 (global-set-key (kbd "M-]") 'move-region-down)
 (global-set-key (kbd "C-ç") 'camel-dot-snake)
-(global-set-key [?\M--] 'wz-insert-rule-from-point-to-margin)
-(global-set-key [?\C--] 'wz-insert-rule-and-comment-3)
-(global-set-key [?\M-=]
+(global-set-key (kbd "C--") 'wz-insert-rule-from-point-to-margin)
+(global-set-key (kbd "C-M--") 'wz-insert-rule-and-comment-3)
+(global-set-key (kbd "M-=")
                 (lambda ()
                   (interactive)
                   (wz-insert-rule-from-point-to-margin ?=)))
 
 (add-hook
- 'poly-markdown-mode-hook
+ 'markdown-mode-hook
  (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
 
 (add-hook
  'ess-mode-hook
  (lambda ()
+   (local-set-key (kbd "C-c i")   'insert-chunk)
    (local-set-key (kbd "C-c r")   'ess-eval-word)
    (local-set-key (kbd "C-c a")   'wz-ess-align-R-assigment-operators)
    (local-set-key (kbd "C-,")     'wz-ess-backward-break-line-here)
