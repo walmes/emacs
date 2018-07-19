@@ -373,10 +373,6 @@
 (add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
 
-;; Movement across chunks in Rmd files.
-(global-set-key (kbd "S-<f7>") 'polymode-previous-chunk)
-(global-set-key (kbd "S-<f8>") 'polymode-next-chunk)
-
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/

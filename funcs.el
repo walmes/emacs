@@ -379,13 +379,58 @@
 ;; -style-between-camel-case-and-c-style-in-emacs/
 
 ;;----------------------------------------------------------------------
+;; Functions related do Rmd files.
 
 ;; Insert a new (empty) chunk to R markdown.
-(defun insert-chunk ()
+(defun wz-insert-chunk ()
   "Insert chunk environment Rmd sessions."
   (interactive)
   (insert "```{r}\n\n```")
   (forward-line -1))
+
+;; Goes to next chunk.
+(defun wz-polymode-next-chunk ()
+  "Go to next chunk. This function is not general because is
+   assumes all chunks are of R language."
+  (interactive)
+  (search-forward-regexp "^```{.*}$" nil t)
+  (forward-line 1))
+
+;; Goes to previous chunk.
+(defun wz-polymode-previous-chunk ()
+  "Go to previous chunk. This function is not general because is
+   assumes all chunks are of R language."
+  (interactive)
+  (search-backward-regexp "^```$" nil t)
+  (search-backward-regexp "^```{.*}$" nil t)
+  (forward-line 1))
+
+;; Evals current R chunk.
+(defun wz-polymode-eval-R-chunk ()
+  "Evals all code in R chunks in a polymode document (Rmd files)."
+  (interactive)
+  (if (derived-mode-p 'ess-mode)
+      (let ((ptn (point))
+            (beg (progn
+                   (search-backward-regexp "^```{r.*}$" nil t)
+                   (forward-line 1)
+                   (line-beginning-position)))
+            (end (progn
+                   (search-forward-regexp "^```$" nil t)
+                   (forward-line -1)
+                   (line-end-position))))
+        (ess-eval-region beg end nil)
+        (goto-char ptn))
+    (message "ess-mode weren't detected.")))
+
+;; Evals R chunk and goes to next chunk.
+(defun wz-polymode-eval-R-chunk-and-next ()
+  "Evals a R chunk and move point to next chunk."
+  (interactive)
+  (wz-polymode-eval-R-chunk)
+  (wz-polymode-next-chunk))
+
+;;----------------------------------------------------------------------
 
 ;; ;; Based on:
 ;; ;; http://stackoverflow.com/questions/4697322/elisp-call-command-on-current-file
@@ -880,18 +925,27 @@
 
 (add-hook
  'markdown-mode-hook
- (lambda () (local-set-key (kbd "C-c i") 'insert-chunk)))
+ (lambda ()
+   (local-set-key (kbd "C-c i")   'wz-insert-chunk)
+   (local-set-key (kbd "<f6>")    'wz-polymode-eval-R-chunk)
+   (local-set-key (kbd "S-<f6>")  'wz-polymode-eval-R-chunk-and-next)
+   (local-set-key (kbd "S-<f7>")  'wz-polymode-previous-chunk)
+   (local-set-key (kbd "S-<f8>")  'wz-polymode-next-chunk)))
 
 (add-hook
  'ess-mode-hook
  (lambda ()
-   (local-set-key (kbd "C-c i")   'insert-chunk)
+   (local-set-key (kbd "C-c i")   'wz-insert-chunk)
+   (local-set-key (kbd "<f6>")    'wz-polymode-eval-R-chunk)
+   (local-set-key (kbd "S-<f6>")  'wz-polymode-eval-R-chunk-and-next)
+   (local-set-key (kbd "S-<f7>")  'wz-polymode-previous-chunk)
+   (local-set-key (kbd "S-<f8>")  'wz-polymode-next-chunk)
    (local-set-key (kbd "C-c r")   'ess-eval-word)
    (local-set-key (kbd "C-c a")   'wz-ess-align-R-assigment-operators)
    (local-set-key (kbd "C-,")     'wz-ess-backward-break-line-here)
    (local-set-key (kbd "C-.")     'wz-ess-forward-break-line-here)
    (local-set-key (kbd "<f7>")    'wz-ess-break-or-join-lines-wizard)
-   (local-set-key (kbd "<S-f6>")  'wz-ess-rmarkdown-render)
+   ;; (local-set-key (kbd "<S-f6>")  'wz-ess-rmarkdown-render)
    (local-set-key (kbd "<S-f9>")  'wz-ess-backward-R-assigment-symbol)
    (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
    ;; (local-set-key (kbd "C-c C-h") 'ess-edit-indent-call-sophisticatedly)
