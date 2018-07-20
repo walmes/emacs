@@ -385,8 +385,10 @@
 (defun wz-insert-chunk ()
   "Insert chunk environment Rmd sessions."
   (interactive)
-  (insert "```{r}\n\n```")
-  (forward-line -1))
+  (if (derived-mode-p 'ess-mode)
+      (insert "```\n\n```{r}\n")
+    (insert "```{r}\n\n```")
+    (forward-line -1)))
 
 ;; Goes to next chunk.
 (defun wz-polymode-next-chunk ()
