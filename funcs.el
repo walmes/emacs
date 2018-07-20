@@ -432,6 +432,48 @@
   (wz-polymode-eval-R-chunk)
   (wz-polymode-next-chunk))
 
+(defun wz-polymode-eval-line-by-line (end)
+  "This function evaluates only R code inside Rmd chunks from
+   `point' to `end'. The function determine the boundaries of a
+   chunk based on regex. If the point is a chunk, then each line
+   is evaluated and the point go to the next line."
+  (interactive)
+  ;; Turn on/off the `inside-chunk' based on the major-mode at point.
+  (if (derived-mode-p 'ess-mode)
+      (setq inside-chunk t)
+    (setq inside-chunk nil))
+  ;; Go through each line till reach `end'.
+  (while (< (point) end)
+    ;; (beginning-of-line)
+    ;; Test if point is at the chunk header.
+    (if (looking-at "```{r")
+        (progn
+          (setq inside-chunk t)
+          (forward-line 1)))
+    ;; If inside-chunk is t then evaluate the line.
+    (if inside-chunk
+        (ess-eval-line t))
+    (forward-line 1)
+    ;; (beginning-of-line)
+    ;; Test if point is at the chunk tail.
+    (if (looking-at "```$")
+        (setq inside-chunk nil))))
+
+(defun wz-polymode-eval-chunks-on-region ()
+  "This function calls `wz-polymode-eval-line-by-line'.
+   It only determines if region is activated. Then it evaluates
+   the code inside the chunks in the region."
+  (interactive)
+  (if (region-active-p)
+      ;; If region is activated.
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (goto-char beg)
+        ;; Calls the function.
+        (wz-polymode-eval-line-by-line end))
+    ;; If the region is not activated.
+    (message "Region must be activated.")))
+
 ;;----------------------------------------------------------------------
 
 ;; ;; Based on:
