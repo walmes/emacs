@@ -38,6 +38,7 @@
 ;;                      key-combo
 ;;                      elpy
 ;;                      jedi
+;;                      web-mode
 ;;                      monokai-theme
 ;;                      molokai-theme
 ;;                      solarized-theme
@@ -87,6 +88,7 @@
 (package-install 'elpy)
 (package-install 'jedi)
 ;; (package-install 'jedi-core)
+(package-install 'web-mode)
 
 ;; Light.
 (package-install 'monokai-theme)

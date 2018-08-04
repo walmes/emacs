@@ -15,6 +15,10 @@
 ;; http://www.mygooglest.com/fni/dot-emacs.html
 ;; “Show me your ~/.emacs and I will tell
 ;;    you who you are.” -- Bogdan Maryniuk.
+;;
+;; https://www.emacswiki.org/emacs/EmacsKoans
+;; “-- Master, does Emacs have buddha-nature?
+;;  -- I can't se why not, it has everything else.”
 
 ;;----------------------------------------------------------------------
 ;; Basic definitions.
@@ -616,6 +620,20 @@
 
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
+
+;;----------------------------------------------------------------------
+;; To edit HTML and related files.
+
+(require 'web-mode)
+
+;; Enable mode for file types.
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+;; Customization.
+(add-hook 'web-mode-hook
+          '(lambda ()
+             (setq web-mode-markup-indent-offset 2))
+          t)
 
 ;;----------------------------------------------------------------------
 ;; File navigation like in Sublime.
