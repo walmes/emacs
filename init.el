@@ -467,9 +467,8 @@
                (global-set-key (kbd "<M-S-down>") 'down-list))))
 
 ;; When point is in a function argument list, F5 shows ARGS in the
-;; minibuffer and Shift-F5 inserts them at point.
-(define-key ess-mode-map [f5] 'ess-r-args-show)
-(define-key ess-mode-map [S-f5] 'ess-r-args-insert)
+;; minibuffer.
+(define-key ess-mode-map [f5] 'ess-ac-args)
 
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
