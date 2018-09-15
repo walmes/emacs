@@ -585,6 +585,7 @@
 ;; Install first: M-x package-list-packages C-s elpy.
 (elpy-enable)
 (setq python-shell-interpreter "/usr/bin/python3")
+;; (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
 
 ;; Seguir: http://tkf.github.io/emacs-jedi/latest/
 ;;   Terminal : sudo apt-get install virtualenv
