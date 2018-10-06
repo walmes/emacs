@@ -38,6 +38,7 @@
 ;;                      key-combo
 ;;                      elpy
 ;;                      jedi
+;;                      anaconda-mode
 ;;                      web-mode
 ;;                      monokai-theme
 ;;                      molokai-theme
@@ -87,6 +88,7 @@
 (package-install 'key-combo)
 (package-install 'elpy)
 (package-install 'jedi)
+(package-install 'anaconda-mode)
 ;; (package-install 'jedi-core)
 (package-install 'web-mode)
 

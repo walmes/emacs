@@ -595,6 +595,11 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
+;; Requires `anaconda-mode' package.
+;; https://github.com/proofit404/anaconda-mode
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
 ;;----------------------------------------------------------------------
 ;; Alternatives for highlight indentation:
 ;; https://github.com/DarthFennec/highlight-indent-guides.
@@ -665,18 +670,18 @@
 
 (dolist
     (mode '(fundamental-mode emacs-lisp-mode lisp-mode org-mode
-            shell-mode sh-mode ess-mode polymode-mode
+            shell-mode sh-mode ess-mode polymode-mode python-mode
             markdown-mode latex-mode TeX-mode))
   (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
    '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\)\\>"
       0 'font-lock-warning-face t)
-     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\)\\>"
+     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\|TIP\\)\\>"
       0 'font-lock-warning-face t)
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\)\\>"
       0 'bad-words t)
-     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\)\\>"
+     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\|AMAZING\\|COOL\\)\\>"
       0 'good-words t))
    ))
 
