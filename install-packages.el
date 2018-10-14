@@ -16,6 +16,9 @@
 
 (package-list-packages)
 
+;; ATTENTION: Run the instruction bellow to update packages.
+(package-refresh-contents)
+
 ;;----------------------------------------------------------------------
 ;; https://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
 
