@@ -21,10 +21,13 @@
 
 ;; ;; List the packages you want.
 ;; (setq package-list '(helm
+;;                      use-package
 ;;                      auctex
 ;;                      ess
 ;;                      ess-view
 ;;                      polymode
+;;                      poly-markdown
+;;                      poly-R
 ;;                      auto-complete
 ;;                      company
 ;;                      bm
@@ -68,10 +71,13 @@
 
 ;; Runs the installation of each package.
 (package-install 'helm)
+(package-install 'use-package)
 (package-install 'auctex)
 (package-install 'ess)
 (package-install 'ess-view)
 (package-install 'polymode)
+(package-install 'poly-markdown)
+(package-install 'poly-R)
 ;; (package-install 'ess-R-data-view)
 (package-install 'auto-complete)
 (package-install 'company)

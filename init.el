@@ -368,8 +368,10 @@
 ;; (when (not (package-installed-p 'polymode))
 ;;   (package-install 'polymode))
 
-(require 'poly-R)
-(require 'poly-markdown)
+(use-package poly-markdown
+             :ensure t)
+(use-package poly-R
+             :ensure t)
 
 ;; (autoload 'poly-markdown-mode "poly-markdown-mode"
 ;;   "Major mode for editing R-Markdown files" t)
