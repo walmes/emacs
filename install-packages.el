@@ -14,10 +14,12 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 
-(package-list-packages)
 
-;; ATTENTION: Run the instruction bellow to update packages.
-(package-refresh-contents)
+;; ATTENTION: Run the instructions bellow to update packages.
+(package-list-packages)    ;; Show packages.
+(package-refresh-contents) ;; Run `M-x package-refresh-contents'.
+                           ;; Type `U' to mark to upgrade.
+                           ;; Press `X' to execute.
 
 ;;----------------------------------------------------------------------
 ;; https://stackoverflow.com/questions/10092322/how-to-automatically-install-emacs-packages-by-specifying-a-list-of-package-name
