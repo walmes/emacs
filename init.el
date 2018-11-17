@@ -386,9 +386,6 @@
 ;; (when (not (package-installed-p 'ess))
 ;;   (package-install 'ess))
 
-;; ATTENTION: must be before the call for ESS.
-(setq ess-smart-S-assign-key (kbd "M--"))
-
 (require 'ess-site)
 
 (setq-default ess-dialect "R")
@@ -409,10 +406,12 @@
 (add-hook
  'ess-mode-hook
  '(lambda()
-    ;; (auto-complete-mode -1)
-    ;; (company-mode 1)
-    (company-mode -1)
+    (ess-toggle-underscore nil)
+    (define-key ess-mode-map [?\M--]
+      'ess-cycle-assign) ;; `Alt + -'  to cycle `<- | <<- | = ...'.
     (auto-complete-mode 1)
+    (company-mode 1)                               ;; (company-mode -1)
+    (define-key ess-mode-map [f5] 'company-R-args) ;; F5 do show ARGS.
     (setq ess-indent-with-fancy-comments nil) ;; No indent levels.
     (setq-local comment-add 0)                ;; Single # as default.
     (setq ess-smart-operators t)              ;; Smart comma.
@@ -432,7 +431,6 @@
         (ess-fl-keyword:operators . t)
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
-        ;; (ess-R-fl-keyword:%op% . t)
         (ess-R-fl-keyword:F&T . t)))
 (setq inferior-R-font-lock-keywords
       '((ess-S-fl-keyword:prompt . t)
@@ -448,7 +446,6 @@
         (ess-fl-keyword:operators . t)
         (ess-fl-keyword:delimiters . t)
         (ess-fl-keyword:= . t)
-        ;; (ess-R-fl-keyword:%op% . t)
         (ess-R-fl-keyword:F&T . t)))
 
 ;; Movement across chunks in Rnw files.
@@ -467,10 +464,6 @@
                (global-set-key (kbd "<M-up>")     'backward-list)
                (global-set-key (kbd "<M-S-up>")   'backward-up-list)
                (global-set-key (kbd "<M-S-down>") 'down-list))))
-
-;; When point is in a function argument list, F5 shows ARGS in the
-;; minibuffer.
-(define-key ess-mode-map [f5] 'ess-ac-args)
 
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
