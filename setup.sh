@@ -3,6 +3,8 @@
 #----------------------------------------------------------------------
 # Welcome message.
 
+
+
 # ASCII Art. 87487
 # http://patorjk.com/software/taag/#p=display&f=Calvin%20S&t=GNU%20Emacs
 
@@ -39,6 +41,9 @@ function installEmacs {
     read opcao
     case $opcao in
         y )
+            echo "Adding repository to Emacs: `ppa:kelleyk/emacs`"
+            sudo add-apt-repository ppa:kelleyk/emacs -y
+            sudo apt-get update -y
             echo "Running \"apt-get build-dep emacs\"."
             sudo apt-get build-dep emacs -y
             echo
