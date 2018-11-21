@@ -676,6 +676,8 @@
       0 'font-lock-constant-face t)
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\|ERROR\\)\\>"
       0 'bad-words t)
+     ("@[[:alnum:]_.]+\\>" ;; @walmes, @param, @return
+      0 'font-lock-function-name-face t)
      ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\|AMAZING\\|COOL\\|NICE\\|BRILIANT\\)\\>"
       0 'good-words t))
    ))
