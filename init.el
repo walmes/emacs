@@ -24,6 +24,9 @@
 ;; Basic definitions.
 ;;----------------------------------------------------------------------
 
+(setq user-full-name "Walmes Zeviani"
+      user-mail-address "walmeszeviani")
+
 ;; Add directory with supplementary configuration files.
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -63,6 +66,7 @@
 
 ;; (set-default-font "Noto Sans Mono-14")
 ;; (set-default-font "Inconsolata-14")
+(set-default-font "Ubuntu Mono-14")
 ;; (cond ((string-equal system-name "camus")
 ;;        (set-default-font "Noto Sans Mono-14"))
 ;;       ((string-equal system-name "ulisses")
@@ -115,12 +119,6 @@
 
 (require 'funcs)
 
-;; (add-hook 'find-file-hook
-;;           (lambda ()
-;;              (replace-buffer-divisions-by-Walmes-style
-;;               (point-min) (point-max) "#")
-;;             ))
-
 ;;----------------------------------------------------------------------
 ;; Extensions.
 ;;----------------------------------------------------------------------
@@ -128,8 +126,26 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/") t)
-  (package-initialize))
+               '("melpa" . "http://melpa.org/packages/") t))
+
+(package-initialize)
+
+;;----------------------------------------------------------------------
+;; Packages.
+;;----------------------------------------------------------------------
+
+;;----------------------------------------------------------------------
+;; use-package: to tidy .emacs definitions.
+;; https://github.com/jwiegley/use-package
+;; IMPORTANT: https://jwiegley.github.io/use-package/keywords/
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(setq use-package-verbose t)
+(setq use-package-always-ensure nil)
+
+(require 'use-package)
 
 ;;----------------------------------------------------------------------
 ;; Color themes. Options > Customize Emacs > Custom Themes
@@ -144,75 +160,75 @@
 ;; (load-theme 'monokai t)
 ;; (set-face-attribute hl-line-face nil :background "#171816")
 
-;; (load-theme 'molokai t)
-(load-theme 'gotham t)
-;; (load-theme 'solarized-dark t)
+;; (use-package
+;;   ;; Choose only one.
+;;   monokai-theme :init (load-theme 'monokai t)
+;;   ;; gotham-theme :init (load-theme 'gotham t)
+;;   ;; molokai-theme :init (load-theme 'molokai t)
+;;   ;; solarized-theme :init (load-theme 'solarized-dark t)
+;;   ;; spacemacs-theme :init (load-theme 'spacemacs-dark t)
+;;   :defer t
+;;   :ensure t)
 
 ;;-------------------------------------------
 ;; Light.
 
-;; (load-theme 'flatui t)
-;; (load-theme 'leuven t)
-;; (load-theme 'solarized t)
+(use-package
+  ;; Choose only one.
+  ;; flatui-theme :init (load-theme 'flatui t)
+  ;; leuven-theme :init (load-theme 'leuven t)
+  solarized-theme :init (load-theme 'solarized-light t)
+  ;; spacemacs-theme :init (load-theme 'spacemacs-light t)
+  :defer t
+  :ensure nil)
 
-;; (require 'use-package)
-;; (use-package spacemacs-theme
-;;   :ensure t
-;;   :init
-;;   (load-theme 'spacemacs-light t))
 
 ;;----------------------------------------------------------------------
 ;; helm.
 ;; http://tuhdo.github.io/helm-intro.html
 
-;; (when (not (package-installed-p 'helm))
-;;   (package-install 'helm))
+(use-package helm
+  :diminish helm-mode
+  :init ;;-----------------------------------
+  (progn
+    (require 'helm-config)
+    (when (executable-find "curl")
+      (setq helm-google-suggest-use-curl-p t))
+    (when (executable-find "ack-grep")
+      (setq helm-grep-default-command
+            "ack-grep -Hn --no-group --no-color %e %p %f"
+            helm-grep-default-recurse-command
+            "ack-grep -H --no-group --no-color %e %p %f"))
+    (setq helm-split-window-in-side-p           t
+          helm-move-to-line-cycle-in-source     t
+          helm-ff-search-library-in-sexp        t
+          helm-scroll-amount                    8
+          helm-ff-file-name-history-use-recentf t
+          helm-M-x-fuzzy-match                  t
+          helm-buffers-fuzzy-matching           t
+          helm-recentf-fuzzy-match              t
+          helm-locate-fuzzy-match               t
+          helm-apropos-fuzzy-match              t
+          helm-lisp-fuzzy-completion            t
+          helm-semantic-fuzzy-match             t
+          helm-imenu-fuzzy-match                t)
+    (helm-mode)
+    (helm-autoresize-mode t)
+    )
+  :bind
+  (("C-c h"     . helm-mini)
+   ("C-h a"     . helm-apropos)
+   ("C-x C-b"   . helm-buffers-list)
+   ("C-x b"     . helm-buffers-list)
+   ("M-y"       . helm-show-kill-ring)
+   ("M-x"       . helm-M-x)
+   ("C-x c o"   . helm-occur)
+   ("C-x c s"   . helm-swoop)
+   ("C-x c y"   . helm-yas-complete)
+   ("C-x c Y"   . helm-yas-create-snippet-on-region)
+   ("C-x c b"   . my/helm-do-grep-book-notes)
+   ("C-x c SPC" . helm-all-mark-rings)))
 
-(require 'helm)
-(require 'helm-config)
-;; (require 'helm-R)
-
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-z") 'helm-select-action)
-
-(when (executable-find "curl")
-  (setq helm-google-suggest-use-curl-p t))
-
-(when (executable-find "ack-grep")
-  (setq helm-grep-default-command
-        "ack-grep -Hn --no-group --no-color %e %p %f"
-        helm-grep-default-recurse-command
-        "ack-grep -H --no-group --no-color %e %p %f"))
-
-(setq helm-split-window-in-side-p           t
-      helm-move-to-line-cycle-in-source     t
-      helm-ff-search-library-in-sexp        t
-      helm-scroll-amount                    8
-      helm-ff-file-name-history-use-recentf t
-      helm-M-x-fuzzy-match                  t
-      helm-buffers-fuzzy-matching           t
-      helm-recentf-fuzzy-match              t
-      helm-locate-fuzzy-match               t
-      helm-apropos-fuzzy-match              t
-      helm-lisp-fuzzy-completion            t
-      helm-semantic-fuzzy-match             t
-      helm-imenu-fuzzy-match                t)
-
-(helm-mode 1)
-(helm-autoresize-mode t)
-
-(global-set-key (kbd "C-c h")   'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
-(global-set-key (kbd "M-x")     'helm-M-x)
-(global-set-key (kbd "M-y")     'helm-show-kill-ring)
-(global-set-key (kbd "C-x b")   'helm-mini)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-c h o") 'helm-occur)
-(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
-
-(add-to-list 'helm-sources-using-default-as-input
-             'helm-source-man-pages)
 
 ;;----------------------------------------------------------------------
 ;; Company.
@@ -220,18 +236,22 @@
 ;; (when (not (package-installed-p 'company))
 ;;   (package-install 'company))
 
-(require 'company)
-;; (add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay             0.2
-      company-minimum-prefix-length  2
-      company-require-match          nil
-      company-dabbrev-ignore-case    nil
-      company-dabbrev-downcase       nil
-      company-frontends              '(company-pseudo-tooltip-frontend))
+(use-package company
+  :init
+  (setq company-idle-delay             0.2
+        company-minimum-prefix-length  2
+        company-require-match          nil
+        company-dabbrev-ignore-case    nil
+        company-dabbrev-downcase       nil
+        company-frontends              '(company-pseudo-tooltip-frontend))
+  :config
+  (add-hook 'prog-mode-hook 'company-mode))
 
 ;;----------------------------------------------------------------------
+;; To work the accents on Sony Vaio.
 
-(require 'iso-transl) ;; To work the accents on Sony Vaio.
+(use-package iso-transl
+  :ensure nil)
 
 ;;----------------------------------------------------------------------
 ;; Magit.
@@ -239,8 +259,9 @@
 ;; (when (not (package-installed-p 'magit))
 ;;   (package-install 'magit))
 
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :bind
+  ("C-c g" . magit-status))
 
 ;;----------------------------------------------------------------------
 ;; essh.el - ESS like shell mode. To eval line/regions in Emacs shell.
@@ -248,22 +269,21 @@
 ;; Byte compile file.
 ;; (byte-compile-file "~/.emacs.d/lisp/essh.el")
 
-(require 'essh)
-(add-hook
- 'sh-mode-hook
- '(lambda ()
-    (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
-    (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
-    (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
-    (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
-    (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
-    (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
+(use-package essh
+  :config
+  (add-hook
+   'sh-mode-hook
+   '(lambda ()
+      (define-key sh-mode-map "\C-c\C-r" 'pipe-region-to-shell)
+      (define-key sh-mode-map "\C-c\C-b" 'pipe-buffer-to-shell)
+      (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
+      (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
+      (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
+      (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
+  :ensure nil)
 
 ;;----------------------------------------------------------------------
 ;; Bookmark-plus.
-
-(setq bookmark-default-file "~/Dropbox/bookmarks"
-      bookmark-save-flag 1)
 
 ;; (when (not (package-installed-p 'bookmark+))
 ;;   (package-install 'bookmark+))
@@ -272,22 +292,30 @@
 ;; http://ergoemacs.org/emacs/emacs_byte_compile.html
 ;; (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
 
-(add-to-list 'load-path "~/.emacs.d/elpa/bookmark+")
-
-(require 'bookmark+)
-
-;; Create an autonamed bookmark.
-(global-set-key (kbd "<C-f3>")
-                'bmkp-toggle-autonamed-bookmark-set/delete)
-;; Go to the next bookmark in file.
-(global-set-key (kbd "<f3>")
-                'bmkp-next-bookmark-this-file/buffer-repeat)
-;; Go to the previous bookmark in file.
-(global-set-key (kbd "<f4>")
-                'bmkp-previous-bookmark-this-file/buffer-repeat)
-;; Toggle temporary/permanent bookmark.
-(global-set-key (kbd "<S-f3>")
-                'bmkp-toggle-temporary-bookmark)
+(use-package bookmark+
+  :load-path "~/.emacs.d/elpa/bookmark+"
+  :init
+  (setq bookmark-default-file "~/Dropbox/bookmarks"
+        bookmark-save-flag 1)
+  :config
+  ;; ATTENTION: for some unknown reason, the keymap must be defined in
+  ;; `:config' because in `:bind' the bookmark list buffer have a
+  ;; different appearance.
+  (progn
+    ;; Create an autonamed bookmark.
+    (global-set-key (kbd "<C-f3>")
+                    'bmkp-toggle-autonamed-bookmark-set/delete)
+    ;; Go to the next bookmark in file.
+    (global-set-key (kbd "<f3>")
+                    'bmkp-next-bookmark-this-file/buffer-repeat)
+    ;; Go to the previous bookmark in file.
+    (global-set-key (kbd "<f4>")
+                    'bmkp-previous-bookmark-this-file/buffer-repeat)
+    ;; Toggle temporary/permanent bookmark.
+    (global-set-key (kbd "<S-f3>")
+                    'bmkp-toggle-temporary-bookmark)
+    )
+  :ensure nil)
 
 ;;----------------------------------------------------------------------
 ;; Visible bookmarks. Easy movement.
@@ -296,15 +324,15 @@
 ;; (when (not (package-installed-p 'bm))
 ;;   (package-install 'bm))
 
-(require 'bm)
-
-;; Customize the colors by using M-x customize-group RET bm RET
-(setq bm-marker 'bm-marker-left)
-(setq bm-highlight-style 'bm-highlight-only-fringe)
-
-(global-set-key (kbd "<C-f2>") 'bm-toggle)
-(global-set-key (kbd "<f2>")   'bm-next)
-(global-set-key (kbd "<S-f2>") 'bm-previous)
+(use-package bm
+  :config
+  (setq bm-marker 'bm-marker-left
+        bm-highlight-style 'bm-highlight-only-fringe)
+  :bind
+  (("<C-f2>" . bm-toggle)
+   ("<f2>"   . bm-next)
+   ("<S-f2>" . bm-previous))
+  :ensure t)
 
 ;;----------------------------------------------------------------------
 ;; Folding code blocks based on indentation.
@@ -313,9 +341,11 @@
 ;; (when (not (package-installed-p 'yafolding))
 ;;   (package-install 'yafolding))
 
-(require 'yafolding)
-(global-set-key [?\C-{] #'yafolding-hide-parent-element)
-(global-set-key [?\C-}] #'yafolding-toggle-element)
+(use-package yafolding
+  :bind
+  (("C-{" . yafolding-hide-parent-element)
+   ("C-}" . yafolding-toggle-element))
+  :ensure nil)
 
 ;;----------------------------------------------------------------------
 ;; Smart Parenthesis.
@@ -324,12 +354,17 @@
 ;; (when (not (package-installed-p 'smartparens))
 ;;   (package-install 'smartparens))
 
-(require 'smartparens)
-(require 'smartparens-config)
-(smartparens-global-mode 1)
-
-(sp-pair "\"" nil :unless '(sp-point-after-word-p))
-(sp-pair "'" nil :unless '(sp-point-after-word-p))
+(use-package smartparens
+  :ensure nil
+  :diminish smartparens-mode
+  :config
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)
+    (sp-pair "\"" nil :unless '(sp-point-after-word-p))
+    (sp-pair "'" nil :unless '(sp-point-after-word-p))
+    )
+  )
 
 ;;----------------------------------------------------------------------
 ;; MarkDown extensions.
@@ -338,28 +373,30 @@
 ;; (when (not (package-installed-p 'markdown-mode))
 ;;   (package-install 'markdown-mode))
 
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'"       . markdown-mode))
+(use-package imenu-list
+  :config
+  (setq imenu-list-focus-after-activation t
+        imenu-list-auto-resize nil))
 
-;; Org-struct minor mode active in markdown mode.
-(add-hook 'markdown-mode-hook 'turn-on-orgstruct)
-(add-hook 'markdown-mode-hook 'turn-on-orgstruct++)
-
-;; Enable Index at the menu bar with the TOC of markdown document.
-(add-hook 'markdown-mode-hook 'imenu-add-menubar-index)
-(setq imenu-auto-rescan t)
-
-;; https://leanpub.com/markdown-mode/read -> section 4.6.
-(require 'imenu-list)
-(setq imenu-list-focus-after-activation t
-      imenu-list-auto-resize nil)
-
-;; Uses F10 to toggle the TOC sidebar for easy navigation.
-(add-hook 'markdown-mode-hook
-          '(lambda()
-             (global-set-key (kbd "<f10>") 'imenu-list-smart-toggle)))
+(use-package markdown-mode
+  :ensure nil
+  :mode (("\\.md\\'"       . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :config
+  (progn
+    (add-hook 'markdown-mode-hook 'turn-on-orgstruct)
+    (add-hook 'markdown-mode-hook 'turn-on-orgstruct++)
+    (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)
+    (setq imenu-auto-rescan t)
+    (require 'imenu-list)
+    (setq imenu-list-focus-after-activation t
+          imenu-list-auto-resize nil)
+    (add-hook 'markdown-mode-hook
+              '(lambda()
+                 (global-set-key (kbd "<f10>")
+                                 'imenu-list-smart-toggle)))
+    )
+  )
 
 ;;----------------------------------------------------------------------
 ;; R+MarkDown extensions (emacs >= 24.3.1).
@@ -368,16 +405,35 @@
 ;; (when (not (package-installed-p 'polymode))
 ;;   (package-install 'polymode))
 
-(use-package poly-markdown
-             :ensure t)
-(use-package poly-R
-             :ensure t)
+;; Based on:
+;; https://github.com/SteveLane/dot-emacs/blob/master/packages-polymode.el
 
-;; (autoload 'poly-markdown-mode "poly-markdown-mode"
-;;   "Major mode for editing R-Markdown files" t)
-;; (add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown+r-mode))
-(add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
+(use-package polymode
+  ;; :ensure markdown-mode
+  ;; :ensure poly-R
+  ;; :ensure poly-noweb
+  ;; :bind
+  ;; (("S-<f7>" . polymode-next-chunk-same-type)
+  ;;  ("S-<f8>" . polymode-previous-chunk-same-type))
+  :mode
+  (("\\.Rnw\\'" . poly-noweb+r-mode)
+   ("\\.Rmd\\'" . poly-markdown+r-mode))
+  )
+
+(use-package poly-markdown
+  ;; :ensure polymode
+  :defer t)
+
+(use-package poly-R
+  ;; :ensure polymode
+  ;; :ensure poly-markdown
+  ;; :ensure poly-noweb
+  :defer t)
+
+(use-package yaml-mode
+  :ensure nil
+  :mode (("\\.ya?ml\\'" . yaml-mode)
+         ("\\.toml\\'"  . yaml-mode)))
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
@@ -386,74 +442,90 @@
 ;; (when (not (package-installed-p 'ess))
 ;;   (package-install 'ess))
 
-(require 'ess-site)
+(use-package ess
+  :ensure nil
+  ;; :ensure ess-site
+  ;; :ensure ess-view
+  :init
+  (progn
+    (require 'ess-site)
+    (require 'ess-view))
+  :bind
+  (("C-S-<f5>" . ess-eval-chunk)
+   ("C-S-<f6>" . ess-eval-chunk-and-step)
+   ("C-S-<f7>" . ess-noweb-next-code-chunk)
+   ("C-S-<f8>" . ess-noweb-previous-code-chunk)
+   ("C-S-<f9>" . ess-noweb-goto-chunk))
+  ;; ;; Movement across chunks in Rnw files.
+  ;; (global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
+  ;; (global-set-key (kbd "C-S-<f6>") 'ess-eval-chunk-and-step)
+  ;; (global-set-key (kbd "C-S-<f7>") 'ess-noweb-next-code-chunk)
+  ;; (global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
+  ;; (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
+  :config
+  (setq-default ess-dialect "R")
+  (setq-default inferior-R-args "--no-restore-history --no-save ")
+  (setq ess-view--spreadsheet-program "gnumeric")
+  ;; Script and console font lock highlight.
+  (setq ess-R-font-lock-keywords
+        '((ess-R-fl-keyword:modifiers . t)
+          (ess-R-fl-keyword:fun-defs . t)
+          (ess-R-fl-keyword:keywords . t)
+          (ess-R-fl-keyword:assign-ops . t)
+          (ess-R-fl-keyword:constants . t)
+          (ess-fl-keyword:fun-calls . t)
+          (ess-fl-keyword:numbers . t)
+          (ess-fl-keyword:operators . t)
+          (ess-fl-keyword:delimiters . t)
+          (ess-fl-keyword:= . t)
+          (ess-R-fl-keyword:F&T . t)))
+  (setq inferior-R-font-lock-keywords
+        '((ess-S-fl-keyword:prompt . t)
+          (ess-R-fl-keyword:messages . t)
+          (ess-R-fl-keyword:modifiers . t)
+          (ess-R-fl-keyword:fun-defs . t)
+          (ess-R-fl-keyword:keywords . t)
+          (ess-R-fl-keyword:assign-ops . t)
+          (ess-R-fl-keyword:constants . t)
+          (ess-fl-keyword:matrix-labels . t)
+          (ess-fl-keyword:fun-calls . t)
+          (ess-fl-keyword:numbers . t)
+          (ess-fl-keyword:operators . t)
+          (ess-fl-keyword:delimiters . t)
+          (ess-fl-keyword:= . t)
+          (ess-R-fl-keyword:F&T . t)))
+  (add-hook
+   'ess-mode-hook
+   '(lambda()
+      ;;-------------------------------------
+      (ess-toggle-underscore nil)
+      (define-key ess-mode-map [?\M--]
+        'ess-cycle-assign) ;; `Alt + -'  to cycle `<- | <<- | = ...'.
+      ;;-------------------------------------
+      (auto-complete-mode 1)
+      (company-mode 1)                               ;; (company-mode -1)
+      ;;-------------------------------------
+      (define-key ess-mode-map [f5] 'company-R-args) ;; F5 do show ARGS.
+      (setq ess-indent-with-fancy-comments nil)      ;; No indent levels.
+      (setq-local comment-add 0)                     ;; Single # as default.
+      (setq ess-smart-operators t)                   ;; Smart comma.
+      (setq comint-scroll-to-bottom-on-input t)
+      (setq comint-scroll-to-bottom-on-output t)
+      (setq comint-move-point-for-output t))
+   )
+  ;;-----------------------------------------
+  (defadvice ess-eval-buffer (before really-eval-buffer compile activate)
+    "Prevent call ess-eval-buffer by accident, frequently by
+     hitting C-c C-b instead of C-c C-n."
+    (if (yes-or-no-p
+         (format "Are you sure you want to evaluate the %s buffer?"
+                 buffer-file-name))
+        (message "ess-eval-buffer started.")
+      (error "ess-eval-buffer canceled!")))
+  )
 
-(setq-default ess-dialect "R")
-(setq-default inferior-R-args "--no-restore-history --no-save ")
-
-(require 'ess-view)
-(setq ess-view--spreadsheet-program "gnumeric")
-
-(defadvice ess-eval-buffer (before really-eval-buffer compile activate)
-  "Prevent call ess-eval-buffer by accident, frequently by
-   hitting C-c C-b instead of C-c C-n."
-  (if (yes-or-no-p
-       (format "Are you sure you want to evaluate the %s buffer?"
-               buffer-file-name))
-      (message "ess-eval-buffer started.")
-    (error "ess-eval-buffer canceled!")))
-
-(add-hook
- 'ess-mode-hook
- '(lambda()
-    (ess-toggle-underscore nil)
-    (define-key ess-mode-map [?\M--]
-      'ess-cycle-assign) ;; `Alt + -'  to cycle `<- | <<- | = ...'.
-    (auto-complete-mode 1)
-    (company-mode 1)                               ;; (company-mode -1)
-    (define-key ess-mode-map [f5] 'company-R-args) ;; F5 do show ARGS.
-    (setq ess-indent-with-fancy-comments nil) ;; No indent levels.
-    (setq-local comment-add 0)                ;; Single # as default.
-    (setq ess-smart-operators t)              ;; Smart comma.
-    (setq comint-scroll-to-bottom-on-input t)
-    (setq comint-scroll-to-bottom-on-output t)
-    (setq comint-move-point-for-output t)))
-
-;; Script and console font lock highlight.
-(setq ess-R-font-lock-keywords
-      '((ess-R-fl-keyword:modifiers . t)
-        (ess-R-fl-keyword:fun-defs . t)
-        (ess-R-fl-keyword:keywords . t)
-        (ess-R-fl-keyword:assign-ops . t)
-        (ess-R-fl-keyword:constants . t)
-        (ess-fl-keyword:fun-calls . t)
-        (ess-fl-keyword:numbers . t)
-        (ess-fl-keyword:operators . t)
-        (ess-fl-keyword:delimiters . t)
-        (ess-fl-keyword:= . t)
-        (ess-R-fl-keyword:F&T . t)))
-(setq inferior-R-font-lock-keywords
-      '((ess-S-fl-keyword:prompt . t)
-        (ess-R-fl-keyword:messages . t)
-        (ess-R-fl-keyword:modifiers . t)
-        (ess-R-fl-keyword:fun-defs . t)
-        (ess-R-fl-keyword:keywords . t)
-        (ess-R-fl-keyword:assign-ops . t)
-        (ess-R-fl-keyword:constants . t)
-        (ess-fl-keyword:matrix-labels . t)
-        (ess-fl-keyword:fun-calls . t)
-        (ess-fl-keyword:numbers . t)
-        (ess-fl-keyword:operators . t)
-        (ess-fl-keyword:delimiters . t)
-        (ess-fl-keyword:= . t)
-        (ess-R-fl-keyword:F&T . t)))
-
-;; Movement across chunks in Rnw files.
-(global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
-(global-set-key (kbd "C-S-<f6>") 'ess-eval-chunk-and-step)
-(global-set-key (kbd "C-S-<f7>") 'ess-noweb-next-code-chunk)
-(global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
-(global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
+;;----------------------------------------------------------------------
+;; Navigation in balanced expressions.
 
 (dolist (mode '(ess-mode-hook lisp-mode-hook))
   (add-hook mode
@@ -471,28 +543,34 @@
 ;; (when (not (package-installed-p 'auto-complete))
 ;;   (package-install 'auto-complete))
 
-(require 'auto-complete-config)
-(ac-config-default)
-
-(setq ac-auto-start 0
-      ac-delay 0.2
-      ac-quick-help-delay 1.
-      ac-use-fuzzy t
-      ac-fuzzy-enable t
-      ;; use 'complete when auto-complete is disabled
-      tab-always-indent 'complete
-      ac-dwim t)
-
-(setq-default ac-sources '(ac-source-abbrev
-                           ac-source-dictionary
-                           ac-source-words-in-same-mode-buffers))
-
-;; To activate ESS auto-complete for R.
-(setq ess-use-auto-complete 'script-only)
-
-;; Change 'ac-complete from ENTER to TAB.
-(define-key ac-completing-map "\r" nil)
-(define-key ac-completing-map "\t" 'ac-complete)
+(use-package auto-complete-config
+  ;; :ensure auto-complete
+  :bind ("M-<tab>" . my--auto-complete)
+  ;; :init
+  ;; (defun my--auto-complete ()
+  ;;   (interactive)
+  ;;   (unless (boundp 'auto-complete-mode)
+  ;;     (global-auto-complete-mode 1))
+  ;;   (auto-complete))
+  :config
+  (ac-config-default)
+  (setq ac-auto-start 0
+        ac-delay 0.2
+        ac-quick-help-delay 1.
+        ac-use-fuzzy t
+        ac-fuzzy-enable t
+        ;; use 'complete when auto-complete is disabled
+        tab-always-indent 'complete
+        ac-dwim t)
+  (setq-default ac-sources '(ac-source-abbrev
+                             ac-source-dictionary
+                             ac-source-words-in-same-mode-buffers))
+  ;; To activate ESS auto-complete for R.
+  (setq ess-use-auto-complete 'script-only)
+  ;; Change 'ac-complete from ENTER to TAB.
+  (define-key ac-completing-map "\r" nil)
+  (define-key ac-completing-map "\t" 'ac-complete)
+  )
 
 ;;----------------------------------------------------------------------
 ;; Smart operators with electric spacing.
@@ -501,153 +579,116 @@
 ;; Byte compile file.
 ;; (byte-compile-file "~/.emacs.d/lisp/electric-spacing-r.el")
 
-(require 'electric-spacing-r)
-(add-hook 'ess-mode-hook #'electric-spacing-mode)
-(add-hook 'python-mode-hook #'electric-spacing-mode)
-
-;;----------------------------------------------------------------------
-;; Key combos.
-;; https://github.com/emacs-ess/ESS/issues/96
-
-;; (require 'key-combo)
-;;
-;; (defvar key-combo-ess-default
-;;   '((">"  . (" > " " %>% " " %>%\n"))
-;;     ("<"  . (" < " " <<- "))
-;;     ("$"  . ("$" " %$% "))
-;;     ("<>" . " %<>% ")
-;;     ("%" . " %")
-;;     ("#" . "# ")
-;;     ;; ("*"  . ("*" " * "))
-;;     ;; ("%" . ("%" "%*%" "%%"))
-;;     ;; ("^"  . ("^" " ^ "))
-;;     ("/"  . ("/" " %/% " " %% "))
-;;     ;; ("~" . " ~ ")
-;;     ;; (":" . (":" "::" ":::"))
-;;     ;; (":="  . " := ") ; data.table
-;;     ("->"  . " -> ")
-;;     ("."  . ("." "_" "..."))))
-;;
-;; (add-hook 'ess-mode-hook
-;;           '(lambda() (key-combo-mode t)))
-;; (add-hook 'inferior-ess-mode-hook
-;;           '(lambda() (key-combo-mode t)))
-;;
-;; (key-combo-define-hook '(ess-mode-hook inferior-ess-mode-hook)
-;;                        'ess-key-combo-load-default
-;;                        key-combo-ess-default)
+(use-package electric-spacing-r
+  :ensure nil
+  :config
+  (add-hook 'ess-mode-hook #'electric-spacing-mode)
+  (add-hook 'python-mode-hook #'electric-spacing-mode))
 
 ;;----------------------------------------------------------------------
 ;; Latex extensions.
 
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(setq reftex-plug-into-AUCTeX t)
-
-;; Open Tikz files (pgf and pgs extensions) in Tex mode.
-(add-to-list 'auto-mode-alist '("\\.pgf" . latex-mode))
-(add-to-list 'auto-mode-alist '("\\.pgs" . latex-mode))
+(use-package auctex
+  :ensure nil
+  :defer nil
+  :mode
+  (("\\.pgf\\'" . latex-mode)
+   ("\\.pgs\\'" . latex-mode))
+  :config
+  (setq reftex-plug-into-AUCTeX t)
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  )
 
 ;;----------------------------------------------------------------------
 ;; Org Mode.
 
-;; http://emacswiki.org/emacs/OrgMode#toc7
-(setq org-replace-disputed-keys t)
-(setq org-return-follows-link t)
-(setq org-descriptive-links nil)
-
+(use-package org
+  :defer t
+  :config
+  (setq org-replace-disputed-keys t)
+  (setq org-return-follows-link t)
+  (setq org-descriptive-links nil)
 ;; Fontify code in code blocks.
 ;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
-(setq org-src-fontify-natively t)
+  (setq org-src-fontify-natively t)
+  ;; Babel.
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (R . t)
+                                 (sh . t)))
+  (setq org-confirm-babel-evaluate nil)
+  )
 
-;; http://orgmode.org/worg/org-dependencies.html
-
-(require 'ox-latex)
-(setq org-latex-listings t)
-(add-to-list 'org-latex-packages-alist '("" "listings"))
-(add-to-list 'org-latex-packages-alist '("" "color"))
-
-;; Babel.
-(org-babel-do-load-languages 'org-babel-load-languages
-                             '((emacs-lisp . t)
-                               (R . t)
-                               (sh . t)))
-(setq org-confirm-babel-evaluate nil)
+(use-package ox-latex
+  :config
+  (setq org-latex-listings t)
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-latex-packages-alist '("" "color")))
 
 ;;----------------------------------------------------------------------
 ;; Python configuration.
+;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
 
-;; Install first: M-x package-list-packages C-s elpy.
-(elpy-enable)
-(setq python-shell-interpreter "/usr/bin/python3")
-;; (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
+(use-package ox-latex
+  :config
+  (setq org-latex-listings t)
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-latex-packages-alist '("" "color")))
+
+(use-package elpy
+  :ensure nil
+  :init (add-hook 'python-mode-hook #'elpy-enable))
+
+(use-package jedi
+  :ensure nil)
+
+(use-package elpy
+  :ensure nil
+  :commands elpy-enable
+  :init
+  (progn
+    (with-eval-after-load 'python (elpy-enable))
+    ;; (setq python-shell-interpreter "/usr/bin/python3")
+    (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
+    )
+  :config
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)
+  (add-hook 'python-mode-hook
+            '(lambda () (highlight-indentation-mode 0)) t)
+  )
 
 ;; Seguir: http://tkf.github.io/emacs-jedi/latest/
 ;;   Terminal : sudo apt-get install virtualenv
 ;;   Emacs    : M-x package-install RET jedi RET
 ;;   Emacs    : M-x jedi:install-server RET
 
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-
-;; Requires `anaconda-mode' package.
 ;; https://github.com/proofit404/anaconda-mode
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-
-;;----------------------------------------------------------------------
-;; Alternatives for highlight indentation:
-;; https://github.com/DarthFennec/highlight-indent-guides.
-;; https://github.com/antonj/Highlight-Indentation-for-Emacs
-
-;; To disable highlight-indentation for Python do
-;;   M-x highlight-indentation-mode.
-;; To disable permanently:
-;;   M-x customize-variable RET elpy-modules RET
-;; and disable checkbox. Apply and save.
-
-;; This uses `highlight-indentation` package.
-;; Desable it in Python.
-(add-hook 'python-mode-hook
-          '(lambda () (highlight-indentation-mode 0)) t)
-;; (highlight-indentation-current-column-mode)
-;; (set-face-background 'highlight-indentation-face "#990000")
+(use-package anaconda-mode
+  :ensure nil
+  :init
+  (progn
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)))
 
 ;;----------------------------------------------------------------------
 ;; A Emacs tree plugin like NerdTree for Vim.
 ;; https://github.com/jaypei/emacs-neotree
 ;; M-x package-install RET neotree
 
-(require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
+(use-package neotree
+  :bind ("<f8>" . neotree-toggle))
 
 ;;----------------------------------------------------------------------
 ;; To edit HTML and related files.
 
-(require 'web-mode)
-
-;; Enable mode for file types.
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-;; Customization.
-(add-hook 'web-mode-hook
-          '(lambda ()
-             (setq web-mode-markup-indent-offset 2))
-          t)
-
-;;----------------------------------------------------------------------
-;; File navigation like in Sublime.
-;; https://github.com/zk-phi/sublimity
-;; https://www.emacswiki.org/emacs/Sublimity
-;; M-x package-install RET sublimity
-
-;; (require 'sublimity)
-;; (require 'sublimity-scroll)
-;; (require 'sublimity-map)
-;; (sublimity-mode 1)
-;;
-;; (setq sublimity-scroll-weight 10
-;;       sublimity-scroll-drift-length 5)
+(use-package web-mode
+  :mode ("\\.html?\\'" . web-mode)
+  :config
+  (add-hook 'web-mode-hook
+            '(lambda ()
+               (setq web-mode-markup-indent-offset 2)) t))
 
 ;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
