@@ -55,6 +55,9 @@
 (setq inhibit-startup-screen t)
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
+;; To debug on errors.
+(setq debug-on-error t)
+
 ;; Font and size.
 (cond
  ((find-font (font-spec :name "Inconsolata"))
@@ -442,6 +445,9 @@
 ;; (when (not (package-installed-p 'ess))
 ;;   (package-install 'ess))
 
+(use-package ess-site
+  :ensure nil)
+
 (use-package ess
   :ensure nil
   ;; :ensure ess-site
@@ -452,14 +458,9 @@
     (setq-default inferior-R-args "--no-restore-history --no-save ")
     (setq ess-fancy-comments nil
           ess-indent-with-fancy-comments nil
-          ess-view--spreadsheet-program "gnumeric"
-          ess-smart-operators t
           comint-scroll-to-bottom-on-input t
           comint-scroll-to-bottom-on-output t
           comint-move-point-for-output t)
-    (setq-local comment-add 0) ;; Single # as default.
-    (require 'ess-site)
-    (require 'ess-view)
     )
   :bind
   (("C-S-<f5>" . ess-eval-chunk)
@@ -500,6 +501,8 @@
    'ess-mode-hook
    '(lambda()
       ;;-------------------------------------
+      (setq ess-smart-operators t)
+      (setq-local comment-add 0) ;; Single # as default.
       (auto-complete-mode 1)
       (company-mode 1)       ;; (company-mode -1)
       (ess-toggle-underscore nil)
@@ -518,6 +521,14 @@
         (message "ess-eval-buffer started.")
       (error "ess-eval-buffer canceled!")))
   )
+
+(use-package ess-view
+  :ensure nil
+  :init (setq ess-view--spreadsheet-program "gnumeric"))
+
+(use-package ess-R-data-view
+  ;; :bind ("<f6>" . ess-R-dv-pprint)
+  :ensure nil)
 
 ;;----------------------------------------------------------------------
 ;; Navigation in balanced expressions.
