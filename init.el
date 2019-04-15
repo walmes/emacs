@@ -448,8 +448,19 @@
   ;; :ensure ess-view
   :init
   (progn
+    (setq-default ess-dialect "R")
+    (setq-default inferior-R-args "--no-restore-history --no-save ")
+    (setq ess-fancy-comments nil
+          ess-indent-with-fancy-comments nil
+          ess-view--spreadsheet-program "gnumeric"
+          ess-smart-operators t
+          comint-scroll-to-bottom-on-input t
+          comint-scroll-to-bottom-on-output t
+          comint-move-point-for-output t)
+    (setq-local comment-add 0) ;; Single # as default.
     (require 'ess-site)
-    (require 'ess-view))
+    (require 'ess-view)
+    )
   :bind
   (("C-S-<f5>" . ess-eval-chunk)
    ("C-S-<f6>" . ess-eval-chunk-and-step)
@@ -457,9 +468,6 @@
    ("C-S-<f8>" . ess-noweb-previous-code-chunk)
    ("C-S-<f9>" . ess-noweb-goto-chunk))
   :config
-  (setq-default ess-dialect "R")
-  (setq-default inferior-R-args "--no-restore-history --no-save ")
-  (setq ess-view--spreadsheet-program "gnumeric")
   ;; Script and console font lock highlight.
   (setq ess-R-font-lock-keywords
         '((ess-R-fl-keyword:modifiers . t)
@@ -492,20 +500,13 @@
    'ess-mode-hook
    '(lambda()
       ;;-------------------------------------
-      (ess-toggle-underscore nil)
-      (define-key ess-mode-map [?\M--]
-        'ess-cycle-assign) ;; `Alt + -'  to cycle `<- | <<- | = ...'.
-      ;;-------------------------------------
       (auto-complete-mode 1)
-      (company-mode 1)                               ;; (company-mode -1)
-      ;;-------------------------------------
+      (company-mode 1)       ;; (company-mode -1)
+      (ess-toggle-underscore nil)
+      ;; `Alt + -'  to cycle `<- | <<- | = ...'.
+      (define-key ess-mode-map [?\M--] 'ess-cycle-assign)
       (define-key ess-mode-map [f5] 'company-R-args) ;; F5 do show ARGS.
-      (setq ess-indent-with-fancy-comments nil)      ;; No indent levels.
-      (setq-local comment-add 0)                     ;; Single # as default.
-      (setq ess-smart-operators t)                   ;; Smart comma.
-      (setq comint-scroll-to-bottom-on-input t)
-      (setq comint-scroll-to-bottom-on-output t)
-      (setq comint-move-point-for-output t))
+      )
    )
   ;;-----------------------------------------
   (defadvice ess-eval-buffer (before really-eval-buffer compile activate)
