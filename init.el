@@ -456,12 +456,6 @@
    ("C-S-<f7>" . ess-noweb-next-code-chunk)
    ("C-S-<f8>" . ess-noweb-previous-code-chunk)
    ("C-S-<f9>" . ess-noweb-goto-chunk))
-  ;; ;; Movement across chunks in Rnw files.
-  ;; (global-set-key (kbd "C-S-<f5>") 'ess-eval-chunk)
-  ;; (global-set-key (kbd "C-S-<f6>") 'ess-eval-chunk-and-step)
-  ;; (global-set-key (kbd "C-S-<f7>") 'ess-noweb-next-code-chunk)
-  ;; (global-set-key (kbd "C-S-<f8>") 'ess-noweb-previous-code-chunk)
-  ;; (global-set-key (kbd "C-S-<f9>") 'ess-noweb-goto-chunk)
   :config
   (setq-default ess-dialect "R")
   (setq-default inferior-R-args "--no-restore-history --no-save ")
@@ -630,19 +624,6 @@
 ;; Python configuration.
 ;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
 
-(use-package ox-latex
-  :config
-  (setq org-latex-listings t)
-  (add-to-list 'org-latex-packages-alist '("" "listings"))
-  (add-to-list 'org-latex-packages-alist '("" "color")))
-
-(use-package elpy
-  :ensure nil
-  :init (add-hook 'python-mode-hook #'elpy-enable))
-
-(use-package jedi
-  :ensure nil)
-
 (use-package elpy
   :ensure nil
   :commands elpy-enable
@@ -651,6 +632,9 @@
     (with-eval-after-load 'python (elpy-enable))
     ;; (setq python-shell-interpreter "/usr/bin/python3")
     (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
+    ;; To fix a warning message.
+    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+    (setq python-shell-completion-native-enable nil)
     )
   :config
   (add-hook 'python-mode-hook 'jedi:setup)
@@ -663,6 +647,9 @@
 ;;   Terminal : sudo apt-get install virtualenv
 ;;   Emacs    : M-x package-install RET jedi RET
 ;;   Emacs    : M-x jedi:install-server RET
+
+(use-package jedi
+  :ensure nil)
 
 ;; https://github.com/proofit404/anaconda-mode
 (use-package anaconda-mode
