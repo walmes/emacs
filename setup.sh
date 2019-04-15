@@ -344,6 +344,18 @@ function callMeld {
 }
 
 #-----------------------------------------------------------------------
+# Update intalled packages.
+
+function updatePackages {
+
+    echo "Updating installed packages."
+    echo "You may run this several times until all packages were updated."
+    emacs --script update-packages.el
+
+}
+
+
+#-----------------------------------------------------------------------
 # Remember after installation.
 
 read -r -d '' REMEMBER <<EOM
@@ -374,10 +386,11 @@ do
     printf "  5. Download and byte compile \`electric-spacing-r.el\`.\n"
     printf "  6. Download \`bookmark+\`.\n"
     printf "  7. Open \`init.el\` and \`funcs.el\` with Meld.\n"
-    printf "  8. List of things to do when open GNU Emacs the first time.\n"
+    printf "  8. Update installed packages.\n"
+    printf "  9. List of things to do when open GNU Emacs the first time.\n"
     printf "  q. Quit.\n\n"
 
-    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, 7, 8, q): " input
+    read -sn1 -p "Select (1, 2, 3, 4, 5, 6, 7, 8, 9, q): " input
     echo
 
     case $input in
@@ -388,7 +401,8 @@ do
         5) moveElectricSpacing ;;
         6) createBookmark ;;
         7) callMeld ;;
-        8) echo "$REMEMBER" ;;
+        8) updatePackages ;;
+        9) echo "$REMEMBER" ;;
         q) break ;;
         *) echo "Invalid option!" ;;
     esac
