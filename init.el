@@ -445,9 +445,6 @@
 ;; (when (not (package-installed-p 'ess))
 ;;   (package-install 'ess))
 
-(use-package ess-site
-  :ensure nil)
-
 (use-package ess
   :ensure nil
   ;; :ensure ess-site
@@ -521,6 +518,9 @@
         (message "ess-eval-buffer started.")
       (error "ess-eval-buffer canceled!")))
   )
+
+(use-package ess-site
+  :ensure nil)
 
 (use-package ess-view
   :ensure nil
