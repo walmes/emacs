@@ -56,7 +56,7 @@
 (add-hook 'emacs-startup-hook 'delete-other-windows)[/code]
 
 ;; To debug on errors.
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;; Font and size.
 (cond
@@ -443,7 +443,6 @@
 (use-package ess
   :init
   (progn
-    (require 'ess-site)
     (setq-default ess-dialect "R")
     (setq-default inferior-R-args "--no-restore-history --no-save ")
     (setq ess-fancy-comments nil
@@ -492,6 +491,7 @@
    'ess-mode-hook
    '(lambda()
       ;;-------------------------------------
+      (require 'ess-site)
       (setq ess-smart-operators t)
       (setq-local comment-add 0) ;; Single # as default.
       (auto-complete-mode 1)
