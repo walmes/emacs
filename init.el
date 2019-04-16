@@ -705,8 +705,9 @@
 
 (dolist
     (mode '(fundamental-mode emacs-lisp-mode lisp-mode org-mode
-            shell-mode sh-mode ess-mode polymode-mode python-mode
-            markdown-mode latex-mode TeX-mode))
+            shell-mode sh-mode ess-mode ess-r-mode polymode-mode
+            python-mode markdown-mode latex-mode TeX-mode
+            prog-mode html-mode css-mode yaml-mode))
   (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
