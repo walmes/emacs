@@ -182,8 +182,7 @@
   ;; leuven-theme :init (load-theme 'leuven t)
   solarized-theme :init (load-theme 'solarized-light t)
   ;; spacemacs-theme :init (load-theme 'spacemacs-light t)
-  :defer t
-  :ensure nil)
+  :defer t)
 
 
 ;;----------------------------------------------------------------------
@@ -273,6 +272,7 @@
 ;; (byte-compile-file "~/.emacs.d/lisp/essh.el")
 
 (use-package essh
+  :ensure nil
   :config
   (add-hook
    'sh-mode-hook
@@ -282,8 +282,7 @@
       (define-key sh-mode-map "\C-c\C-j" 'pipe-line-to-shell)
       (define-key sh-mode-map "\C-c\C-n" 'pipe-line-to-shell-and-step)
       (define-key sh-mode-map "\C-c\C-f" 'pipe-function-to-shell)
-      (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory)))
-  :ensure nil)
+      (define-key sh-mode-map "\C-c\C-d" 'shell-cd-current-directory))))
 
 ;;----------------------------------------------------------------------
 ;; Bookmark-plus.
@@ -296,6 +295,7 @@
 ;; (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
 
 (use-package bookmark+
+  :ensure nil
   :load-path "~/.emacs.d/elpa/bookmark+"
   :init
   (setq bookmark-default-file "~/Dropbox/bookmarks"
@@ -317,8 +317,7 @@
     ;; Toggle temporary/permanent bookmark.
     (global-set-key (kbd "<S-f3>")
                     'bmkp-toggle-temporary-bookmark)
-    )
-  :ensure nil)
+    ))
 
 ;;----------------------------------------------------------------------
 ;; Visible bookmarks. Easy movement.
@@ -334,8 +333,7 @@
   :bind
   (("<C-f2>" . bm-toggle)
    ("<f2>"   . bm-next)
-   ("<S-f2>" . bm-previous))
-  :ensure t)
+   ("<S-f2>" . bm-previous)))
 
 ;;----------------------------------------------------------------------
 ;; Folding code blocks based on indentation.
@@ -347,8 +345,7 @@
 (use-package yafolding
   :bind
   (("C-{" . yafolding-hide-parent-element)
-   ("C-}" . yafolding-toggle-element))
-  :ensure nil)
+   ("C-}" . yafolding-toggle-element)))
 
 ;;----------------------------------------------------------------------
 ;; Smart Parenthesis.
@@ -358,7 +355,6 @@
 ;;   (package-install 'smartparens))
 
 (use-package smartparens
-  :ensure nil
   :diminish smartparens-mode
   :config
   (progn
@@ -382,7 +378,6 @@
         imenu-list-auto-resize nil))
 
 (use-package markdown-mode
-  :ensure nil
   :mode (("\\.md\\'"       . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :config
@@ -400,6 +395,11 @@
                                  'imenu-list-smart-toggle)))
     )
   )
+
+(use-package yaml-mode
+  :defer t
+  :mode (("\\.ya?ml\\'" . yaml-mode)
+         ("\\.toml\\'"  . yaml-mode)))
 
 ;;----------------------------------------------------------------------
 ;; R+MarkDown extensions (emacs >= 24.3.1).
@@ -433,11 +433,6 @@
   ;; :ensure poly-noweb
   :defer t)
 
-(use-package yaml-mode
-  :ensure nil
-  :mode (("\\.ya?ml\\'" . yaml-mode)
-         ("\\.toml\\'"  . yaml-mode)))
-
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/
@@ -446,18 +441,17 @@
 ;;   (package-install 'ess))
 
 (use-package ess
-  :ensure nil
-  ;; :ensure ess-site
-  ;; :ensure ess-view
   :init
   (progn
+    (require 'ess-site)
     (setq-default ess-dialect "R")
     (setq-default inferior-R-args "--no-restore-history --no-save ")
     (setq ess-fancy-comments nil
           ess-indent-with-fancy-comments nil
           comint-scroll-to-bottom-on-input t
           comint-scroll-to-bottom-on-output t
-          comint-move-point-for-output t)
+          comint-move-point-for-output t
+          ess-indent-level 4)
     )
   :bind
   (("C-S-<f5>" . ess-eval-chunk)
@@ -519,16 +513,12 @@
       (error "ess-eval-buffer canceled!")))
   )
 
-(use-package ess-site
-  :ensure nil)
-
 (use-package ess-view
-  :ensure nil
   :init (setq ess-view--spreadsheet-program "gnumeric"))
 
 (use-package ess-R-data-view
   ;; :bind ("<f6>" . ess-R-dv-pprint)
-  :ensure nil)
+  )
 
 ;;----------------------------------------------------------------------
 ;; Navigation in balanced expressions.
@@ -549,9 +539,13 @@
 ;; (when (not (package-installed-p 'auto-complete))
 ;;   (package-install 'auto-complete))
 
+(use-package auto-complete
+  :defer t)
+
 (use-package auto-complete-config
   ;; :ensure auto-complete
-  :bind ("M-<tab>" . my--auto-complete)
+  :ensure nil
+  ;; :bind ("M-<tab>" . my--auto-complete)
   ;; :init
   ;; (defun my--auto-complete ()
   ;;   (interactive)
@@ -595,7 +589,6 @@
 ;; Latex extensions.
 
 (use-package auctex
-  :ensure nil
   :defer nil
   :mode
   (("\\.pgf\\'" . latex-mode)
@@ -626,18 +619,11 @@
   (setq org-confirm-babel-evaluate nil)
   )
 
-(use-package ox-latex
-  :config
-  (setq org-latex-listings t)
-  (add-to-list 'org-latex-packages-alist '("" "listings"))
-  (add-to-list 'org-latex-packages-alist '("" "color")))
-
 ;;----------------------------------------------------------------------
 ;; Python configuration.
 ;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
 
 (use-package elpy
-  :ensure nil
   :commands elpy-enable
   :init
   (progn
@@ -660,12 +646,10 @@
 ;;   Emacs    : M-x package-install RET jedi RET
 ;;   Emacs    : M-x jedi:install-server RET
 
-(use-package jedi
-  :ensure nil)
+(use-package jedi)
 
 ;; https://github.com/proofit404/anaconda-mode
 (use-package anaconda-mode
-  :ensure nil
   :init
   (progn
     (add-hook 'python-mode-hook 'anaconda-mode)
