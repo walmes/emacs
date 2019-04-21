@@ -695,7 +695,7 @@
   (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
-   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\)\\>"
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\|PROBLEM\\|FAIL\\)\\>"
       0 'font-lock-warning-face t)
      ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\|TIP\\|REMEMBER\\|QUESTION\\|EXPLANATION\\|INTERESTING\\|HYPHOTESIS\\|CONCEPT\\)\\>"
       0 'font-lock-constant-face t)
@@ -703,7 +703,7 @@
       0 'bad-words t)
      ("\\(^\\|[[:space:]]\\)@[[:alnum:]_.]+\\>" ;; @walmes, @param, @return
       0 'font-lock-function-name-face t)
-     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\|AMAZING\\|COOL\\|NICE\\|BRILLIANT\\)\\>"
+     ("\\<\\(DONE\\|GOOD\\|WALMES\\|SOLVED\\|SOLUTION\\|AMAZING\\|COOL\\|NICE\\|BRILLIANT\\)\\>"
       0 'good-words t))
    ))
 
