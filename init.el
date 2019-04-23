@@ -695,7 +695,7 @@
   (setq font-lock-keywords-case-fold-search t)
   (font-lock-add-keywords
    mode
-   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\|PROBLEM\\|FAIL\\)\\>"
+   '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\|PROBLEM\\|FAIL\\|CAUTION\\)\\>"
       0 'font-lock-warning-face t)
      ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\|TIP\\|REMEMBER\\|QUESTION\\|EXPLANATION\\|INTERESTING\\|HYPHOTESIS\\|CONCEPT\\)\\>"
       0 'font-lock-constant-face t)
