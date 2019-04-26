@@ -494,8 +494,8 @@
       (require 'ess-site)
       (setq ess-smart-operators t)
       (setq-local comment-add 0) ;; Single # as default.
-      (auto-complete-mode 1)
       (company-mode 1)       ;; (company-mode -1)
+      (auto-complete-mode -1)
       (ess-toggle-underscore nil)
       ;; `Alt + -'  to cycle `<- | <<- | = ...'.
       (define-key ess-mode-map [?\M--] 'ess-cycle-assign)
@@ -566,7 +566,8 @@
                              ac-source-dictionary
                              ac-source-words-in-same-mode-buffers))
   ;; To activate ESS auto-complete for R.
-  (setq ess-use-auto-complete 'script-only)
+  ;; (setq ess-use-auto-complete 'script-only)
+  (setq ess-use-auto-complete -1)
   ;; Change 'ac-complete from ENTER to TAB.
   (define-key ac-completing-map "\r" nil)
   (define-key ac-completing-map "\t" 'ac-complete)
