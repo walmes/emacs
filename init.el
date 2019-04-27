@@ -698,7 +698,7 @@
    mode
    '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\|PROBLEM\\|FAIL\\|CAUTION\\)\\>"
       0 'font-lock-warning-face t)
-     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\|TIP\\|REMEMBER\\|QUESTION\\|EXPLANATION\\|INTERESTING\\|HYPHOTESIS\\|CONCEPT\\)\\>"
+     ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\|TIP\\|REMEMBER\\|QUESTION\\|EXPLANATION\\|INTERESTING\\|HYPHOTESIS\\|CONCEPT\\|DISCUSSION\\)\\>"
       0 'font-lock-constant-face t)
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\|ERROR\\)\\>"
       0 'bad-words t)
