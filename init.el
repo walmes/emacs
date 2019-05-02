@@ -611,8 +611,8 @@
   (setq org-replace-disputed-keys t)
   (setq org-return-follows-link t)
   (setq org-descriptive-links nil)
-;; Fontify code in code blocks.
-;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
+  ;; Fontify code in code blocks.
+  ;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
   (setq org-src-fontify-natively t)
   ;; Babel.
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -656,24 +656,40 @@
     ;; (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
     ))
 
+;; NOTE: When to use :init or :config.
+;; https://emacs.stackexchange.com/questions/10396/difference-between-init-and-config-in-use-package
+;;   :init   -> Code to run when `use-package' form evals.
+;;   :config -> Runs if and when package loads.
+
 ;; https://cestlaz.github.io/posts/using-emacs-45-company/
-;; https://github.com/zamansky/using-emacs/blob/master/myinit.org
-(use-package company-jedi
-  :config
+;; https://steelkiwi.com/blog/emacs-configuration-working-python/
+(use-package jedi
+  :init ;; Code to run when `use-package' form evals.
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (jedi:setup)
+               (jedi:ac-setup)))
+  :config ;; Runs if and when package loads.
   (add-hook
    'python-mode-hook
    '(lambda ()
-      (jedi:setup)
-      (highlight-indentation-mode 0)
-      ;; (auto-complete-mode nil)
+      (auto-complete-mode t)
+      (setq ac-auto-start nil)
       (setq ac-auto-show-menu nil)
-      ;; (setq ac-auto-start nil)
-      ;; (setq ac-use-quick-help nil)
+      (setq ac-use-quick-help nil)
+      (setq ac-auto-start 0
+            ac-delay 0
+            ac-quick-help-delay 0
+            ac-use-fuzzy t
+            ac-fuzzy-enable t)
+      (company-mode nil)
+      (highlight-indentation-mode 0)
+      (setq jedi:complete-on-dot nil)
       (setq jedi:tooltip-method nil)
       (setq jedi:server-args
             '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
+              "--sys-path" "/home/walmes/anaconda3/lib/python3.6/site-packages/"
               "--sys-path" "/usr/lib/python3.6/"))
-      (add-to-list 'company-backends 'company-jedi)
       ))
   )
 
