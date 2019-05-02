@@ -390,7 +390,7 @@
     (setq imenu-list-focus-after-activation t
           imenu-list-auto-resize nil)
     (add-hook 'markdown-mode-hook
-              '(lambda()
+              '(lambda ()
                  (global-set-key (kbd "<f10>")
                                  'imenu-list-smart-toggle)))
     )
@@ -489,7 +489,7 @@
           (ess-R-fl-keyword:F&T . t)))
   (add-hook
    'ess-mode-hook
-   '(lambda()
+   '(lambda ()
       ;;-------------------------------------
       (require 'ess-site)
       (setq ess-smart-operators t)
@@ -634,6 +634,13 @@
     ;; To fix a warning message.
     ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
     (setq python-shell-completion-native-enable nil)
+    (add-hook 'python-mode-hook
+            '(lambda ()
+               (highlight-indentation-mode 0)
+               ;; (company-mode -1)
+               (auto-complete-mode -1)
+               )
+            t)
     )
   :config
   (add-hook 'python-mode-hook 'jedi:setup)
@@ -642,14 +649,77 @@
             '(lambda () (highlight-indentation-mode 0)) t)
   )
 
-;; Seguir: http://tkf.github.io/emacs-jedi/latest/
+;; TIP: check if company is enabled in a buffer.
+;; (if (bound-and-true-p company-mode)
+;;     (message "is on")
+;;   (message "is off"))
+
+;; Follow: http://tkf.github.io/emacs-jedi/latest/
 ;;   Terminal : sudo apt-get install virtualenv
 ;;   Emacs    : M-x package-install RET jedi RET
 ;;   Emacs    : M-x jedi:install-server RET
 
-(use-package jedi)
+;; Install in Python.
+;;   sudo apt-get install python-pip python3-pip
+;;   sudo pip install --upgrade pip
+;;   pip install jedi
+;;   pip install epc
+
+;; sudo find . -name jediepcserver.py
+;;   .emacs.d/.python-environments/default/lib/python2.7/site-packages/jediepcserver.py
+;;   .emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py
+
+;; IMPORTANT: You must choose the packages for completion. Use `jedi'
+;; only (it calls auto-complete) ou use `company-jedi' (it calls
+;; comapany). The last one is more distracting. So, to setup `jedi'
+;; without auto-complete is the best option.
+
+;; To see options:
+;;   python ~/.emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py --help
+(use-package jedi
+  :defer
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  :config
+  (progn
+    ;; (add-hook 'python-mode-hook 'jedi:setup)
+    (setq jedi:complete-on-dot nil)
+    (setq jedi:server-args
+          '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
+            "--sys-path" "/usr/lib/python3.6/"))
+    ;; (add-hook 'python-mode-hook '(lambda ()
+    ;;                                (auto-complete-mode -1)
+    ;;                                (setq ac-auto-show-menu nil)
+    ;;                                (add-to-list 'company-backends 'company-jedi)
+    ;;                                ))
+    )
+  )
+
+;; FIXME: `jedi' and `company-jedi' are incompatible. Please choose one.
+
+;; https://cestlaz.github.io/posts/using-emacs-45-company/
+;; Provides completion.
+;; https://github.com/syohex/emacs-company-jedi
+;; https://github.com/syohex/emacs-company-jedi/wiki
+;; https://stackoverflow.com/questions/24184577/emacs-how-to-stop-jedi
+;; https://github.com/jorgenschaefer/elpy/issues/1445
+(use-package company-jedi
+  :defer
+  :init
+  ;; (add-hook 'python-mode-hook 'jedi:setup)
+  ;; (setq jedi:complete-on-dot nil)
+  ;; (setq jedi:server-args
+  ;;       '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
+  ;;         "--sys-path" "/usr/lib/python3.6/"))
+  (add-hook 'python-mode-hook '(lambda ()
+                                 (auto-complete-mode -1)
+                                 (setq ac-auto-show-menu nil)
+                                 (add-to-list 'company-backends 'company-jedi)
+                                 ))
+  )
 
 ;; https://github.com/proofit404/anaconda-mode
+;; Provides parameter list in minibuffer.
 (use-package anaconda-mode
   :init
   (progn
