@@ -240,12 +240,14 @@
 
 (use-package company
   :init
-  (setq company-idle-delay             0.2
+  (setq company-idle-delay             0
         company-minimum-prefix-length  2
-        company-require-match          nil
-        company-dabbrev-ignore-case    nil
-        company-dabbrev-downcase       nil
-        company-frontends              '(company-pseudo-tooltip-frontend))
+        ;; company-require-match          nil
+        ;; company-dabbrev-ignore-case    nil
+        ;; company-dabbrev-downcase       nil
+        ;; company-frontends              '(company-pseudo-tooltip-frontend)
+        )
+  (global-company-mode t)
   :config
   (add-hook 'prog-mode-hook 'company-mode))
 
@@ -624,31 +626,6 @@
 ;; Python configuration.
 ;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
 
-(use-package elpy
-  :commands elpy-enable
-  :init
-  (progn
-    (with-eval-after-load 'python (elpy-enable))
-    ;; (setq python-shell-interpreter "/usr/bin/python3")
-    (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
-    ;; To fix a warning message.
-    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
-    (setq python-shell-completion-native-enable nil)
-    (add-hook 'python-mode-hook
-            '(lambda ()
-               (highlight-indentation-mode 0)
-               ;; (company-mode -1)
-               (auto-complete-mode -1)
-               )
-            t)
-    )
-  :config
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
-  (add-hook 'python-mode-hook
-            '(lambda () (highlight-indentation-mode 0)) t)
-  )
-
 ;; TIP: check if company is enabled in a buffer.
 ;; (if (bound-and-true-p company-mode)
 ;;     (message "is on")
@@ -669,62 +646,48 @@
 ;;   .emacs.d/.python-environments/default/lib/python2.7/site-packages/jediepcserver.py
 ;;   .emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py
 
-;; IMPORTANT: You must choose the packages for completion. Use `jedi'
-;; only (it calls auto-complete) ou use `company-jedi' (it calls
-;; comapany). The last one is more distracting. So, to setup `jedi'
-;; without auto-complete is the best option.
-
-;; To see options:
-;;   python ~/.emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py --help
-(use-package jedi
-  :defer
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  :config
-  (progn
-    ;; (add-hook 'python-mode-hook 'jedi:setup)
-    (setq jedi:complete-on-dot nil)
-    (setq jedi:server-args
-          '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
-            "--sys-path" "/usr/lib/python3.6/"))
-    ;; (add-hook 'python-mode-hook '(lambda ()
-    ;;                                (auto-complete-mode -1)
-    ;;                                (setq ac-auto-show-menu nil)
-    ;;                                (add-to-list 'company-backends 'company-jedi)
-    ;;                                ))
-    )
-  )
-
-;; FIXME: `jedi' and `company-jedi' are incompatible. Please choose one.
-
-;; https://cestlaz.github.io/posts/using-emacs-45-company/
-;; Provides completion.
-;; https://github.com/syohex/emacs-company-jedi
-;; https://github.com/syohex/emacs-company-jedi/wiki
-;; https://stackoverflow.com/questions/24184577/emacs-how-to-stop-jedi
-;; https://github.com/jorgenschaefer/elpy/issues/1445
-(use-package company-jedi
-  :defer
-  :init
-  ;; (add-hook 'python-mode-hook 'jedi:setup)
-  ;; (setq jedi:complete-on-dot nil)
-  ;; (setq jedi:server-args
-  ;;       '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
-  ;;         "--sys-path" "/usr/lib/python3.6/"))
-  (add-hook 'python-mode-hook '(lambda ()
-                                 (auto-complete-mode -1)
-                                 (setq ac-auto-show-menu nil)
-                                 (add-to-list 'company-backends 'company-jedi)
-                                 ))
-  )
-
 ;; https://github.com/proofit404/anaconda-mode
-;; Provides parameter list in minibuffer.
+;; Provides parameter list in minibuffer and jump to definitions.
 (use-package anaconda-mode
   :init
   (progn
     (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)))
+    ;; Eldoc from auto-complete is used.
+    ;; (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+    ))
+
+;; https://cestlaz.github.io/posts/using-emacs-45-company/
+;; https://github.com/zamansky/using-emacs/blob/master/myinit.org
+(use-package company-jedi
+  :config
+  (add-hook
+   'python-mode-hook
+   '(lambda ()
+      (jedi:setup)
+      (highlight-indentation-mode 0)
+      ;; (auto-complete-mode nil)
+      (setq ac-auto-show-menu nil)
+      ;; (setq ac-auto-start nil)
+      ;; (setq ac-use-quick-help nil)
+      (setq jedi:tooltip-method nil)
+      (setq jedi:server-args
+            '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
+              "--sys-path" "/usr/lib/python3.6/"))
+      (add-to-list 'company-backends 'company-jedi)
+      ))
+  )
+
+(use-package elpy
+  :init
+  (progn
+    (with-eval-after-load 'python (elpy-enable))
+    ;; (setq python-shell-interpreter "/usr/bin/python3")
+    (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
+    ;; To fix a warning message.
+    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+    (setq python-shell-completion-native-enable nil)
+    )
+  )
 
 ;;----------------------------------------------------------------------
 ;; A Emacs tree plugin like NerdTree for Vim.
