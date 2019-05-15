@@ -86,9 +86,6 @@
 ;; Key bindings.
 ;;----------------------------------------------------------------------
 
-;; C-TAB to move the cursor between visible buffers.
-(global-set-key [(control tab)] 'other-window)
-
 ;; C-page down e C-page up to move along buffers.
 (global-set-key (kbd "C-<next>") 'next-buffer)
 (global-set-key (kbd "C-<prior>") 'previous-buffer)
@@ -184,7 +181,6 @@
   ;; spacemacs-theme :init (load-theme 'spacemacs-light t)
   :defer t)
 
-
 ;;----------------------------------------------------------------------
 ;; helm.
 ;; http://tuhdo.github.io/helm-intro.html
@@ -230,7 +226,6 @@
    ("C-x c Y"   . helm-yas-create-snippet-on-region)
    ("C-x c b"   . my/helm-do-grep-book-notes)
    ("C-x c SPC" . helm-all-mark-rings)))
-
 
 ;;----------------------------------------------------------------------
 ;; Company.
@@ -368,16 +363,26 @@
   )
 
 ;;----------------------------------------------------------------------
+;; A Emacs tree plugin like NerdTree for Vim.
+;; https://github.com/jaypei/emacs-neotree
+;; M-x package-install RET neotree
+
+(use-package neotree
+  :bind ("<f8>" . neotree-toggle))
+
+;;----------------------------------------------------------------------
+;; To edit HTML and related files.
+
+(use-package web-mode
+  :mode ("\\.html?\\'" . web-mode)
+  :config
+  (add-hook 'web-mode-hook
+            '(lambda ()
+               (setq web-mode-markup-indent-offset 2)) t))
+
+;;----------------------------------------------------------------------
 ;; MarkDown extensions.
 ;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
-
-;; (when (not (package-installed-p 'markdown-mode))
-;;   (package-install 'markdown-mode))
-
-(use-package imenu-list
-  :config
-  (setq imenu-list-focus-after-activation t
-        imenu-list-auto-resize nil))
 
 (use-package markdown-mode
   :mode (("\\.md\\'"       . markdown-mode)
@@ -386,11 +391,8 @@
   (progn
     (add-hook 'markdown-mode-hook 'turn-on-orgstruct)
     (add-hook 'markdown-mode-hook 'turn-on-orgstruct++)
-    (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)
-    (setq imenu-auto-rescan t)
     (require 'imenu-list)
-    (setq imenu-list-focus-after-activation t
-          imenu-list-auto-resize nil)
+    (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)
     (add-hook 'markdown-mode-hook
               '(lambda ()
                  (global-set-key (kbd "<f10>")
@@ -404,49 +406,152 @@
          ("\\.toml\\'"  . yaml-mode)))
 
 ;;----------------------------------------------------------------------
-;; R+MarkDown extensions (emacs >= 24.3.1).
-;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
+;; Org Mode.
 
-;; (when (not (package-installed-p 'polymode))
-;;   (package-install 'polymode))
-
-;; Based on:
-;; https://github.com/SteveLane/dot-emacs/blob/master/packages-polymode.el
-
-(use-package polymode
-  ;; :ensure markdown-mode
-  ;; :ensure poly-R
-  ;; :ensure poly-noweb
-  ;; :bind
-  ;; (("S-<f7>" . polymode-next-chunk-same-type)
-  ;;  ("S-<f8>" . polymode-previous-chunk-same-type))
-  :mode
-  (("\\.Rnw\\'" . poly-noweb+r-mode)
-   ("\\.Rmd\\'" . poly-markdown+r-mode))
+(use-package org
+  :defer t
+  :config
+  (setq org-replace-disputed-keys t)
+  (setq org-return-follows-link t)
+  (setq org-descriptive-links nil)
+  ;; Fontify code in code blocks.
+  ;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
+  (setq org-src-fontify-natively t)
+  ;; Babel.
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (R . t)
+                                 (sh . t)))
+  (setq org-confirm-babel-evaluate nil)
   )
 
-(use-package poly-markdown
-  ;; :ensure polymode
-  :defer t)
+;;----------------------------------------------------------------------
+;; Auto complete mode for Emacs.
 
-(use-package poly-R
-  ;; :ensure polymode
-  ;; :ensure poly-markdown
-  ;; :ensure poly-noweb
-  :defer t)
+;; (when (not (package-installed-p 'auto-complete))
+;;   (package-install 'auto-complete))
+
+(use-package auto-complete
+  :defer t
+  :init
+  (progn
+    (auto-complete-mode t))
+  :config
+  (progn
+    (use-package auto-complete-config)
+    (ac-config-default)
+    (setq ac-delay 0.02
+          ac-auto-start 0)
+    (setq ac-use-quick-help nil
+          ac-quick-help-delay 1.)
+    (setq ac-use-menu-map t)
+    (setq ac-dwim t)
+    (setq ac-fuzzy-enable t)
+    (setq-default ac-sources '(ac-source-abbrev
+                               ac-source-dictionary
+                               ac-source-words-in-same-mode-buffers))
+    ;; Change 'ac-complete from ENTER to TAB.
+    ;; (ac-set-trigger-key "TAB")
+    (define-key ac-completing-map "\r" nil)
+    (define-key ac-completing-map "\t" 'ac-complete)
+    )
+  )
+
+;;----------------------------------------------------------------------
+;; Python configuration.
+;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
+
+;; TIP: check if company is enabled in a buffer.
+;; (if (bound-and-true-p company-mode)
+;;     (message "is on")
+;;   (message "is off"))
+
+;; Follow: http://tkf.github.io/emacs-jedi/latest/
+;;   Terminal : sudo apt-get install virtualenv
+;;   Emacs    : M-x package-install RET jedi RET
+;;   Emacs    : M-x jedi:install-server RET
+
+;; Install in Python.
+;;   sudo apt-get install python-pip python3-pip
+;;   sudo pip install --upgrade pip
+;;   pip install jedi
+;;   pip install epc
+
+;; sudo find . -name jediepcserver.py
+;;   .emacs.d/.python-environments/default/lib/python2.7/site-packages/jediepcserver.py
+;;   .emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py
+
+;; C-c ? -> jedi:show-doc
+;; C-c . -> jedi:goto-definition
+;; M-.   -> anaconda-mode-find-definitions
+
+(use-package anaconda-mode
+  :init
+  (progn
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    ;; Eldoc from auto-complete is used.
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+    ))
+
+(use-package elpy
+  :init
+  (progn
+    (with-eval-after-load 'python (elpy-enable))
+    ;; (setq python-shell-interpreter "/usr/bin/python3")
+    (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
+    ;; To fix a warning message.
+    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+    (setq python-shell-completion-native-enable nil)
+    )
+  )
+
+;; NOTE: When to use :init or :config.
+;; https://emacs.stackexchange.com/questions/10396/difference-between-init-and-config-in-use-package
+;;   :init   -> Code to run when `use-package' form evals.
+;;   :config -> Runs if and when package loads.
+
+;; https://cestlaz.github.io/posts/using-emacs-45-company/
+;; https://steelkiwi.com/blog/emacs-configuration-working-python/
+(use-package jedi
+  :init ;; Code to run when `use-package' form evals.
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (jedi:setup)
+               (jedi:ac-setup)))
+  :config ;; Runs if and when package loads.
+  (add-hook
+   'python-mode-hook
+   '(lambda ()
+      (auto-complete-mode t)
+      (setq ac-auto-start nil)
+      (setq ac-auto-show-menu nil)
+      (setq ac-use-quick-help nil)
+      (setq ac-auto-start 0
+            ac-delay 0
+            ac-quick-help-delay 0
+            ac-use-fuzzy t
+            ac-fuzzy-enable t)
+      (company-mode nil)
+      (highlight-indentation-mode 0)
+      (setq jedi:complete-on-dot t)
+      (setq jedi:tooltip-method nil)
+      (setq jedi:server-args
+            '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
+              "--sys-path" "/home/walmes/anaconda3/lib/python3.6/site-packages/"
+              "--sys-path" "/usr/lib/python3.6/"))
+      ))
+  )
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
 ;; http://ess.r-project.org/
-
-;; (when (not (package-installed-p 'ess))
-;;   (package-install 'ess))
 
 (use-package ess
   :init
   (progn
     (setq-default ess-dialect "R")
     (setq-default inferior-R-args "--no-restore-history --no-save ")
+    ;; (setq inferior-ess-r-program "/home/walmes/anaconda3/bin/R")
     (setq ess-fancy-comments nil
           ess-indent-with-fancy-comments nil
           comint-scroll-to-bottom-on-input t
@@ -536,44 +641,37 @@
                (global-set-key (kbd "<M-S-down>") 'down-list))))
 
 ;;----------------------------------------------------------------------
-;; Auto complete mode for Emacs.
+;; R+MarkDown extensions (emacs >= 24.3.1).
+;; (IT MUST BE BEFORE LATEX EXTENSIONS.)
 
-;; (when (not (package-installed-p 'auto-complete))
-;;   (package-install 'auto-complete))
+;; Based on:
+;; https://github.com/fernandomayer/spacemacs/blob/master/private/polymode/packages.el#L13
 
-(use-package auto-complete
-  :defer t)
+(use-package polymode
+  :mode (("\\.Rmd" . Rmd-mode))
+  :init
+  (progn
+    (defun Rmd-mode ()
+      "ESS Markdown mode for Rmd files"
+      (interactive)
+      (require 'poly-R)
+      (require 'poly-markdown)
+      (R-mode)
+      (poly-markdown+r-mode))
+    ))
 
-(use-package auto-complete-config
-  ;; :ensure auto-complete
-  :ensure nil
-  ;; :bind ("M-<tab>" . my--auto-complete)
-  ;; :init
-  ;; (defun my--auto-complete ()
-  ;;   (interactive)
-  ;;   (unless (boundp 'auto-complete-mode)
-  ;;     (global-auto-complete-mode 1))
-  ;;   (auto-complete))
-  :config
-  (ac-config-default)
-  (setq ac-auto-start 0
-        ac-delay 0.2
-        ac-quick-help-delay 1.
-        ac-use-fuzzy t
-        ac-fuzzy-enable t
-        ;; use 'complete when auto-complete is disabled
-        tab-always-indent 'complete
-        ac-dwim t)
-  (setq-default ac-sources '(ac-source-abbrev
-                             ac-source-dictionary
-                             ac-source-words-in-same-mode-buffers))
-  ;; To activate ESS auto-complete for R.
-  ;; (setq ess-use-auto-complete 'script-only)
-  (setq ess-use-auto-complete -1)
-  ;; Change 'ac-complete from ENTER to TAB.
-  (define-key ac-completing-map "\r" nil)
-  (define-key ac-completing-map "\t" 'ac-complete)
-  )
+(use-package polymode
+  :mode (("\\.Rnw" . Rnw-mode))
+  :init
+  (progn
+    (defun Rnw-mode ()
+      "ESS LaTeX mode for Rnw files"
+      (interactive)
+      (require 'poly-R)
+      (require 'poly-noweb)
+      (R-mode)
+      (poly-noweb+r-mode))
+    ))
 
 ;;----------------------------------------------------------------------
 ;; Smart operators with electric spacing.
@@ -599,129 +697,7 @@
   :config
   (setq reftex-plug-into-AUCTeX t)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  )
-
-;;----------------------------------------------------------------------
-;; Org Mode.
-
-(use-package org
-  :defer t
-  :config
-  (setq org-replace-disputed-keys t)
-  (setq org-return-follows-link t)
-  (setq org-descriptive-links nil)
-  ;; Fontify code in code blocks.
-  ;; http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
-  (setq org-src-fontify-natively t)
-  ;; Babel.
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t)
-                                 (R . t)
-                                 (sh . t)))
-  (setq org-confirm-babel-evaluate nil)
-  )
-
-;;----------------------------------------------------------------------
-;; Python configuration.
-;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
-
-;; TIP: check if company is enabled in a buffer.
-;; (if (bound-and-true-p company-mode)
-;;     (message "is on")
-;;   (message "is off"))
-
-;; Follow: http://tkf.github.io/emacs-jedi/latest/
-;;   Terminal : sudo apt-get install virtualenv
-;;   Emacs    : M-x package-install RET jedi RET
-;;   Emacs    : M-x jedi:install-server RET
-
-;; Install in Python.
-;;   sudo apt-get install python-pip python3-pip
-;;   sudo pip install --upgrade pip
-;;   pip install jedi
-;;   pip install epc
-
-;; sudo find . -name jediepcserver.py
-;;   .emacs.d/.python-environments/default/lib/python2.7/site-packages/jediepcserver.py
-;;   .emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py
-
-;; https://github.com/proofit404/anaconda-mode
-;; Provides parameter list in minibuffer and jump to definitions.
-(use-package anaconda-mode
-  :init
-  (progn
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    ;; Eldoc from auto-complete is used.
-    ;; (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-    ))
-
-;; NOTE: When to use :init or :config.
-;; https://emacs.stackexchange.com/questions/10396/difference-between-init-and-config-in-use-package
-;;   :init   -> Code to run when `use-package' form evals.
-;;   :config -> Runs if and when package loads.
-
-;; https://cestlaz.github.io/posts/using-emacs-45-company/
-;; https://steelkiwi.com/blog/emacs-configuration-working-python/
-(use-package jedi
-  :init ;; Code to run when `use-package' form evals.
-  (add-hook 'python-mode-hook
-            '(lambda ()
-               (jedi:setup)
-               (jedi:ac-setup)))
-  :config ;; Runs if and when package loads.
-  (add-hook
-   'python-mode-hook
-   '(lambda ()
-      (auto-complete-mode t)
-      (setq ac-auto-start nil)
-      (setq ac-auto-show-menu nil)
-      (setq ac-use-quick-help nil)
-      (setq ac-auto-start 0
-            ac-delay 0
-            ac-quick-help-delay 0
-            ac-use-fuzzy t
-            ac-fuzzy-enable t)
-      (company-mode nil)
-      (highlight-indentation-mode 0)
-      (setq jedi:complete-on-dot nil)
-      (setq jedi:tooltip-method nil)
-      (setq jedi:server-args
-            '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
-              "--sys-path" "/home/walmes/anaconda3/lib/python3.6/site-packages/"
-              "--sys-path" "/usr/lib/python3.6/"))
-      ))
-  )
-
-(use-package elpy
-  :init
-  (progn
-    (with-eval-after-load 'python (elpy-enable))
-    ;; (setq python-shell-interpreter "/usr/bin/python3")
-    (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
-    ;; To fix a warning message.
-    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
-    (setq python-shell-completion-native-enable nil)
-    )
-  )
-
-;;----------------------------------------------------------------------
-;; A Emacs tree plugin like NerdTree for Vim.
-;; https://github.com/jaypei/emacs-neotree
-;; M-x package-install RET neotree
-
-(use-package neotree
-  :bind ("<f8>" . neotree-toggle))
-
-;;----------------------------------------------------------------------
-;; To edit HTML and related files.
-
-(use-package web-mode
-  :mode ("\\.html?\\'" . web-mode)
-  :config
-  (add-hook 'web-mode-hook
-            '(lambda ()
-               (setq web-mode-markup-indent-offset 2)) t))
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
 ;;----------------------------------------------------------------------
 ;; Add highlighting for certain keywords.
