@@ -154,32 +154,27 @@
 ;; M-x disable-theme
 ;; M-x load-theme RET <theme> RET
 
-;;-------------------------------------------
-;; Dark.
-
-;; (load-theme 'monokai t)
-;; (set-face-attribute hl-line-face nil :background "#171816")
-
-;; (use-package
-;;   ;; Choose only one.
-;;   monokai-theme :init (load-theme 'monokai t)
-;;   ;; gotham-theme :init (load-theme 'gotham t)
-;;   ;; molokai-theme :init (load-theme 'molokai t)
-;;   ;; solarized-theme :init (load-theme 'solarized-dark t)
-;;   ;; spacemacs-theme :init (load-theme 'spacemacs-dark t)
-;;   :defer t
-;;   :ensure t)
-
-;;-------------------------------------------
-;; Light.
-
-(use-package
-  ;; Choose only one.
-  ;; flatui-theme :init (load-theme 'flatui t)
-  ;; leuven-theme :init (load-theme 'leuven t)
-  solarized-theme :init (load-theme 'solarized-light t)
-  ;; spacemacs-theme :init (load-theme 'spacemacs-light t)
-  :defer t)
+;; Select conditional on computer name.
+(cond
+ ((string-equal system-name "youngest")
+  (use-package
+    gotham-theme :init (load-theme 'gotham t)
+    :defer t))
+ (t
+  (use-package
+    ;; Choose only one.
+    ;; Light. -------------------------------
+    ;; flatui-theme :init (load-theme 'flatui t)
+    ;; leuven-theme :init (load-theme 'leuven t)
+    solarized-theme :init (load-theme 'solarized-light t)
+    ;; spacemacs-theme :init (load-theme 'spacemacs-light t)
+    ;; Dark. --------------------------------
+    ;; monokai-theme :init (load-theme 'monokai t)
+    ;; gotham-theme :init (load-theme 'gotham t)
+    ;; molokai-theme :init (load-theme 'molokai t)
+    ;; solarized-theme :init (load-theme 'solarized-dark t)
+    ;; spacemacs-theme :init (load-theme 'spacemacs-dark t)
+    :defer t)))
 
 ;;----------------------------------------------------------------------
 ;; helm.
