@@ -160,6 +160,11 @@
   (use-package
     gotham-theme :init (load-theme 'gotham t)
     :defer t))
+ ((string-equal system-name "aqua")
+  (use-package
+    flatui-theme :init (load-theme 'flatui t)
+    (set-default-font "Noto Sans Mono CJK SC-20")
+    :defer t))
  (t
   (use-package
     ;; Choose only one.
@@ -493,6 +498,7 @@
   (progn
     (with-eval-after-load 'python (elpy-enable))
     ;; (setq python-shell-interpreter "/usr/bin/python3")
+    (setq elpy-rpc-python-command "/home/walmes/anaconda3/bin/python3")
     (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
     ;; To fix a warning message.
     ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
