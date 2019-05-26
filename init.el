@@ -154,11 +154,15 @@
 ;; M-x disable-theme
 ;; M-x load-theme RET <theme> RET
 
+;; Download NK57 from https://www.1001fonts.com/nk57-monospace-font.html
+;;                    https://www.dafont.com/nk57-monospace.font
+
 ;; Select conditional on computer name.
 (cond
  ((string-equal system-name "youngest")
   (use-package
     gotham-theme :init (load-theme 'gotham t)
+    (set-default-font "NK57 Monospace-16")
     :defer t))
  ((string-equal system-name "aqua")
   (use-package
