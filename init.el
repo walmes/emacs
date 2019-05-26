@@ -173,11 +173,15 @@
   (use-package
     ;; Choose only one.
     ;; Light. -------------------------------
+    ;; apropospriate-theme :init (load-theme 'apropospriate-light t)
     ;; flatui-theme :init (load-theme 'flatui t)
     ;; leuven-theme :init (load-theme 'leuven t)
     solarized-theme :init (load-theme 'solarized-light t)
     ;; spacemacs-theme :init (load-theme 'spacemacs-light t)
     ;; Dark. --------------------------------
+    ;; flatland-theme :init (load-theme 'flatland t)
+    ;; afternoon-theme :init (load-theme 'afternoon t)
+    ;; apropospriate-theme :init (load-theme 'apropospriate-dark t)
     ;; monokai-theme :init (load-theme 'monokai t)
     ;; gotham-theme :init (load-theme 'gotham t)
     ;; molokai-theme :init (load-theme 'molokai t)
