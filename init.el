@@ -67,18 +67,6 @@
  (t
   (set-default-font "Ubuntu Mono-14")))
 
-;; (set-default-font "Noto Sans Mono-14")
-;; (set-default-font "Inconsolata-14")
-(set-default-font "Ubuntu Mono-14")
-;; (cond ((string-equal system-name "camus")
-;;        (set-default-font "Noto Sans Mono-14"))
-;;       ((string-equal system-name "ulisses")
-;;        (set-default-font "Ubuntu Mono-16"))
-;;       ((string-equal system-name "youngest")
-;;        (set-default-font "Ubuntu Mono-16"))
-;;       ((string-equal system-name "class")
-;;        (set-default-font "Ubuntu Mono-14")))
-
 ;; Turn ido-mode on.
 (ido-mode t)
 
@@ -157,6 +145,8 @@
 ;; Download NK57 from https://www.1001fonts.com/nk57-monospace-font.html
 ;;                    https://www.dafont.com/nk57-monospace.font
 
+;; Download PF Din from https://www.gfxfile.com/3tb/PF_Din_Mono.7z
+
 ;; Select conditional on computer name.
 (cond
  ((string-equal system-name "youngest")
@@ -168,6 +158,11 @@
   (use-package
     flatui-theme :init (load-theme 'flatui t)
     (set-default-font "Noto Sans Mono CJK SC-20")
+    :defer t))
+ ((string-equal system-name "ulisses")
+  (use-package
+    molokai-theme :init (load-theme 'molokai t)
+    (set-default-font "PFDin-16")
     :defer t))
  (t
   (use-package
@@ -754,6 +749,7 @@
  '(bmkp-last-as-first-bookmark-file nil)
  '(bmkp-light-style-autonamed (quote lfringe))
  '(bmkp-light-style-non-autonamed (quote lfringe))
+ '(column-number-mode t)
  '(doc-view-continuous t)
 )
 (custom-set-faces
