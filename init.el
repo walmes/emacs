@@ -146,6 +146,7 @@
 ;;                    https://www.dafont.com/nk57-monospace.font
 
 ;; Download PF Din from https://www.gfxfile.com/3tb/PF_Din_Mono.7z
+;; Download M+ 2m Font from: https://www.fontspace.com/m-fonts/m-2m
 
 ;; Select conditional on computer name.
 (cond
@@ -162,7 +163,8 @@
  ((string-equal system-name "ulisses")
   (use-package
     molokai-theme :init (load-theme 'molokai t)
-    (set-default-font "PFDin-16")
+    ;; (set-default-font "PFDin-16")
+    (set-default-font "M+ 2m-16")
     :defer t))
  (t
   (use-package
