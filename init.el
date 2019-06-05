@@ -58,15 +58,6 @@
 ;; To debug on errors.
 ;; (setq debug-on-error t)
 
-;; Font and size.
-(cond
- ((find-font (font-spec :name "Inconsolata"))
-  (set-default-font "Inconsolata-14"))
- ((find-font (font-spec :name "Noto Sans Mono"))
-  (set-default-font "Noto Sans Mono-14"))
- (t
-  (set-default-font "Ubuntu Mono-14")))
-
 ;; Turn ido-mode on.
 (ido-mode t)
 
@@ -149,23 +140,33 @@
 ;; Download M+ 2m Font from: https://www.fontspace.com/m-fonts/m-2m
 ;; Download M+ 1mn Font from: https://www.fontspace.com/m-fonts/m-1mn
 
+;; Font and size.
+(cond
+ ((find-font (font-spec :name "M+ 2m"))
+  (set-default-font "M+ 2m-14"))
+ ((find-font (font-spec :name "Inconsolata"))
+  (set-default-font "Inconsolata-14"))
+ ((find-font (font-spec :name "Noto Sans Mono"))
+  (set-default-font "Noto Sans Mono-14"))
+ (t
+  (set-default-font "Ubuntu Mono-14")))
+
 ;; Select conditional on computer name.
 (cond
  ((string-equal system-name "youngest")
   (use-package
     gotham-theme :init (load-theme 'gotham t)
-    (set-default-font "NK57 Monospace-16")
+    ;; (set-default-font "NK57 Monospace-16")
     :defer t))
  ((string-equal system-name "aqua")
   (use-package
     flatui-theme :init (load-theme 'flatui t)
-    (set-default-font "Noto Sans Mono CJK SC-20")
+    ;; (set-default-font "Noto Sans Mono CJK SC-20")
     :defer t))
  ((string-equal system-name "ulisses")
   (use-package
     molokai-theme :init (load-theme 'molokai t)
     ;; (set-default-font "PFDin-16")
-    (set-default-font "M+ 2m-16")
     :defer t))
  (t
   (use-package
