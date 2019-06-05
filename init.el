@@ -144,9 +144,10 @@
 
 ;; Download NK57 from https://www.1001fonts.com/nk57-monospace-font.html
 ;;                    https://www.dafont.com/nk57-monospace.font
-
 ;; Download PF Din from https://www.gfxfile.com/3tb/PF_Din_Mono.7z
+;; Download M+ 1m Font from: https://www.fontspace.com/m-fonts/m-1m
 ;; Download M+ 2m Font from: https://www.fontspace.com/m-fonts/m-2m
+;; Download M+ 1mn Font from: https://www.fontspace.com/m-fonts/m-1mn
 
 ;; Select conditional on computer name.
 (cond
@@ -718,6 +719,10 @@
 (set-face-attribute 'good-words nil
                     :foreground "LightSeaGreen"
                     :background "White")
+(make-face 'caution-words)
+(set-face-attribute 'caution-words nil
+                    :foreground "OrangeRed"
+                    :background "LightGray")
 
 (dolist
     (mode '(fundamental-mode emacs-lisp-mode lisp-mode org-mode
@@ -728,7 +733,7 @@
   (font-lock-add-keywords
    mode
    '(("\\<\\(IMPORTANT\\|ATTENTION\\|NOTE\\|OBS\\|TODO\\|BAD\\|STOP\\|PROBLEM\\|FAIL\\|CAUTION\\)\\>"
-      0 'font-lock-warning-face t)
+      0 'caution-words t)
      ("\\<\\(COMMENT\\|IMPROVE\\|REVIEW\\|TIP\\|REMEMBER\\|QUESTION\\|EXPLANATION\\|INTERESTING\\|HYPHOTESIS\\|CONCEPT\\|DISCUSSION\\)\\>"
       0 'font-lock-constant-face t)
      ("\\<\\(BUG\\|WARNING\\|DANGER\\|FIXME\\|ERROR\\)\\>"
