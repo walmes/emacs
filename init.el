@@ -34,6 +34,8 @@
 (visual-line-mode 1)                ;; Screen lines, not logical lines.
 (show-paren-mode 1)                 ;; Highlight matching pairs.
 (delete-selection-mode 1)           ;; Allows delete region.
+(recentf-mode 1)                    ;; List of recently opened files.
+
 (setq column-number-mode t)         ;; Show cursor position.
 (setq auto-save-default nil)        ;; Turn off #autosave#.
 (setq make-backup-files nil)        ;; Turn off backup~.
