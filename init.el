@@ -368,6 +368,9 @@
     (smartparens-global-mode 1)
     (sp-pair "\"" nil :unless '(sp-point-after-word-p))
     (sp-pair "'" nil :unless '(sp-point-after-word-p))
+    (sp-local-pair '(ess-mode) "(" nil :unless '(sp-point-before-word-p))
+    (sp-local-pair '(ess-mode) "[" nil :unless '(sp-point-before-word-p))
+    (sp-local-pair '(ess-mode) "{" nil :unless '(sp-point-before-word-p))
     )
   )
 
