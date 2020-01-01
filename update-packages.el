@@ -9,6 +9,8 @@
 
 (package-initialize)
 
+(setq package-check-signature nil)
+
 (package-list-packages)
 (package-refresh-contents)
 
