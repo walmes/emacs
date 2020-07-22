@@ -1,5 +1,5 @@
 ;;======================================================================
-;; Configuration file to Emacs (>=25.2.2) by Walmes Zeviani.
+;; Configuration file to Emacs (>=26.3) by Walmes Zeviani.
 ;;
 ;; This file is hosted at https://github.com/walmes/emacs.
 ;;
@@ -635,10 +635,6 @@
 
 (use-package ess-view
   :init (setq ess-view--spreadsheet-program "gnumeric"))
-
-(use-package ess-R-data-view
-  ;; :bind ("<f6>" . ess-R-dv-pprint)
-  )
 
 ;;----------------------------------------------------------------------
 ;; Navigation in balanced expressions.
