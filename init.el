@@ -432,8 +432,9 @@
   ;; Babel.
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
-                                 (R . t)
-                                 (sh . t)))
+                                 ;; (sh . t)
+                                 (shell . t)
+                                 (R . t)))
   (setq org-confirm-babel-evaluate nil)
   )
 
