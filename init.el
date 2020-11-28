@@ -511,8 +511,8 @@
   (progn
     (with-eval-after-load 'python (elpy-enable))
     ;; (setq python-shell-interpreter "/usr/bin/python3")
-    (setq elpy-rpc-python-command "/home/walmes/anaconda3/bin/python3")
-    (setq python-shell-interpreter "/home/walmes/anaconda3/bin/python3")
+    (setq elpy-rpc-python-command "/home/walmes/anaconda/bin/python3")
+    (setq python-shell-interpreter "/home/walmes/anaconda/bin/python3")
     ;; To fix a warning message.
     ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
     (setq python-shell-completion-native-enable nil)
@@ -550,9 +550,10 @@
       (setq jedi:complete-on-dot t)
       (setq jedi:tooltip-method nil)
       (setq jedi:server-args
-            '("--sys-path" "/home/walmes/anaconda3/lib/python3.7/site-packages/"
-              "--sys-path" "/home/walmes/anaconda3/lib/python3.6/site-packages/"
-              "--sys-path" "/usr/lib/python3.6/"))
+            ;; ls /home/walmes/anaconda/lib | grep "^python"
+            ;; ls /usr/lib/ | grep "^python"
+            '("--sys-path" "/home/walmes/anaconda/lib/python3.8/site-packages/"
+              "--sys-path" "/usr/lib/python3.8/"))
       ))
   )
 
