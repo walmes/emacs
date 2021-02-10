@@ -499,12 +499,12 @@
 ;; M-.   -> anaconda-mode-find-definitions
 
 (use-package anaconda-mode
-  :init
-  (progn
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    ;; Eldoc from auto-complete is used.
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-    ))
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode))
+  :config
+  (use-package company-anaconda
+    :requires company
+    :config (add-to-list 'company-backends 'company-anaconda)))
 
 (use-package elpy
   :init
