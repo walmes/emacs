@@ -246,6 +246,9 @@
   :init
   (setq company-idle-delay             0
         company-minimum-prefix-length  2
+        ;; company-show-numbers t
+        company-tooltip-limit 10
+        company-tooltip-align-annotations t
         ;; company-require-match          nil
         ;; company-dabbrev-ignore-case    nil
         ;; company-dabbrev-downcase       nil
@@ -498,6 +501,8 @@
 ;; C-c . -> jedi:goto-definition
 ;; M-.   -> anaconda-mode-find-definitions
 
+;; ATTENTION: documentação do anaconda-mode -> https://github.com/pythonic-emacs/anaconda-mode
+
 (use-package anaconda-mode
   :hook ((python-mode . anaconda-mode)
          (python-mode . anaconda-eldoc-mode))
@@ -509,6 +514,7 @@
 (use-package elpy
   :init
   (progn
+    ;; (auto-complete-mode nil)
     (with-eval-after-load 'python (elpy-enable))
     ;; (setq python-shell-interpreter "/usr/bin/python3")
     (setq elpy-rpc-python-command "/home/walmes/anaconda/bin/python3")
@@ -531,21 +537,23 @@
   (add-hook 'python-mode-hook
             '(lambda ()
                (jedi:setup)
-               (jedi:ac-setup)))
+               (jedi:ac-setup)
+               (auto-complete-mode -1) ;; TODO Deixar apenas o company para Python.
+               ))
   :config ;; Runs if and when package loads.
   (add-hook
    'python-mode-hook
    '(lambda ()
-      (auto-complete-mode t)
-      (setq ac-auto-start nil)
-      (setq ac-auto-show-menu nil)
-      (setq ac-use-quick-help nil)
-      (setq ac-auto-start 0
-            ac-delay 0
-            ac-quick-help-delay 0
-            ac-use-fuzzy t
-            ac-fuzzy-enable t)
-      (company-mode nil)
+      ;; (auto-complete-mode t)
+      ;; (setq ac-auto-start nil)
+      ;; (setq ac-auto-show-menu nil)
+      ;; (setq ac-use-quick-help nil)
+      ;; (setq ac-auto-start 0
+      ;;       ac-delay 0
+      ;;       ac-quick-help-delay 0
+      ;;       ac-use-fuzzy t
+      ;;       ac-fuzzy-enable t)
+      ;; (company-mode nil)
       (highlight-indentation-mode 0)
       (setq jedi:complete-on-dot t)
       (setq jedi:tooltip-method nil)
@@ -556,6 +564,10 @@
               "--sys-path" "/usr/lib/python3.8/"))
       ))
   )
+(use-package company-jedi
+  :disabled
+  :ensure t
+  :config)
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
