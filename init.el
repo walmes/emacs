@@ -188,6 +188,8 @@
     ;; molokai-theme :init (load-theme 'molokai t)
     ;; solarized-theme :init (load-theme 'solarized-dark t)
     ;; spacemacs-theme :init (load-theme 'spacemacs-dark t)
+    ;; fantom-theme :init (load-theme 'fantom t)
+    ;; vscode-dark-plus-theme :init (load-theme 'vscode-dark-plus t)
     :defer t)))
 
 ;;----------------------------------------------------------------------
@@ -245,6 +247,7 @@
 (use-package company
   :init
   (setq company-idle-delay             0
+        ;; company-idle-delay       0.36
         company-minimum-prefix-length  2
         ;; company-show-numbers t
         company-tooltip-limit 10
@@ -253,10 +256,16 @@
         ;; company-dabbrev-ignore-case    nil
         ;; company-dabbrev-downcase       nil
         ;; company-frontends              '(company-pseudo-tooltip-frontend)
+        company-selection-wrap-around t
+        company-tooltip-flip-when-above t
         )
   (global-company-mode t)
   :config
-  (add-hook 'prog-mode-hook 'company-mode))
+  (add-hook 'prog-mode-hook 'company-mode)
+  (global-unset-key (kbd "C-/"))
+  (global-set-key (kbd "C-/") #'company-complete)             ;; C-/
+  (global-set-key (kbd "<backtab>") 'company-complete-common) ;; S-TAB
+  )
 
 ;;----------------------------------------------------------------------
 ;; To work the accents on Sony Vaio.
@@ -443,35 +452,37 @@
 
 ;;----------------------------------------------------------------------
 ;; Auto complete mode for Emacs.
+;; https://www.emacswiki.org/emacs/AutoComplete
 
 ;; (when (not (package-installed-p 'auto-complete))
 ;;   (package-install 'auto-complete))
 
-(use-package auto-complete
-  :defer t
-  :init
-  (progn
-    (auto-complete-mode t))
-  :config
-  (progn
-    (use-package auto-complete-config)
-    (ac-config-default)
-    (setq ac-delay 0.02
-          ac-auto-start 0)
-    (setq ac-use-quick-help nil
-          ac-quick-help-delay 1.)
-    (setq ac-use-menu-map t)
-    (setq ac-dwim t)
-    (setq ac-fuzzy-enable t)
-    (setq-default ac-sources '(ac-source-abbrev
-                               ac-source-dictionary
-                               ac-source-words-in-same-mode-buffers))
-    ;; Change 'ac-complete from ENTER to TAB.
-    ;; (ac-set-trigger-key "TAB")
-    (define-key ac-completing-map "\r" nil)
-    (define-key ac-completing-map "\t" 'ac-complete)
-    )
-  )
+;; (use-package auto-complete
+;;   :defer t
+;;   :init
+;;   (progn
+;;     (auto-complete-mode t))
+;;   :config
+;;   (progn
+;;     (use-package auto-complete-config)
+;;     (ac-config-default)
+;;     (setq ac-delay 0.02
+;;           ac-auto-start 0)
+;;     (setq ac-use-quick-help nil
+;;           ac-quick-help-delay 1.)
+;;     (setq ac-use-menu-map t)
+;;     (setq ac-dwim t)
+;;     (setq ac-fuzzy-enable t)
+;;     ;; (setq ac-auto-show-menu nil)
+;;     (setq-default ac-sources '(ac-source-abbrev
+;;                                ac-source-dictionary
+;;                                ac-source-words-in-same-mode-buffers))
+;;     ;; Change 'ac-complete from ENTER to TAB.
+;;     ;; (ac-set-trigger-key "TAB")
+;;     (define-key ac-completing-map "\r" nil)
+;;     (define-key ac-completing-map "\t" 'ac-complete)
+;;     )
+;;   )
 
 ;;----------------------------------------------------------------------
 ;; Python configuration.
@@ -537,7 +548,7 @@
   (add-hook 'python-mode-hook
             '(lambda ()
                (jedi:setup)
-               (jedi:ac-setup)
+               ;; (jedi:ac-setup)
                (auto-complete-mode -1) ;; TODO Deixar apenas o company para Python.
                ))
   :config ;; Runs if and when package loads.
@@ -628,12 +639,28 @@
       (require 'ess-site)
       (setq ess-smart-operators t)
       (setq-local comment-add 0) ;; Single # as default.
-      (company-mode 1)       ;; (company-mode -1)
-      (auto-complete-mode -1)
       (ess-toggle-underscore nil)
+      ;; Using `auto-complete-mode` ---------
+      ;; (auto-complete-mode 1)
+      ;; (setq ess-use-auto-complete t)
+      ;; (company-mode -1)
+      ;; Using `company-mode` ---------------
+      (auto-complete-mode -1)
+      (company-mode 1)           ;; (company-mode -1)
+      (setq ess-use-company 'script-only)
       ;; `Alt + -'  to cycle `<- | <<- | = ...'.
       (define-key ess-mode-map [?\M--] 'ess-cycle-assign)
-      (define-key ess-mode-map [f5] 'company-R-args) ;; F5 do show ARGS.
+      (define-key ess-mode-map [f5] 'company-R-args)    ;; F5 do show ARGS.
+      (define-key ess-mode-map [C-f5] 'company-R-objects) ;; F6 complete objects.
+;; https://stackoverflow.com/questions/49232454/emacs-ess-how-to-auto-complete-library-function
+      (make-local-variable 'company-backends)
+      (cl-delete-if (lambda (x)
+                      (and (eq (car-safe x) 'company-R-args))) company-backends)
+      (push (list 'company-R-args
+                  'company-R-objects
+                  'company-R-library :separate)
+            company-backends)
+
       )
    )
   ;;-----------------------------------------
