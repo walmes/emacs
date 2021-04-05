@@ -190,6 +190,11 @@
     ;; spacemacs-theme :init (load-theme 'spacemacs-dark t)
     ;; fantom-theme :init (load-theme 'fantom t)
     ;; vscode-dark-plus-theme :init (load-theme 'vscode-dark-plus t)
+    ;; material-theme :init (load-theme 'material t)
+    ;; doom-themes
+    ;; :init
+    ;; (load-theme 'doom-one t)
+    ;; (doom-themes-neotree-config) ;; `all-the-icons' must be installed!
     :defer t)))
 
 ;;----------------------------------------------------------------------
@@ -457,6 +462,15 @@
 ;; (when (not (package-installed-p 'auto-complete))
 ;;   (package-install 'auto-complete))
 
+;; ;; auto-complete
+;; (use-package auto-complete
+;;   :ensure t
+;;   :diminish auto-complete-mode
+;;   :init
+;;   (setq ac-quick-help-delay 0.0)
+;;   :config
+;;   (ac-config-default))
+
 ;; (use-package auto-complete
 ;;   :defer t
 ;;   :init
@@ -487,6 +501,22 @@
 ;;----------------------------------------------------------------------
 ;; Python configuration.
 ;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
+;; https://github.com/psachin/.emacs.d/blob/master/packages.org
+
+;; TODO: https://steelkiwi.com/blog/emacs-configuration-working-python/
+
+;; Python mode.
+(use-package python
+  ;; :mode ("\\.py\\'" . python-mode)
+  ;; :interpreter ("python3.6" . python-mode)
+  :config
+  (progn
+    (define-key python-mode-map
+      [f5] 'complete-symbol)
+    (define-key python-mode-map
+      [f6] 'ac-start) ;; Using auto-complete.
+    )
+  )
 
 ;; TIP: check if company is enabled in a buffer.
 ;; (if (bound-and-true-p company-mode)
@@ -498,63 +528,51 @@
 ;;   Emacs    : M-x package-install RET jedi RET
 ;;   Emacs    : M-x jedi:install-server RET
 
-;; Install in Python.
+;; Install in Python (system's Python).
 ;;   sudo apt-get install python-pip python3-pip
 ;;   sudo pip install --upgrade pip
-;;   pip install jedi
-;;   pip install epc
+;;   pip install jedi epc
+;; Install in Python (Anaconda's Python).
+;;   cd ~/anaconda
+;;   source activate
+;;   pip instal jedi epc
 
 ;; sudo find . -name jediepcserver.py
 ;;   .emacs.d/.python-environments/default/lib/python2.7/site-packages/jediepcserver.py
 ;;   .emacs.d/elpa/jedi-core-XXX.YYY/jediepcserver.py
 
+;; Some useful keys.
 ;; C-c ? -> jedi:show-doc
 ;; C-c . -> jedi:goto-definition
 ;; M-.   -> anaconda-mode-find-definitions
 
-;; ATTENTION: documentação do anaconda-mode -> https://github.com/pythonic-emacs/anaconda-mode
-
-(use-package anaconda-mode
-  :hook ((python-mode . anaconda-mode)
-         (python-mode . anaconda-eldoc-mode))
-  :config
-  (use-package company-anaconda
-    :requires company
-    :config (add-to-list 'company-backends 'company-anaconda)))
-
-(use-package elpy
-  :init
-  (progn
-    ;; (auto-complete-mode nil)
-    (with-eval-after-load 'python (elpy-enable))
-    ;; (setq python-shell-interpreter "/usr/bin/python3")
-    (setq elpy-rpc-python-command "/home/walmes/anaconda/bin/python3")
-    (setq python-shell-interpreter "/home/walmes/anaconda/bin/python3")
-    ;; To fix a warning message.
-    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
-    (setq python-shell-completion-native-enable nil)
-    )
-  )
+;; TODO: http://tkf.github.io/emacs-jedi/latest/
+;; https://cestlaz.github.io/posts/using-emacs-45-company/
+;; https://steelkiwi.com/blog/emacs-configuration-working-python/
 
 ;; NOTE: When to use :init or :config.
 ;; https://emacs.stackexchange.com/questions/10396/difference-between-init-and-config-in-use-package
 ;;   :init   -> Code to run when `use-package' form evals.
 ;;   :config -> Runs if and when package loads.
 
-;; https://cestlaz.github.io/posts/using-emacs-45-company/
-;; https://steelkiwi.com/blog/emacs-configuration-working-python/
+;; Python Jedi
+;; From emacs-jedi readme
+;; Type:
+;;     M-x jedi:install-server RET
+;; Then open Python file.
 (use-package jedi
   :init ;; Code to run when `use-package' form evals.
   (add-hook 'python-mode-hook
             '(lambda ()
                (jedi:setup)
                ;; (jedi:ac-setup)
-               (auto-complete-mode -1) ;; TODO Deixar apenas o company para Python.
+               (auto-complete-mode -1)
                ))
   :config ;; Runs if and when package loads.
   (add-hook
    'python-mode-hook
    '(lambda ()
+      ;; (add-to-list 'company-backends 'company-jedi)
       ;; (auto-complete-mode t)
       ;; (setq ac-auto-start nil)
       ;; (setq ac-auto-show-menu nil)
@@ -575,10 +593,55 @@
               "--sys-path" "/usr/lib/python3.8/"))
       ))
   )
+
+;; company-jedi
+;; Need to install jedi server
+;; M-x jedi:install-server RET
 (use-package company-jedi
-  :disabled
-  :ensure t
-  :config)
+  ;; :ensure t
+  :config
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
+  (add-hook 'python-mode-hook 'my/python-mode-hook))
+
+;; Notes:
+;;   To activate python virtualenv: M-x pyvenv-activate
+;;   To Configure elpy: M-x elpy-config
+;;   Ref: https://realpython.com/blog/python/emacs-the-best-python-editor/
+(use-package elpy
+  :init
+  (progn
+    ;; (auto-complete-mode nil)
+    (with-eval-after-load 'python (elpy-enable))
+    ;; (setq python-shell-interpreter "/usr/bin/python3")
+    (setq elpy-rpc-python-command "/home/walmes/anaconda/bin/python3")
+    (setq python-shell-interpreter "/home/walmes/anaconda/bin/python3")
+    (setq
+     ;; Referred from:
+     ;; https://github.com/ajschumacher/.emacs.d/blob/master/init.el
+     ;; sudo dnf install python-jedi python3-jedi -y
+     elpy-rpc-backend "jedi"
+     help-at-pt-timer-delay 0.9
+     help-at-pt-display-when-idle t
+     tab-width 4)
+    ;; To fix a warning message.
+    ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+    (setq python-shell-completion-native-enable nil)
+    )
+  )
+
+;; https://github.com/pythonic-emacs/anaconda-mode
+(use-package anaconda-mode
+  :hook
+  ((python-mode . anaconda-mode)
+   (python-mode . anaconda-eldoc-mode))
+  :config
+  (use-package company-anaconda
+    :requires company
+    :config (add-to-list
+             ;; 'company-backends
+             ;; 'company-jedi
+             'company-anaconda)))
 
 ;;----------------------------------------------------------------------
 ;; ESS - Emacs Speaks Statistics.
