@@ -502,7 +502,6 @@
 ;; Python configuration.
 ;; https://github.com/howardabrams/dot-files/blob/master/emacs-python.org
 ;; https://github.com/psachin/.emacs.d/blob/master/packages.org
-
 ;; TODO: https://steelkiwi.com/blog/emacs-configuration-working-python/
 
 ;; Python mode.
@@ -586,11 +585,11 @@
       (highlight-indentation-mode 0)
       (setq jedi:complete-on-dot t)
       (setq jedi:tooltip-method nil)
-      (setq jedi:server-args
-            ;; ls /home/walmes/anaconda/lib | grep "^python"
-            ;; ls /usr/lib/ | grep "^python"
-            '("--sys-path" "/home/walmes/anaconda/lib/python3.8/site-packages/"
-              "--sys-path" "/usr/lib/python3.8/"))
+      ;; (setq jedi:server-args
+      ;;      ;; ls /home/walmes/anaconda/lib | grep "^python"
+      ;;      ;; ls /usr/lib/ | grep "^python"
+      ;;      '("--sys-path" "/home/walmes/anaconda/lib/python3.8/site-packages/"
+      ;;        "--sys-path" "/usr/lib/python3.8/"))
       ))
   )
 
